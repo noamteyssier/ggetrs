@@ -17,5 +17,5 @@ cargo install --path .
 For querying `Enrichr`
 
 ```bash
-ggetrs enrichr -l <library_name> -g <gene_name_1> <...> <gene_name_2>
+ggetrs enrichr -l GO_Biological_Process_2021 -g AP2S1 NSD1 RFX3 LDB1
 ```
