@@ -10,13 +10,17 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Perform an enrichment analysis on a list of genes using Enrichr.
     Enrichr {
+        /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
         #[clap(short, long, value_parser)]
         library: String,
-        #[clap(short, long, value_parser, min_values=1, required=true)]
-        gene_list: Vec<String>,
+        /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
-        output: Option<String>
+        output: Option<String>,
+        /// list of gene symbols to perform enrichment analysis on.
+        #[clap(value_parser, min_values=1, required=true)]
+        gene_list: Vec<String>,
     }
 }
 
