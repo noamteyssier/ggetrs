@@ -3,6 +3,10 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
 
+/// A struct to hold the results of an enrichment test.
+///
+/// The keys of this `HashMap` will be the background library
+/// tested against and the values will each be an instance of [ResultEnrichr]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ResponseEnrich (
     HashMap<String, Vec<ResultEnrichr>>
@@ -12,19 +16,10 @@ impl fmt::Display for ResponseEnrich {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
     }
 }
-// impl fmt::Display for ResponseEnrich {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         write!(f, "{{")?;
-//         for (k, v) in self.0.iter() {
-//             write!(f, "{}: ", k)?;
-//             for record in v {
-//                 write!(f, "{}", serde_json::to_string_pretty(&record).expect("cannot serialize"))?;
-//             }
-//         }
-//         write!(f, "}}")
-//     }
-// }
 
+/// A singular enrichment result.
+///
+/// Names were taken from <https://maayanlab.cloud/Enrichr/help#api&q=3>
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ResultEnrichr {
     pub rank: usize,
@@ -55,6 +50,10 @@ impl fmt::Display for ResultEnrichr {
     }
 }
 
+/// Performs an API call to the `Enrichr`'s `enrich`. 
+///
+/// This measures the significance of overlap of the provided gene list to the provided library
+/// name.
 pub async fn enrich(list_id: usize, library_name: &str) -> Result<ResponseEnrich, Error> {
     let url = format!(
         "https://maayanlab.cloud/Enrichr/enrich?userListId={}&backgroundType={}",

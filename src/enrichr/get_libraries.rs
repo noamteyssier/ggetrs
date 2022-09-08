@@ -1,6 +1,9 @@
 use reqwest::Error;
 use serde::Deserialize;
 
+/// An instance of a library contained within `Enrichr`
+///
+/// Data is stored as a json at <https://maayanlab.cloud/Enrichr/datasetStatistics>
 #[derive(Deserialize, Debug)]
 #[serde(rename_all="camelCase")]
 pub struct Library {
@@ -13,6 +16,9 @@ pub struct Library {
     pub category_id: usize
 }
 
+/// An instance of category contained within `Enrichr`
+///
+/// Data is stored as a json at <https://maayanlab.cloud/Enrichr/datasetStatistics>
 #[derive(Deserialize, Debug)]
 #[serde(rename_all="camelCase")]
 pub struct Category {
@@ -20,6 +26,9 @@ pub struct Category {
     pub name: String
 }
 
+/// All libraries contained within `Enrichr`.
+///
+/// The `statistics` attribute is a container of all known [Library].
 #[derive(Deserialize, Debug)]
 #[serde(rename_all="camelCase")]
 pub struct ResponseLibraries {
@@ -32,6 +41,7 @@ impl ResponseLibraries {
     }
 }
 
+/// Performs a `GET` call to retrieve the known libraries of `Enrichr`
 pub async fn get_libraries() -> Result<ResponseLibraries, Error> {
     let url = "https://maayanlab.cloud/Enrichr/datasetStatistics";
     reqwest::get(url)

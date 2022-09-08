@@ -1,6 +1,9 @@
 use reqwest::{Client, Error};
 use serde::Deserialize;
 
+/// A struct to handle the results of the `Enrichr` function call: `addList`
+///
+/// details at: <https://maayanlab.cloud/Enrichr/help#api&q=1>
 #[derive(Deserialize, Debug)]
 #[serde(rename_all="camelCase")]
 pub struct ResponseAddList {
@@ -8,6 +11,7 @@ pub struct ResponseAddList {
     pub short_id: String
 }
 
+/// Performs a function call to the `addList` API.
 pub async fn add_list(gene_list: &[String]) -> Result<ResponseAddList, Error> {
 
     // defines the web client
@@ -34,6 +38,5 @@ pub async fn add_list(gene_list: &[String]) -> Result<ResponseAddList, Error> {
         .await?
         .json::<ResponseAddList>()
         .await
-
 }
 
