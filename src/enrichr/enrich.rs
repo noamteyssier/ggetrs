@@ -32,21 +32,9 @@ pub struct ResultEnrichr {
     pub old_pvalue: f64,
     pub old_adj_pvalue: f64
 }
-impl fmt::Display for ResultEnrichr {
+impl fmt::Display for ResultEnrichr{
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{{{}\n,\t{}\n,\t{}\n,\t{}\n,\t{}\n,\t{:?}\n,\t{}\n,\t{}\n,\t{}\n}}",
-            self.rank,
-            self.term_name,
-            self.pvalue,
-            self.zscore,
-            self.combined_score,
-            self.overlapping_genes,
-            self.adj_pvalue,
-            self.old_pvalue,
-            self.old_adj_pvalue
-        )
+        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
     }
 }
 
