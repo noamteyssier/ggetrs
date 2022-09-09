@@ -20,7 +20,7 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        pip install maturin pytest
+        env/bin/python -m pip install maturin pytest
 
     - name: Build package
       run: |
@@ -28,7 +28,7 @@ jobs:
 
     - name: Install package
       run: |
-        pip install target/wheels/*.whl
+        env/bin/pip install target/wheels/*.whl
 
     - name: Test package
       run: |
