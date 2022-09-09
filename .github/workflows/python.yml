@@ -13,27 +13,22 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Add conda to system path
+    - name: Activate venv
       run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
+        python3.8 -m venv env
+        source env/bin/activate
 
-    - name: initialize conda 
-      run: |
-        conda init bash
-        source /home/runner/.bashrc
-
-    - name: activate conda env
-      run: |
-        conda activate base
-
-    - name: Install dependencies
+    - name: Install Dependencies
       run: |
         pip install maturin pytest
 
     - name: Build package
       run: |
-        maturin develop
+        maturin build
+
+    - name: Install package
+      run: |
+        pip install target/wheels/*.whl
 
     - name: Test package
       run: |
