@@ -12,9 +12,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: install
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install Pip
       run: |
-        python -m pip install pip;
-        pip install maturin;
-        maturin build;
-        pip install target/wheels/*.whl;
+        python -m pip install pip
+    - name: Install Maturin
+      run: |
+        pip install maturin
+    - name: Build ggetrs
+      run: |
+        maturin build
+    - name: Install Wheel
+      run: |
+        pip install target/wheels/*.whl
