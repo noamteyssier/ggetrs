@@ -7,29 +7,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
-    - name: Activate venv
+    - name: Add conda to system path
       run: |
-        python3.8 -m venv env
-        source env/bin/activate
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: |
-        env/bin/python -m pip install maturin pytest
+        conda env update --file env.yml --name base
 
     - name: Build package
       run: |
-        env/bin/maturin develop
+        maturin develop
 
     - name: Install package
       run: |
-        env/bin/pip install target/wheels/*.whl
+        pip install target/wheels/*.whl
 
     - name: Test package
       run: |
-        env/bin/pytest -v
+        pytest -v
