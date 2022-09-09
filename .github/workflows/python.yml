@@ -24,7 +24,7 @@ jobs:
 
     - name: Build package
       run: |
-        env/bin/maturin build
+        env/bin/maturin develop
 
     - name: Install package
       run: |
@@ -32,4 +32,4 @@ jobs:
 
     - name: Test package
       run: |
-        env/bin/python -m pytest -v
+        env/bin/pytest -v
