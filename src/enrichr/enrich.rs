@@ -1,3 +1,4 @@
+use pyo3::pyclass;
 use reqwest::Result;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -8,8 +9,9 @@ use std::fmt;
 /// The keys of this `HashMap` will be the background library
 /// tested against and the values will each be an instance of [ResultEnrichr]
 #[derive(Serialize, Deserialize, Debug)]
+#[pyclass]
 pub struct ResponseEnrich (
-    HashMap<String, Vec<ResultEnrichr>>
+    pub HashMap<String, Vec<ResultEnrichr>>
 );
 impl fmt::Display for ResponseEnrich {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -21,15 +23,25 @@ impl fmt::Display for ResponseEnrich {
 ///
 /// Names were taken from <https://maayanlab.cloud/Enrichr/help#api&q=3>
 #[derive(Serialize, Deserialize, Debug)]
+#[pyclass(dict)]
 pub struct ResultEnrichr {
+    #[pyo3(get, set)]
     pub rank: usize,
+    #[pyo3(get, set)]
     pub term_name: String,
+    #[pyo3(get, set)]
     pub pvalue: f64,
+    #[pyo3(get, set)]
     pub zscore: f64,
+    #[pyo3(get, set)]
     pub combined_score: f64,
+    #[pyo3(get, set)]
     pub overlapping_genes: Vec<String>,
+    #[pyo3(get, set)]
     pub adj_pvalue: f64,
+    #[pyo3(get, set)]
     pub old_pvalue: f64,
+    #[pyo3(get, set)]
     pub old_adj_pvalue: f64
 }
 impl fmt::Display for ResultEnrichr{
