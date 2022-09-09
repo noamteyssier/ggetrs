@@ -1,3 +1,6 @@
+develop: build
+  maturin develop --release
+
 build: 
   cargo build --release
 
@@ -14,7 +17,7 @@ lint: build
     -A clippy::missing_errors_doc \
     -A clippy::module_name_repetitions
 
-install: build
+install: develop
   cargo install --path .
 
 enrichr_query: build
