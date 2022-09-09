@@ -20,10 +20,10 @@ jobs:
 
     - name: initialize conda 
       run: |
-        conda init $SHELL
+        conda init bash
         source ~/.bashrc
 
-    - name: initialize conda 
+    - name: activate conda env
       run: |
         conda activate base
 
