@@ -14,8 +14,19 @@ cargo install --path .
 
 #### Enrichr
 
+##### Command Line Interface
+
 For querying `Enrichr`
 
 ```bash
 ggetrs enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3 LDB1
+```
+
+##### Python Interface
+
+For querying `Enrichr`
+
+```python3
+import ggetrs
+ggetrs.enrichr("GO_Biological_Process_2021", ["AP2S1", "NSD1", "RFX3", "LDB1"])
 ```
