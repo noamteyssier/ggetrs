@@ -24,7 +24,7 @@ jobs:
 
     - name: Build package
       run: |
-        maturin build
+        env/bin/maturin build
 
     - name: Install package
       run: |
