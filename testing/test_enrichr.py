@@ -1,4 +1,4 @@
-from ggetrs import ggetrs
+import ggetrs
 
 def test_enrichr():
     library = "GO_Biological_Process_2021"
