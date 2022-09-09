@@ -1,4 +1,4 @@
-use reqwest::Error;
+use reqwest::Result;
 use serde::{Serialize, Deserialize};
 use std::fmt;
 
@@ -59,10 +59,8 @@ impl fmt::Display for ResponseLibraries {
 }
 
 /// Performs a `GET` call to retrieve the known libraries of `Enrichr`
-pub async fn get_libraries() -> Result<ResponseLibraries, Error> {
+pub fn get_libraries() -> Result<ResponseLibraries> {
     let url = "https://maayanlab.cloud/Enrichr/datasetStatistics";
-    reqwest::get(url)
-        .await?
+    reqwest::blocking::get(url)?
         .json::<ResponseLibraries>()
-        .await
 }

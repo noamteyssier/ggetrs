@@ -1,13 +1,13 @@
 use std::fs::File;
 use std::io::Write;
 
-use reqwest::Error;
+use reqwest::Result;
 use super::{add_list, enrich};
 
 /// Main entrypoint to launching the `enrich` function for `Enrichr`
-pub async fn launch_enrich(library: &str, gene_list: &[String], output: &Option<String>) -> Result<(), Error> {
-    let add_list = add_list(gene_list).await?;
-    let results = enrich(add_list.user_list_id, library).await?;
+pub fn launch_enrich(library: &str, gene_list: &[String], output: &Option<String>) -> Result<()> {
+    let add_list = add_list(gene_list)?;
+    let results = enrich(add_list.user_list_id, library)?;
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {

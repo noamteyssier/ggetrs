@@ -1,4 +1,4 @@
-use reqwest::Error;
+use reqwest::Result;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
@@ -42,14 +42,12 @@ impl fmt::Display for ResultEnrichr{
 ///
 /// This measures the significance of overlap of the provided gene list to the provided library
 /// name.
-pub async fn enrich(list_id: usize, library_name: &str) -> Result<ResponseEnrich, Error> {
+pub fn enrich(list_id: usize, library_name: &str) -> Result<ResponseEnrich> {
     let url = format!(
         "https://maayanlab.cloud/Enrichr/enrich?userListId={}&backgroundType={}",
         list_id,
         library_name
     );
-    reqwest::get(url)
-        .await?
+    reqwest::blocking::get(url)?
         .json::<ResponseEnrich>()
-        .await
 }

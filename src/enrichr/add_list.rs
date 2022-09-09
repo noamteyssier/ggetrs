@@ -1,4 +1,4 @@
-use reqwest::{Client, Error};
+use reqwest::{Result, blocking::Client};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -18,7 +18,7 @@ impl fmt::Display for ResponseAddList {
 }
 
 /// Performs a function call to the `addList` API.
-pub async fn add_list(gene_list: &[String]) -> Result<ResponseAddList, Error> {
+pub fn add_list(gene_list: &[String]) -> Result<ResponseAddList> {
 
     // defines the web client
     let client = Client::new();
@@ -33,16 +33,14 @@ pub async fn add_list(gene_list: &[String]) -> Result<ResponseAddList, Error> {
     let description = String::from("rust-gget");
 
     // creates the form for the request
-    let form = reqwest::multipart::Form::new()
+    let form = reqwest::blocking::multipart::Form::new()
         .text("list", query)
         .text("description", description);
 
     // query the server
     client.post(url)
         .multipart(form)
-        .send()
-        .await?
+        .send()?
         .json::<ResponseAddList>()
-        .await
 }
 
