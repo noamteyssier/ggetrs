@@ -30,3 +30,8 @@ jobs:
           which pip
           which pytest
 
+      - name: Develop
+        shell: bash -l {0}
+        run: |
+          maturin develop
+
