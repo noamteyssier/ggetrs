@@ -24,12 +24,11 @@ enum Commands {
     }
 }
 
-#[tokio::main]
-async fn main() -> Result<(), RequestError> {
+fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
         Commands::Enrichr { library, gene_list, output } => {
-            launch_enrich(library, gene_list, output).await?;
+            launch_enrich(library, gene_list, output)?;
         },
     };
 

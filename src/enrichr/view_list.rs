@@ -1,4 +1,4 @@
-use reqwest::Error;
+use reqwest::Result;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -18,10 +18,8 @@ impl fmt::Display for ResponseViewList {
 }
 
 /// Performs a `GET` call to retrieve the genes within a `userListId`.
-pub async fn view_list(user_list_id: usize) -> Result<ResponseViewList, Error> {
+pub fn view_list(user_list_id: usize) -> Result<ResponseViewList> {
     let url = format!("https://maayanlab.cloud/Enrichr/view?userListId={}", user_list_id);
-    reqwest::get(&url)
-        .await?
+    reqwest::blocking::get(&url)?
         .json::<ResponseViewList>()
-        .await
 }
