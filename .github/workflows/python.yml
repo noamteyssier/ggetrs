@@ -32,4 +32,4 @@ jobs:
 
     - name: Test package
       run: |
-        pytest -v
+        env/bin/python -m pytest -v
