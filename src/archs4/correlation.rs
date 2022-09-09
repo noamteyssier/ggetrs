@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use pyo3::{Python, PyResult, types::PyDict};
 use reqwest::{blocking::Client, Result};
 use serde::{Serialize, Deserialize};
 use std::fmt;
@@ -38,6 +39,20 @@ impl fmt::Display for Correlations {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
     }
 }
+impl Correlations {
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item(
+            "correlations",
+            self.correlations
+                .iter()
+                .map(|x| x.as_pydict(py).expect("could not create pydict"))
+                .collect::<Vec<&PyDict>>()
+            )?;
+        Ok(dict)
+    }
+}
+
 
 /// An instance of a result (i.e. a single genes pearson correlation with the query gene)
 #[derive(Serialize, Deserialize, Debug)]
@@ -56,6 +71,14 @@ impl Correlation {
 impl fmt::Display for Correlation {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+    }
+}
+impl Correlation {
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item("gene_symbol", &self.gene_symbol)?;
+        dict.set_item("pearson_correlation", self.pearson_correlation)?;
+        Ok(dict)
     }
 }
 
