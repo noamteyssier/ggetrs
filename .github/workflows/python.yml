@@ -21,7 +21,7 @@ jobs:
     - name: initialize conda 
       run: |
         conda init bash
-        source ~/.bashrc
+        source /home/runner/.bashrc
 
     - name: activate conda env
       run: |
