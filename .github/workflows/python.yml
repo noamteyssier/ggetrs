@@ -22,9 +22,15 @@ jobs:
     - name: Install Maturin
       run: |
         pip install maturin
+    - name: Install pytest
+      run: |
+        pip install pytest
     - name: Build ggetrs
       run: |
         maturin build
     - name: Install Wheel
       run: |
         pip install target/wheels/*.whl
+    - name: Test Functions
+      run: |
+        pytest -v 
