@@ -19,7 +19,7 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Activate conda environment
       run: |
-        conda activate base
+        $CONDA/bin/conda activate base
 
     - name: Install dependencies
       run: |
