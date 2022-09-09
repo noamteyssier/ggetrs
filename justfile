@@ -23,5 +23,10 @@ install: develop
 enrichr_query: build
   time target/release/ggetrs enrichr \
     -l GO_Biological_Process_2021 \
-    -g AP2S1 NSD1 RFX3 LDB2
+    AP2S1 NSD1 RFX3 LDB2
+
+archs4_query: build
+  time target/release/ggetrs archs4 \
+    AP2S1
+    
 

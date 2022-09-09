@@ -3,6 +3,9 @@ use pyo3::{pymodule, Python, types::PyModule, PyResult, wrap_pyfunction};
 /// `Enrichr` submodule
 pub mod enrichr;
 
+/// `ARCHS4` submodule
+pub mod archs4;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
