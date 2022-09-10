@@ -1,12 +1,13 @@
 use clap::{Parser, Subcommand};
 use ggetrs::{
     enrichr::launch_enrich, 
-    archs4::launch_archs4_correlation,
+    archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
     RequestError
 };
 
 #[derive(Parser)]
 #[clap(author, version, about)]
+#[clap(propagate_version = true)]
 struct Cli {
     #[clap(subcommand)]
     command: Commands,
@@ -27,14 +28,33 @@ enum Commands {
         gene_list: Vec<String>,
     },
 
-    /// Performs a correlation analysis using ARCHS4
-    ARCHS4 {
+    /// Queries gene-specific information using ARCHS4
+    #[clap(subcommand)]
+    ARCHS4(ModArchS4)
+}
+
+#[derive(Subcommand)]
+enum ModArchS4{
+    /// Performs a gene-correlation analysis
+    Correlation {
         /// Gene name to query for correlation
         #[clap(value_parser, required=true)]
         gene_name: String,
         /// number of values to recover
         #[clap(short, long, value_parser, default_value="100")]
         count: usize,
+        /// output filepath to write to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+    /// Perform a tissue-enrichment analysis
+    Tissue {
+        /// Gene name to query for tissue
+        #[clap(value_parser, required=true)]
+        gene_name: String,
+        /// number of values to recover
+        #[clap(short, long, value_parser, default_value="human")]
+        species: Species,
         /// output filepath to write to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -47,8 +67,13 @@ fn main() -> Result<(), RequestError> {
         Commands::Enrichr { library, gene_list, output } => {
             launch_enrich(library, gene_list, output)?;
         },
-        Commands::ARCHS4 { gene_name, count, output } => {
-            launch_archs4_correlation(gene_name, *count, output)?;
+        Commands::ARCHS4(sub) => match sub {
+            ModArchS4::Correlation { gene_name, count, output } => {
+                launch_archs4_correlation(gene_name, *count, output)?;
+            },
+            ModArchS4::Tissue { gene_name, species, output } => {
+                launch_archs4_tissue(gene_name, species, output)?;
+            }
         }
     };
 
