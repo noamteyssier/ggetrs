@@ -43,7 +43,7 @@ pip install target/wheels/<your_config>.whl
 
 #### Enrichr
 
-##### Command Line Interface
+##### Enrichr :: CLI
 
 For querying `Enrichr`
 
@@ -51,11 +51,40 @@ For querying `Enrichr`
 ggetrs enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3 LDB1
 ```
 
-##### Python Interface
+##### Enrichr :: Python
 
 For querying `Enrichr`
 
 ```python3
 import ggetrs
 ggetrs.enrichr("GO_Biological_Process_2021", ["AP2S1", "NSD1", "RFX3", "LDB1"])
+```
+
+#### ARCHS4
+
+The `ARCHS4` API currently has two submodules:
+
+1. correlate
+2. tissue
+
+##### ARCHS4 :: CLI
+
+```bash
+# correlation module
+ggetrs archs4 correlate AP2S1
+
+# tissue module
+ggetrs archs4 tissue AP2S1
+```
+
+##### ARCHS4 :: Python
+
+```python3
+import ggetrs
+
+# correlation module
+ggetrs.archs4.correlate("AP2S1", 10)
+
+# tissue module
+ggetrs.archs4.tissue("AP2S1", "human")
 ```
