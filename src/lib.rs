@@ -10,8 +10,8 @@ pub mod archs4;
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
 #[pymodule]
-fn ggetrs(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
+fn ggetrs(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(enrichr::python_enrichr, module)?)?;
-    module.add_function(wrap_pyfunction!(archs4::python_archs4, module)?)?;
+    archs4::python_archs4(py, module)?;
     Ok(())
 }

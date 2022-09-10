@@ -38,8 +38,20 @@ impl ResponseTissue {
             .filter_map(|x| ResultTissue::from_line(x))
             .collect()
     }
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item(
+            "tissues",
+            self.results
+                .iter()
+                .map(|x| x.as_pydict(py).expect("could not create pydict"))
+                .collect::<Vec<&PyDict>>()
+            )?;
+        Ok(dict)
+    }
 }
 
+/// Individual tissue responses
 #[derive(Serialize, Debug)]
 pub struct ResultTissue {
     id: String,
@@ -100,6 +112,18 @@ impl ResultTissue {
         Some(Self {
             id, min, q1, median, q3, max, color
         })
+    }
+
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item("id", &self.id)?;
+        dict.set_item("min", self.min)?;
+        dict.set_item("q1", self.q1)?;
+        dict.set_item("median", self.median)?;
+        dict.set_item("q3", self.q3)?;
+        dict.set_item("max", self.max)?;
+        dict.set_item("color", &self.color)?;
+        Ok(dict)
     }
 
 }
