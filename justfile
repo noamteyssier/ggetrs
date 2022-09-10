@@ -25,8 +25,12 @@ enrichr_query: build
     -l GO_Biological_Process_2021 \
     AP2S1 NSD1 RFX3 LDB2
 
-archs4_query: build
-  time target/release/ggetrs archs4 \
+archs4_correlate: build
+  time target/release/ggetrs archs4 correlate \
+    AP2S1
+    
+archs4_tissue: build
+  time target/release/ggetrs archs4 tissue \
     AP2S1
     
 
