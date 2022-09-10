@@ -36,7 +36,7 @@ enum Commands {
 #[derive(Subcommand)]
 enum ModArchS4{
     /// Performs a gene-correlation analysis
-    Correlation {
+    Correlate {
         /// Gene name to query for correlation
         #[clap(value_parser, required=true)]
         gene_name: String,
@@ -68,7 +68,7 @@ fn main() -> Result<(), RequestError> {
             launch_enrich(library, gene_list, output)?;
         },
         Commands::ARCHS4(sub) => match sub {
-            ModArchS4::Correlation { gene_name, count, output } => {
+            ModArchS4::Correlate { gene_name, count, output } => {
                 launch_archs4_correlation(gene_name, *count, output)?;
             },
             ModArchS4::Tissue { gene_name, species, output } => {
