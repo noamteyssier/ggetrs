@@ -1,3 +1,9 @@
+run: enrichr archs4
+
+enrichr: enrichr_query
+
+archs4: archs4_correlate archs4_tissue
+
 develop: build
   maturin develop --release
 
@@ -19,6 +25,7 @@ lint: build
 
 install: develop
   cargo install --path .
+
 
 enrichr_query: build
   time target/release/ggetrs enrichr \
