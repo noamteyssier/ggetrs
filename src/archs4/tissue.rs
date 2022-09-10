@@ -1,8 +1,10 @@
 use std::fmt;
 use clap::clap_derive::ArgEnum;
+use pyo3::{Python, PyResult, types::PyDict};
 use reqwest::{Result, blocking::Client};
 use serde::Serialize;
 
+/// The currently supported species for tissue expression in `ARCHS4`
 #[derive(ArgEnum, Debug, Clone, Default)]
 pub enum Species{
     #[default]
@@ -18,6 +20,7 @@ impl fmt::Display for Species {
     }
 }
 
+/// A struct to hold the responses from tissue expression
 #[derive(Serialize, Debug)]
 pub struct ResponseTissue {
     results: Vec<ResultTissue>
