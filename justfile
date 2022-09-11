@@ -1,8 +1,10 @@
-run: enrichr archs4
+run: enrichr archs4 ensembl
 
 enrichr: enrichr_query
 
 archs4: archs4_correlate archs4_tissue
+
+ensembl: ensembl_search ensembl_database
 
 develop: build
   maturin develop --release
@@ -45,6 +47,7 @@ ensembl_search: build
     RFX3 AP2S1
 
 ensembl_database: build
-  time target/release/ggetrs ensembl database -f homo_sapiens
+  time target/release/ggetrs ensembl database \
+    -f homo_sapiens
     
 
