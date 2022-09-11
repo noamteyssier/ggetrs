@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use ggetrs::{
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    RequestError
+    RequestError, ensembl::launch_ensembl_search
 };
 
 #[derive(Parser)]
@@ -30,7 +30,28 @@ enum Commands {
 
     /// Queries gene-specific information using ARCHS4
     #[clap(subcommand)]
-    ARCHS4(ModArchS4)
+    ARCHS4(ModArchS4),
+
+    /// Searches through descriptions on ENSEMBL
+    Search {
+        #[clap(value_parser, min_values=1, required=true)]
+        search_terms: Vec<String>,
+
+        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        species: String,
+
+        #[clap(short, long, value_parser, default_value="core")]
+        db_type: String,
+
+        #[clap(short, long, value_parser, default_value="107")]
+        release: usize,
+
+        #[clap(short, long, value_parser, default_value="38")]
+        assembly: String,
+
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    }
 }
 
 #[derive(Subcommand)]
@@ -74,6 +95,9 @@ fn main() -> Result<(), RequestError> {
             ModArchS4::Tissue { gene_name, species, output } => {
                 launch_archs4_tissue(gene_name, species, output)?;
             }
+        },
+        Commands::Search { search_terms, species, db_type, release, assembly, output } => {
+            launch_ensembl_search(search_terms, species, db_type, release, assembly, output)?;
         }
     };
 
