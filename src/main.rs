@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use ggetrs::{
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    RequestError, ensembl::launch_ensembl_search
+    RequestError, ensembl::{launch_ensembl_search, launch_ensembl_database}
 };
 
 #[derive(Parser)]
@@ -57,7 +57,10 @@ enum Commands {
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
-    }
+    },
+
+    #[clap(subcommand)]
+    Ensembl(ModEnsembl)
 }
 
 #[derive(Subcommand)]
@@ -88,6 +91,46 @@ enum ModArchS4{
     }
 }
 
+#[derive(Subcommand)]
+enum ModEnsembl {
+    /// Searches through descriptions on ENSEMBL
+    Search {
+        /// Search terms to query
+        #[clap(value_parser, min_values=1, required=true)]
+        search_terms: Vec<String>,
+
+        /// species used in database
+        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        species: String,
+
+        /// database type specied by Ensembl
+        #[clap(short, long, value_parser, default_value="core")]
+        db_type: String,
+
+        /// release number to use for database
+        #[clap(short, long, value_parser, default_value="107")]
+        release: usize,
+
+        /// assembly to use for species
+        #[clap(short, long, value_parser, default_value="38")]
+        assembly: String,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Prints all available databases on Ensembl's SQL database
+    Database {
+        #[clap(short, long, value_parser)]
+        filter: Option<String>,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    }
+}
+
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -104,6 +147,14 @@ fn main() -> Result<(), RequestError> {
         },
         Commands::Search { search_terms, species, db_type, release, assembly, output } => {
             launch_ensembl_search(search_terms, species, db_type, release, assembly, output)?;
+        },
+        Commands::Ensembl(sub) => match sub {
+            ModEnsembl::Search { search_terms, species, db_type, release, assembly, output } => {
+                launch_ensembl_search(search_terms, species, db_type, release, assembly, output)?;
+            },
+            ModEnsembl::Database { filter, output } => {
+                launch_ensembl_database(filter, output)?;
+            }
         }
     };
 
