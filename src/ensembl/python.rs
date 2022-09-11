@@ -1,5 +1,5 @@
 use pyo3::{
-    pyfunction, Python, PyResult, 
+    pyfunction, Python, PyResult,
     types::PyDict
 };
 use super::search;
