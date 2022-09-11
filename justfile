@@ -39,5 +39,9 @@ archs4_correlate: build
 archs4_tissue: build
   time target/release/ggetrs archs4 tissue \
     AP2S1
+
+ensembl_search: build
+  time target/release/ggetrs search \
+    RFX3 AP2S1
     
 
