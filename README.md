@@ -88,3 +88,29 @@ ggetrs.archs4.correlate("AP2S1", 10)
 # tissue module
 ggetrs.archs4.tissue("AP2S1", "human")
 ```
+
+#### Search
+
+This is part of the ensembl submodule but is accessible at the top level as well.
+
+##### Search :: CLI
+
+```bash
+# free-form searching (single term)
+ggetrs search AP2S1
+
+# free-form searching (multiple terms)
+ggetrs search AP2S1 GABA RFX3
+```
+
+##### Search :: Python
+
+```python3
+import ggetrs
+
+# search module (single term)
+ggetrs.search(["AP2S1"], "homo_sapiens", "core", 107, "38")
+
+# search module (multiple terms)
+ggetrs.search(["AP2S1", "GABA", "RFX3"], "homo_sapiens", "core", 107, "38")
+```
