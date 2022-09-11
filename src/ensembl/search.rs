@@ -4,9 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 
 #[derive(Serialize, Deserialize ,Debug)]
-pub struct SearchResults {
-    results: Vec<SearchResult>
-}
+pub struct SearchResults ( Vec<SearchResult> );
 impl fmt::Display for SearchResults {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
@@ -53,7 +51,7 @@ impl SearchResult {
 fn search_term(conn: &mut Conn, search_term: &str) -> anyhow::Result<SearchResults> {
     let query = build_search_query(search_term);
     let results = conn.query_map(query, |row| SearchResult::from_row(row).expect("unable to parse search results"))?;
-    Ok(SearchResults { results })
+    Ok(SearchResults(results))
 }
 
 pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<SearchResults> {
@@ -62,9 +60,9 @@ pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<Searc
     let mut results = Vec::new();
     for term in search_terms.iter() {
         let mut term_results = search_term(&mut conn, term)?;
-        results.append(&mut term_results.results );
+        results.append(&mut term_results.0 );
     }
-    Ok(SearchResults { results })
+    Ok(SearchResults(results))
 }
 
 fn get_mysql_options(db_name: &str) -> OptsBuilder {
