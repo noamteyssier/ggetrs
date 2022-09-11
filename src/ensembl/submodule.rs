@@ -1,6 +1,7 @@
 use super::search;
 use std::{io::Write, fs::File};
 
+/// Main entrypoint for `Ensembl` description search
 pub fn launch_ensembl_search(
         search_terms: &Vec<String>, 
         species: &str, 

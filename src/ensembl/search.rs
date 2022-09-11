@@ -3,7 +3,8 @@ use anyhow::bail;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
-#[derive(Serialize, Deserialize ,Debug)]
+/// A unit struct container of [`SearchResult`]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SearchResults ( Vec<SearchResult> );
 impl fmt::Display for SearchResults {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -11,7 +12,8 @@ impl fmt::Display for SearchResults {
     }
 }
 
-#[derive(Serialize, Deserialize ,Debug)]
+/// An individual search result generated from the `Ensembl` SQL query
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SearchResult {
     stable_id: String,
     display_label: String,
@@ -34,6 +36,7 @@ impl SearchResult {
         }
     }
 
+    /// Generates from a [`Row`]
     pub fn from_row(row: Row) -> anyhow::Result<Self> {
         if row.is_empty() { bail!("empty row") }
         let stable_id = Self::parse_index(&row, 0);
@@ -48,12 +51,14 @@ impl SearchResult {
     }
 }
 
+/// Performs an individual search on a SQL connection for a provided search term
 fn search_term(conn: &mut Conn, search_term: &str) -> anyhow::Result<SearchResults> {
     let query = build_search_query(search_term);
     let results = conn.query_map(query, |row| SearchResult::from_row(row).expect("unable to parse search results"))?;
     Ok(SearchResults(results))
 }
 
+/// Creates an SQL connection then iteratively performs searches for each provided term
 pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<SearchResults> {
     let opts = get_mysql_options(db_name);
     let mut conn = Conn::new(opts)?;
@@ -65,6 +70,7 @@ pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<Searc
     Ok(SearchResults(results))
 }
 
+/// Generates mysql options
 fn get_mysql_options(db_name: &str) -> OptsBuilder {
     OptsBuilder::new()
         .ip_or_hostname(Some("ensembldb.ensembl.org"))
@@ -73,6 +79,9 @@ fn get_mysql_options(db_name: &str) -> OptsBuilder {
         .db_name(Some(db_name))
 }
 
+/// Generates the search query.
+///
+/// Searches through all the descriptions and display labels for the provided search term
 fn build_search_query(search_term: &str) -> String {
     format!(
         "SELECT gene.stable_id, xref.display_label, gene.description, xref.description, gene.biotype
