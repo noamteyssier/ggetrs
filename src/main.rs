@@ -34,21 +34,27 @@ enum Commands {
 
     /// Searches through descriptions on ENSEMBL
     Search {
+        /// Search terms to query
         #[clap(value_parser, min_values=1, required=true)]
         search_terms: Vec<String>,
 
+        /// species used in database
         #[clap(short, long, value_parser, default_value="homo_sapiens")]
         species: String,
 
+        /// database type specied by Ensembl
         #[clap(short, long, value_parser, default_value="core")]
         db_type: String,
 
+        /// release number to use for database
         #[clap(short, long, value_parser, default_value="107")]
         release: usize,
 
+        /// assembly to use for species
         #[clap(short, long, value_parser, default_value="38")]
         assembly: String,
 
+        /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
     }
