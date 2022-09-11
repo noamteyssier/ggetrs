@@ -1,6 +1,7 @@
 use mysql::{Conn, OptsBuilder, Row, prelude::Queryable};
 use anyhow::bail;
 use serde::{Deserialize, Serialize};
+use pyo3::{Python, PyResult, types::PyDict};
 use std::fmt;
 
 /// A unit struct container of [`SearchResult`]
@@ -9,6 +10,19 @@ pub struct SearchResults ( Vec<SearchResult> );
 impl fmt::Display for SearchResults {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+    }
+}
+impl SearchResults {
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item(
+            "results", 
+            self.0
+                .iter()
+                .map(|x| x.as_pydict(py).expect("could not create pydict"))
+                .collect::<Vec<&PyDict>>()
+        )?;
+        Ok(dict)
     }
 }
 
@@ -48,6 +62,16 @@ impl SearchResult {
         Ok(Self {
             stable_id, display_label, ensembl_description, xref_description, biotype
         })
+    }
+
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item("stable_id", &self.stable_id)?;
+        dict.set_item("display_label", &self.display_label)?;
+        dict.set_item("ensembl_description", &self.ensembl_description)?;
+        dict.set_item("xref_description", &self.xref_description)?;
+        dict.set_item("biotype", &self.biotype)?;
+        Ok(dict)
     }
 }
 
