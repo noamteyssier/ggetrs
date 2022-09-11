@@ -94,3 +94,17 @@ fn build_search_query(search_term: &str) -> String {
     )
 }
 
+#[cfg(test)]
+mod testing {
+    use super::search;
+
+    #[test]
+    fn test_search() {
+        let db_name = "homo_sapiens_core_107_38";
+        let search_terms = vec!["AP2S1".to_string()];
+        let results = search(db_name, &search_terms).unwrap();
+        assert_eq!(results.0.len(), 1);
+        assert_eq!(results.0[0].display_label, "AP2S1");
+    }
+
+}
