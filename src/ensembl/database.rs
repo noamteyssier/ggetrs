@@ -9,6 +9,11 @@ impl fmt::Display for ResponseDatabases {
         write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
     }
 }
+impl ResponseDatabases {
+    pub fn as_vec(&self) -> Vec<String> {
+        self.0.iter().map(|x| x.0.to_string()).collect()
+    }
+}
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Database(String);
 impl fmt::Display for Database {
