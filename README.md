@@ -114,3 +114,49 @@ ggetrs.search(["AP2S1"], "homo_sapiens", "core", 107, "38")
 # search module (multiple terms)
 ggetrs.search(["AP2S1", "GABA", "RFX3"], "homo_sapiens", "core", 107, "38")
 ```
+
+#### Ensembl
+
+This is a submodule for `Ensembl` related queries
+
+This submodule currently has 2 commands:
+
+1. search
+2. database
+
+`search` performs a free-form search of ensembl descriptions for a set of search
+terms.
+
+`database` returns all available databases which can be searched in Enesembl.
+This is used to select which databases to search with the `search` command.
+
+#### Ensembl :: CLI
+
+```bash
+# Free-form searching
+ggetrs ensembl search AP2S1
+
+# Database listing
+ggetrs ensembl database 
+
+# Database listing with filter
+ggetrs ensembl database -f mus_musculus
+```
+
+### Ensembl :: Python
+
+```python3
+import ggetrs
+
+# search module (single term)
+ggetrs.ensembl.search(["AP2S1"], "homo_sapiens", "core", 107, "38")
+
+# search module (multiple terms)
+ggetrs.ensembl.search(["AP2S1", "GABA", "RFX3"], "homo_sapiens", "core", 107, "38")
+
+# database module (no filter)
+ggetrs.ensembl.database()
+
+# database module (with filter)
+ggetrs.ensembl.database("mus_musculus")
+```
