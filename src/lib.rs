@@ -6,6 +6,9 @@ pub mod enrichr;
 /// `ARCHS4` submodule
 pub mod archs4;
 
+/// `ENSEMBL` submodule
+pub mod ensembl;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
