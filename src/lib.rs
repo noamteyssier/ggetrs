@@ -16,5 +16,6 @@ pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 fn ggetrs(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(enrichr::python_enrichr, module)?)?;
     archs4::python_archs4(py, module)?;
+    module.add_function(wrap_pyfunction!(ensembl::python_ensembl_search, module)?)?;
     Ok(())
 }
