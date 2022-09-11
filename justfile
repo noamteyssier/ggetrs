@@ -43,5 +43,8 @@ archs4_tissue: build
 ensembl_search: build
   time target/release/ggetrs search \
     RFX3 AP2S1
+
+ensembl_database: build
+  time target/release/ggetrs ensembl database -f homo_sapiens
     
 
