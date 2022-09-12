@@ -26,3 +26,7 @@ def test_database_filter():
     assert(isinstance(results, list))
     assert(len(results) == 1)
     assert(results[0] == "homo_sapiens_core_107_38")
+
+def test_release():
+    results = ggetrs.ensembl.release()
+    assert(results == 107)

@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use ggetrs::{
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    RequestError, ensembl::{launch_ensembl_search, launch_ensembl_database}
+    RequestError, ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release}
 };
 
 #[derive(Parser)]
@@ -137,7 +137,10 @@ enum ModEnsembl {
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
-    }
+    },
+
+    /// Retrieves the latest ensembl release version
+    Release
 }
 
 fn main() -> Result<(), RequestError> {
@@ -163,6 +166,9 @@ fn main() -> Result<(), RequestError> {
             },
             ModEnsembl::Database { filter, output } => {
                 launch_ensembl_database(filter, output)?;
+            },
+            ModEnsembl::Release => {
+                launch_ensembl_release()?;
             }
         }
     };
