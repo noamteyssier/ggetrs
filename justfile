@@ -49,5 +49,8 @@ ensembl_search: build
 ensembl_database: build
   time target/release/ggetrs ensembl database \
     -f homo_sapiens
+
+ensembl_release: build
+  time target/release/ggetrs ensembl release
     
 
