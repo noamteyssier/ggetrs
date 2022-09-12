@@ -1,4 +1,4 @@
-use super::{search, database, release, reference, DataType};
+use super::{search, database, release, reference, DataType, list_species};
 use std::{io::Write, fs::File};
 
 /// Main entrypoint for `Ensembl` description search
@@ -60,6 +60,25 @@ pub fn launch_ensembl_release() -> anyhow::Result<()> {
 pub fn launch_ensembl_reference(species: &str, release: usize, datatype: &Vec<DataType>, output: &Option<String>) -> anyhow::Result<()> {
     let files = reference(species, release, datatype)?;
     let repr = serde_json::to_string_pretty(&files)?;
+    match output {
+        Some(path) => {
+            if let Ok(mut writer) = File::create(path) {
+                writeln!(writer, "{}", repr).expect("Unable to write to file");
+            } else {
+                println!("{}", repr);
+            }
+        },
+        None => {
+            println!("{}", repr);
+        }
+    }
+    Ok(())
+}
+
+/// Main entrypoint for `Ensembl` FTP species list
+pub fn launch_ensembl_list_species(release: usize, datatype: &DataType, output: &Option<String>) -> anyhow::Result<()> {
+    let species = list_species(release, datatype)?;
+    let repr = serde_json::to_string_pretty(&species)?;
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {

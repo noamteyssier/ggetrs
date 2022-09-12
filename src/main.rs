@@ -3,7 +3,7 @@ use ggetrs::{
     RequestError, 
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR}
+    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}
 };
 
 #[derive(Parser)]
@@ -160,6 +160,21 @@ enum ModEnsembl {
         /// Optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
+    },
+
+    Species {
+
+        /// Release to use - will default to latest release
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
+        release: usize,
+
+        /// Optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+
+        /// Datatype to query species list
+        #[clap(short, long, value_enum, default_value="dna")]
+        datatype: DataType,
     }
 }
 
@@ -192,6 +207,9 @@ fn main() -> Result<(), RequestError> {
             },
             ModEnsembl::Ref { species, release, datatype, output } => {
                 launch_ensembl_reference(species, *release, datatype, output)?;
+            },
+            ModEnsembl::Species { release, datatype, output} => {
+                launch_ensembl_list_species(*release, datatype, output)?;
             }
         }
     };
