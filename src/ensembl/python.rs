@@ -3,7 +3,7 @@ use pyo3::{
     pyfunction, Python, PyResult, wrap_pyfunction,
     types::{PyDict, PyModule}
 };
-use super::{search, database, release, DataType, reference, ENSEMBL_RELEASE};
+use super::{search, database, release, DataType, reference, ENSEMBL_RELEASE, list_species};
 
 
 #[pyfunction(name="search")]
@@ -78,12 +78,33 @@ pub fn python_ensembl_reference<'py>(
     )
 }
 
+#[pyfunction(name="species")]
+pub fn python_ensembl_species<'py>(
+        _py: Python<'py>,
+        release: Option<usize>,
+        datatype: Option<String>) -> PyResult<Vec<String>> 
+{
+    let datatype = datatype
+        .map_or(
+            DataType::DNA, |x| 
+            DataType::from_str(&x, true)
+                .expect("Unexpected datatype provided")
+        );
+    let release = match release {
+        Some(x) => x,
+        None => ENSEMBL_RELEASE
+    };
+    let results = list_species(release, &datatype).expect("Could not query species FTP");
+    Ok(results)
+}
+
 pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     let submodule = PyModule::new(py, "ensembl")?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_search, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_database, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_release, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_reference, module)?)?;
+    submodule.add_function(wrap_pyfunction!(python_ensembl_species, module)?)?;
     module.add_submodule(submodule)?;
     Ok(())
 }
