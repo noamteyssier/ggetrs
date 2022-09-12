@@ -153,9 +153,13 @@ enum ModEnsembl {
         #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
 
-        /// Datatype to query for
+        /// Datatype to query for, provided as a comma-separated list (example: cdna,dna,gtf)
+        #[clap(short, long, value_enum, value_parser, value_delimiter=',', min_values=1, required=true)]
+        datatype: Vec<DataType>,
+
+        /// Optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
-        datatype: DataType
+        output: Option<String>,
     }
 }
 
@@ -186,8 +190,8 @@ fn main() -> Result<(), RequestError> {
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
             },
-            ModEnsembl::Ref { species, release, datatype } => {
-                launch_ensembl_reference(species, *release, datatype)?;
+            ModEnsembl::Ref { species, release, datatype, output } => {
+                launch_ensembl_reference(species, *release, datatype, output)?;
             }
         }
     };
