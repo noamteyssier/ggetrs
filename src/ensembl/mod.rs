@@ -7,14 +7,22 @@ mod search;
 /// submodule for retrieving the latest release
 mod release;
 
+/// submodule for retrieving data from Ensembl FTP
+mod reference;
+
 /// submodule for command line usage
 mod submodule;
 
 /// submodule for python usage
 mod python;
 
+/// submodule for constants shared between multiple functions
+mod constants;
+
 pub use database::database;
 pub use search::search;
 pub use release::release;
-pub use submodule::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release};
+pub use reference::{reference, DataType};
+pub use submodule::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference};
 pub use python::{python_ensembl_database, python_ensembl_search, python_ensembl};
+pub use constants::{ENSEMBL_RELEASE, ENSEMBL_RELEASE_STR};
