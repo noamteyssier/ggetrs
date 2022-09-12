@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::constants::convert_mem_label;
 use std::fmt;
 
+/// A representation of a FTP file
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FtpFile {
     url: String,
@@ -33,6 +34,7 @@ impl FtpFile {
     }
 }
 
+/// The different data types present within the Ensembl FTP
 #[derive(ValueEnum, Clone, Debug)]
 pub enum DataType {
     CDNA, CDS, DNA, GFF3,
@@ -71,6 +73,7 @@ impl DataType {
     }
 }
 
+/// Searches through filelists to recover an expected file format
 pub fn find_data(filelist: &Vec<String>, release: usize, datatype: &DataType) -> Option<String> {
     for substring in datatype.expected_substring(release) {
         match filelist.iter().filter(|x| x.contains(&substring)).next() {
@@ -81,6 +84,7 @@ pub fn find_data(filelist: &Vec<String>, release: usize, datatype: &DataType) ->
     None
 }
 
+/// Recovers a specific datatype from Ensembl FTP
 pub fn show_data(stream: &mut FtpStream, species: &str, release: usize, datatype: &DataType) -> Result<Option<String>> {
     let dirname = match datatype.subdirectory() {
         Some(subdir) => format!("release-{}/{}/{}/{}/", release, datatype.directory(), species, subdir),
@@ -92,6 +96,7 @@ pub fn show_data(stream: &mut FtpStream, species: &str, release: usize, datatype
 }
 
 
+/// Queries a set of datatypes from Ensembl FTP
 pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result<Vec<FtpFile>> {
     let site = "ftp.ensembl.org:21";
     let mut stream = FtpStream::connect(site)?;
