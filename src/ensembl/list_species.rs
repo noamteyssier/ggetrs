@@ -2,6 +2,7 @@ use anyhow::Result;
 use ftp::FtpStream;
 use super::DataType;
 
+/// List all available species for the provided release and datatype
 pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> {
     let site = "ftp.ensembl.org:21";
     let mut stream = FtpStream::connect(site)?;
