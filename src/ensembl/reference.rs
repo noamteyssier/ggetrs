@@ -111,3 +111,32 @@ pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result
             .collect())
     
 }
+
+#[cfg(test)]
+mod testing {
+    use super::{DataType, reference};
+
+    #[test]
+    pub fn test_reference_single() {
+        let species = "homo_sapiens";
+        let release = 107;
+        let datatype = vec![DataType::DNA];
+        let results = reference(species, release, &datatype).unwrap();
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].ensembl_release, 107);
+        assert_eq!(results[0].url, "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz");
+    }
+
+    #[test]
+    pub fn test_reference_multi() {
+        let species = "homo_sapiens";
+        let release = 107;
+        let datatype = vec![DataType::DNA, DataType::GTF];
+        let results = reference(species, release, &datatype).unwrap();
+        assert_eq!(results.len(), 2);
+        assert_eq!(results[0].ensembl_release, 107);
+        assert_eq!(results[0].url, "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz");
+        assert_eq!(results[1].ensembl_release, 107);
+        assert_eq!(results[1].url, "http://ftp.ensembl.org/pub/release-107/gtf/homo_sapiens/Homo_sapiens.GRCh38.107.gtf.gz");
+    }
+}
