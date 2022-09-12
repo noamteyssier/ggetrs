@@ -63,6 +63,7 @@ enum Commands {
         output: Option<String>,
     },
 
+    /// Queries information from Ensembl
     #[clap(subcommand)]
     Ensembl(ModEnsembl)
 }
