@@ -4,7 +4,7 @@ enrichr: enrichr_query
 
 archs4: archs4_correlate archs4_tissue
 
-ensembl: ensembl_search ensembl_database
+ensembl: ensembl_search ensembl_database ensembl_release
 
 develop: build
   maturin develop --release
@@ -52,5 +52,3 @@ ensembl_database: build
 
 ensembl_release: build
   time target/release/ggetrs ensembl release
-    
-
