@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, AppSettings};
 use ggetrs::{
     RequestError, 
     enrichr::launch_enrich, 
@@ -9,6 +9,7 @@ use ggetrs::{
 #[derive(Parser)]
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
+#[clap(global_setting(AppSettings::DeriveDisplayOrder))]
 struct Cli {
     #[clap(subcommand)]
     command: Commands,
