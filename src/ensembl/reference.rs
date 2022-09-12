@@ -3,6 +3,7 @@ use clap::clap_derive::ValueEnum;
 use ftp::FtpStream;
 use serde::{Deserialize, Serialize};
 use crate::constants::convert_mem_label;
+use pyo3::{Python, PyResult, types::PyDict};
 use std::fmt;
 
 /// A representation of a FTP file
@@ -31,6 +32,16 @@ impl FtpFile {
             release_time: modtime.time().to_string(),
             bytes: convert_mem_label(size)
         })
+    }
+
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+        let dict = PyDict::new(py);
+        dict.set_item("url", &self.url)?;
+        dict.set_item("ensembl_release", self.ensembl_release)?;
+        dict.set_item("release_date", &self.release_date)?;
+        dict.set_item("release_time", &self.release_time)?;
+        dict.set_item("bytes", &self.bytes)?;
+        Ok(dict)
     }
 }
 

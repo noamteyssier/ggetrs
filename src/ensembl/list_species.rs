@@ -18,5 +18,3 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
 
     Ok(filelist)
 }
-
-
