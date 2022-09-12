@@ -9,6 +9,9 @@ pub mod archs4;
 /// `ENSEMBL` submodule
 pub mod ensembl;
 
+/// Module for constants and utils shared throughout the crate
+pub mod constants;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 

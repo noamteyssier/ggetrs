@@ -1,8 +1,9 @@
 use clap::{Parser, Subcommand};
 use ggetrs::{
+    RequestError, 
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    RequestError, ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release}
+    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}
 };
 
 #[derive(Parser)]
@@ -20,9 +21,11 @@ enum Commands {
         /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
         #[clap(short, long, value_parser)]
         library: String,
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
+
         /// list of gene symbols to perform enrichment analysis on.
         #[clap(value_parser, min_values=1, required=true)]
         gene_list: Vec<String>,
@@ -51,7 +54,7 @@ enum Commands {
         db_type: String,
 
         /// release number to use for database
-        #[clap(short, long, value_parser, default_value="107")]
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
 
         /// assembly to use for species
@@ -75,9 +78,11 @@ enum ModArchS4{
         /// Gene name to query for correlation
         #[clap(value_parser, required=true)]
         gene_name: String,
+
         /// number of values to recover
         #[clap(short, long, value_parser, default_value="100")]
         count: usize,
+        
         /// output filepath to write to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -87,9 +92,11 @@ enum ModArchS4{
         /// Gene name to query for tissue
         #[clap(value_parser, required=true)]
         gene_name: String,
+        
         /// number of values to recover
         #[clap(short, long, value_parser, default_value="human")]
         species: Species,
+        
         /// output filepath to write to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -103,27 +110,27 @@ enum ModEnsembl {
         /// Search terms to query
         #[clap(value_parser, min_values=1, required=true)]
         search_terms: Vec<String>,
-
+        
         /// database
         #[clap(short, long, value_parser)]
         database: Option<String>,
-
+        
         /// species used in database
         #[clap(short, long, value_parser, default_value="homo_sapiens")]
         species: String,
-
+        
         /// database type specied by Ensembl
         #[clap(short='t', long, value_parser, default_value="core")]
         db_type: String,
-
+        
         /// release number to use for database
-        #[clap(short, long, value_parser, default_value="107")]
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
-
+        
         /// assembly to use for species
         #[clap(short, long, value_parser, default_value="38")]
         assembly: String,
-
+        
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -131,16 +138,51 @@ enum ModEnsembl {
 
     /// Prints all available databases on Ensembl's SQL database
     Database {
+        /// Provides a substring filter to only return databases which contain the substring
         #[clap(short, long, value_parser)]
         filter: Option<String>,
-
+        
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
     },
 
     /// Retrieves the latest ensembl release version
-    Release
+    Release,
+
+    /// Retrieves reference files from Ensembl FTP site
+    Ref {
+        /// Species to query data for
+        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        species: String,
+
+        /// Release to use - will default to latest release
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
+        release: usize,
+        
+        /// Datatype to query for, provided as a comma-separated list (example: cdna,dna,gtf)
+        #[clap(short, long, value_enum, value_parser, value_delimiter=',', min_values=1, required=true)]
+        datatype: Vec<DataType>,
+        
+        /// Optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Retrieves the list of species from ENSEMBL FTP site
+    Species {
+        /// Release to use - will default to latest release
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
+        release: usize,
+        
+        /// Optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+        
+        /// Datatype to query species list
+        #[clap(short, long, value_enum, default_value="dna")]
+        datatype: DataType,
+    }
 }
 
 fn main() -> Result<(), RequestError> {
@@ -169,6 +211,12 @@ fn main() -> Result<(), RequestError> {
             },
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
+            },
+            ModEnsembl::Ref { species, release, datatype, output } => {
+                launch_ensembl_reference(species, *release, datatype, output)?;
+            },
+            ModEnsembl::Species { release, datatype, output} => {
+                launch_ensembl_list_species(*release, datatype, output)?;
             }
         }
     };
