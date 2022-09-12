@@ -2,7 +2,7 @@ use pyo3::{
     pyfunction, Python, PyResult, wrap_pyfunction,
     types::{PyDict, PyModule}
 };
-use super::{search, database};
+use super::{search, database, release};
 
 
 #[pyfunction(name="search")]
@@ -18,10 +18,17 @@ pub fn python_ensembl_database<'py>(_py: Python<'py>, filter: Option<String>) ->
     Ok(results.as_vec())
 }
 
+#[pyfunction(name="release")]
+pub fn python_ensembl_release<'py>(_py: Python<'py>) -> PyResult<usize> {
+    let results = release().expect("Could not query ensembl release number");
+    Ok(results)
+}
+
 pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     let submodule = PyModule::new(py, "ensembl")?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_search, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_database, module)?)?;
+    submodule.add_function(wrap_pyfunction!(python_ensembl_release, module)?)?;
     module.add_submodule(submodule)?;
     Ok(())
 }
