@@ -1,8 +1,9 @@
 use clap::{Parser, Subcommand};
 use ggetrs::{
+    RequestError, 
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    RequestError, ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release}
+    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR}
 };
 
 #[derive(Parser)]
@@ -51,7 +52,7 @@ enum Commands {
         db_type: String,
 
         /// release number to use for database
-        #[clap(short, long, value_parser, default_value="107")]
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
 
         /// assembly to use for species
@@ -117,7 +118,7 @@ enum ModEnsembl {
         db_type: String,
 
         /// release number to use for database
-        #[clap(short, long, value_parser, default_value="107")]
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
 
         /// assembly to use for species
@@ -140,7 +141,22 @@ enum ModEnsembl {
     },
 
     /// Retrieves the latest ensembl release version
-    Release
+    Release,
+
+    /// Retrieves reference files from Ensembl FTP site
+    Ref {
+        /// Species to query data for
+        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        species: String,
+
+        /// Release to use - will default to latest release
+        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
+        release: usize,
+
+        /// Datatype to query for
+        #[clap(short, long, value_parser)]
+        datatype: DataType
+    }
 }
 
 fn main() -> Result<(), RequestError> {
@@ -169,6 +185,9 @@ fn main() -> Result<(), RequestError> {
             },
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
+            },
+            ModEnsembl::Ref { species, release, datatype } => {
+                launch_ensembl_reference(species, *release, datatype)?;
             }
         }
     };
