@@ -1,5 +1,5 @@
 use anyhow::Result;
-use clap::clap_derive::ArgEnum;
+use clap::clap_derive::ValueEnum;
 use ftp::FtpStream;
 use serde::{Deserialize, Serialize};
 use crate::constants::convert_mem_label;
@@ -19,7 +19,7 @@ impl fmt::Display for FtpFile {
     }
 }
 impl FtpFile {
-    pub fn new(stream: &mut FtpStream, path: String, release: usize) -> Result<Self> {
+    pub fn new(stream: &mut FtpStream, path: &str, release: usize) -> Result<Self> {
         let size = stream.size(&path)?.unwrap();
         let modtime = stream.mdtm(&path)?.unwrap();
         let url = format!("http://ftp.ensembl.org/pub/{}", path);
@@ -33,7 +33,7 @@ impl FtpFile {
     }
 }
 
-#[derive(ArgEnum, Clone, Debug)]
+#[derive(ValueEnum, Clone, Debug)]
 pub enum DataType {
     CDNA, CDS, DNA, GFF3,
     GTF, NCRNA, PEP,
@@ -92,18 +92,17 @@ pub fn show_data(stream: &mut FtpStream, species: &str, release: usize, datatype
 }
 
 
-pub fn reference(species: &str, release: usize, datatype: &DataType) -> Result<Option<FtpFile>> {
+pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result<Vec<FtpFile>> {
     let site = "ftp.ensembl.org:21";
     let mut stream = FtpStream::connect(site)?;
     stream.login("anonymous", "anonymous")?;
     stream.cwd("pub")?;
 
-    let result = show_data(&mut stream, species, release, &datatype)?;
-    if let Some(path) = result {
-        let file = FtpFile::new(&mut stream, path, release)?;
-        Ok(Some(file))
-    } else {
-        Ok(None)
-    }
-
+    let filepaths = datatype.iter()
+            .filter_map(|d| show_data(&mut stream, species, release, d).expect("could not query ftp"))
+            .collect::<Vec<String>>();
+    Ok(filepaths.iter()
+            .map(|path| FtpFile::new(&mut stream, path, release).expect("Could not represent file path"))
+            .collect())
+    
 }
