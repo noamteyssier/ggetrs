@@ -38,12 +38,16 @@ enum Commands {
         #[clap(value_parser, min_values=1, required=true)]
         search_terms: Vec<String>,
 
+        /// database
+        #[clap(short, long, value_parser)]
+        database: Option<String>,
+
         /// species used in database
         #[clap(short, long, value_parser, default_value="homo_sapiens")]
         species: String,
 
         /// database type specied by Ensembl
-        #[clap(short, long, value_parser, default_value="core")]
+        #[clap(short='t', long, value_parser, default_value="core")]
         db_type: String,
 
         /// release number to use for database
@@ -59,7 +63,7 @@ enum Commands {
         output: Option<String>,
     },
 
-    /// Query Ensembl database
+    /// Queries information from Ensembl
     #[clap(subcommand)]
     Ensembl(ModEnsembl)
 }
@@ -100,12 +104,16 @@ enum ModEnsembl {
         #[clap(value_parser, min_values=1, required=true)]
         search_terms: Vec<String>,
 
+        /// database
+        #[clap(short, long, value_parser)]
+        database: Option<String>,
+
         /// species used in database
         #[clap(short, long, value_parser, default_value="homo_sapiens")]
         species: String,
 
         /// database type specied by Ensembl
-        #[clap(short, long, value_parser, default_value="core")]
+        #[clap(short='t', long, value_parser, default_value="core")]
         db_type: String,
 
         /// release number to use for database
@@ -149,12 +157,12 @@ fn main() -> Result<(), RequestError> {
                 launch_archs4_tissue(gene_name, species, output)?;
             }
         },
-        Commands::Search { search_terms, species, db_type, release, assembly, output } => {
-            launch_ensembl_search(search_terms, species, db_type, release, assembly, output)?;
+        Commands::Search { search_terms, database, species, db_type, release, assembly, output } => {
+            launch_ensembl_search(search_terms, database, species, db_type, release, assembly, output)?;
         },
         Commands::Ensembl(sub) => match sub {
-            ModEnsembl::Search { search_terms, species, db_type, release, assembly, output } => {
-                launch_ensembl_search(search_terms, species, db_type, release, assembly, output)?;
+            ModEnsembl::Search { search_terms, database, species, db_type, release, assembly, output } => {
+                launch_ensembl_search(search_terms, database, species, db_type, release, assembly, output)?;
             },
             ModEnsembl::Database { filter, output } => {
                 launch_ensembl_database(filter, output)?;

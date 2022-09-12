@@ -6,8 +6,25 @@ use super::{search, database, release};
 
 
 #[pyfunction(name="search")]
-pub fn python_ensembl_search<'py>(py: Python<'py>, search_terms: Vec<String>, species: &str, db_type: &str, release: usize, assembly: &str) -> PyResult<&'py PyDict> {
-    let db_name = format!("{}_{}_{}_{}", species, db_type, release, assembly);
+pub fn python_ensembl_search<'py>(
+        py: Python<'py>, 
+        search_terms: Vec<String>, 
+        database: Option<String>,
+        species: Option<&str>, 
+        db_type: Option<&str>, 
+        release: Option<usize>, 
+        assembly: Option<&str>) -> PyResult<&'py PyDict> 
+{
+    let db_name = match database {
+        Some(name) => name.clone(),
+        None => {
+            let species = match species { Some(x) => x, None => "homo_sapiens" };
+            let db_type = match db_type { Some(x) => x, None => "core" };
+            let release = match release { Some(x) => x, None => 107 };
+            let assembly = match assembly { Some(x) => x, None => "38" };
+            format!("{}_{}_{}_{}", species, db_type, release, assembly)
+        }
+    };
     let results = search(&db_name, &search_terms).expect("Unable to query ensembl search");
     results.as_pydict(py)
 }

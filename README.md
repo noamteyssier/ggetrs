@@ -109,10 +109,10 @@ ggetrs search AP2S1 GABA RFX3
 import ggetrs
 
 # search module (single term)
-ggetrs.search(["AP2S1"], "homo_sapiens", "core", 107, "38")
+ggetrs.search(["AP2S1"])
 
 # search module (multiple terms)
-ggetrs.search(["AP2S1", "GABA", "RFX3"], "homo_sapiens", "core", 107, "38")
+ggetrs.search(["AP2S1", "GABA", "RFX3"])
 ```
 
 #### Ensembl
@@ -149,10 +149,10 @@ ggetrs ensembl database -f mus_musculus
 import ggetrs
 
 # search module (single term)
-ggetrs.ensembl.search(["AP2S1"], "homo_sapiens", "core", 107, "38")
+ggetrs.ensembl.search(["AP2S1"])
 
 # search module (multiple terms)
-ggetrs.ensembl.search(["AP2S1", "GABA", "RFX3"], "homo_sapiens", "core", 107, "38")
+ggetrs.ensembl.search(["AP2S1", "GABA", "RFX3"])
 
 # database module (no filter)
 ggetrs.ensembl.database()
