@@ -49,17 +49,28 @@ pub fn launch_ensembl_database(filter: &Option<String>, output: &Option<String>)
     Ok(())
 }
 
+/// Main entrypoint for `Ensembl` release version
 pub fn launch_ensembl_release() -> anyhow::Result<()> {
     let result = release()?;
     println!("release: {}", result);
     Ok(())
 }
 
-pub fn launch_ensembl_reference(species: &str, release: usize, datatype: &DataType) -> anyhow::Result<()> {
-    if let Some(result) = reference(species, release, datatype)? {
-        println!("{}", result);
-    } else {
-        println!("Could not find a reference for provided parameters");
+/// Main entrypoint for `Ensembl` FTP query
+pub fn launch_ensembl_reference(species: &str, release: usize, datatype: &Vec<DataType>, output: &Option<String>) -> anyhow::Result<()> {
+    let files = reference(species, release, datatype)?;
+    let repr = serde_json::to_string_pretty(&files)?;
+    match output {
+        Some(path) => {
+            if let Ok(mut writer) = File::create(path) {
+                writeln!(writer, "{}", repr).expect("Unable to write to file");
+            } else {
+                println!("{}", repr);
+            }
+        },
+        None => {
+            println!("{}", repr);
+        }
     }
     Ok(())
 }
