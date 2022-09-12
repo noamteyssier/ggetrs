@@ -3,6 +3,7 @@ pub const MB_LIMIT: usize = 1_048_576;
 pub const GB_LIMIT: usize = 1_073_741_824;
 pub const TB_LIMIT: usize = 1_099_511_627_776;
 
+/// Converts a bits size to a string representation
 pub fn convert_mem_label(size: usize) -> String {
     let (dividend, units) = 
         if size <  KB_LIMIT { (1.0, "B") } 
