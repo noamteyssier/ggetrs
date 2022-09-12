@@ -1,4 +1,4 @@
-use super::{search, database};
+use super::{search, database, release};
 use std::{io::Write, fs::File};
 
 /// Main entrypoint for `Ensembl` description search
@@ -42,5 +42,11 @@ pub fn launch_ensembl_database(filter: &Option<String>, output: &Option<String>)
             println!("{}", results);
         }
     }
+    Ok(())
+}
+
+pub fn launch_ensembl_release() -> anyhow::Result<()> {
+    let result = release()?;
+    println!("release: {}", result);
     Ok(())
 }
