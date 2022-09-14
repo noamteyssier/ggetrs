@@ -133,7 +133,12 @@ impl UniprotInfo {
     }
 }
 
-async fn async_query_uniprot(query: &str) -> reqwest::Result<UniprotInfo> {
+async fn async_query_uniprot(gene: &str) -> reqwest::Result<UniprotInfo> {
+    let query = if gene.starts_with("ENS") {
+        gene.to_string()
+    } else {
+        format!("(gene:{})", gene)
+    };
     let url = format!(
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
         query 
@@ -145,7 +150,7 @@ async fn async_query_uniprot(query: &str) -> reqwest::Result<UniprotInfo> {
         .await?
         .json::<Value>()
         .await
-        .map(|x| UniprotInfo::from_value(x, query))
+        .map(|x| UniprotInfo::from_value(x, gene))
 }
 
 async fn async_query_uniprot_multiple(ensembl_ids: &Vec<String>) -> reqwest::Result<Vec<reqwest::Result<UniprotInfo>>> {
