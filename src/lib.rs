@@ -12,8 +12,14 @@ pub mod ensembl;
 /// `Uniprot` submodule
 pub mod uniprot;
 
-/// Module for constants and utils shared throughout the crate
+/// `NCBI` submodule
+pub mod ncbi;
+
+/// Module for constants shared throughout the crate
 pub mod constants;
+
+/// Module for utilities shared throughout the crate
+pub mod utils;
 
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;

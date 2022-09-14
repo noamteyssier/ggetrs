@@ -3,7 +3,9 @@ use ggetrs::{
     RequestError, 
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}, uniprot::launch_uniprot_query
+    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}, 
+    uniprot::launch_uniprot_query, 
+    ncbi::{launch_query_ncbi_ids, launch_query_ncbi_symbols}
 };
 
 #[derive(Parser)]
@@ -74,6 +76,10 @@ enum Commands {
     /// Queries information from Uniprot
     #[clap(subcommand)]
     Uniprot(ModUniprot),
+
+    /// Queries information from NCBI
+    #[clap(subcommand)]
+    Ncbi(ModNcbi),
 }
 
 #[derive(Subcommand)]
@@ -208,6 +214,35 @@ enum ModUniprot{
     },
 }
 
+#[derive(Subcommand)]
+enum ModNcbi {
+    /// Retrieves information for a list of IDs
+    QueryIds {
+        /// NCBI ids to query
+        #[clap(value_parser, min_values=1, required=true)]
+        ids: Vec<usize>,
+        
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Retrieves information for a list of symbols (must provide taxon)
+    QuerySymbols {
+        /// NCBI ids to query
+        #[clap(value_parser, min_values=1, required=true)]
+        symbols: Vec<String>,
+
+        /// Taxon ID (human: 9606, mouse: 10090)
+        #[clap(short, long, value_parser, default_value="9606")]
+        taxon_id: usize,
+        
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+}
+
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -245,6 +280,14 @@ fn main() -> Result<(), RequestError> {
         Commands::Uniprot(sub) => match sub {
             ModUniprot::Query { search_terms, taxon, output } => { 
                 launch_uniprot_query(search_terms, taxon, output)?;
+            }
+        },
+        Commands::Ncbi(sub) => match sub {
+            ModNcbi::QueryIds { ids, output } => {
+                launch_query_ncbi_ids(ids, output)?;
+            },
+            ModNcbi::QuerySymbols { symbols, taxon_id, output } => {
+                launch_query_ncbi_symbols(symbols, *taxon_id, output)?;
             }
         }
     };
