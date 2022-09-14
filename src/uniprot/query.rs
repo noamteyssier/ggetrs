@@ -4,6 +4,7 @@ use serde::{Serialize, Deserialize};
 use serde_json::Value;
 use std::fmt;
 
+/// A container of [`UniprotInfo`]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfoContainer (
     Vec<UniprotInfo>
@@ -14,6 +15,7 @@ impl fmt::Display for UniprotInfoContainer {
     }
 }
 
+/// A structure to handle the relevant results of a `Uniprot` query.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfo {
     uniprot_id: String,
@@ -130,6 +132,7 @@ impl UniprotInfo {
     }
 }
 
+/// An asynchronous function which performs a uniprot query
 async fn async_query_uniprot(gene: &str) -> reqwest::Result<Option<UniprotInfo>> {
     let query = if gene.starts_with("ENS") {
         gene.to_string()
@@ -150,6 +153,7 @@ async fn async_query_uniprot(gene: &str) -> reqwest::Result<Option<UniprotInfo>>
         .map(|x| UniprotInfo::from_value(x, gene))
 }
 
+/// An asynchronous function which joins all the handles from `async_query_uniprot`
 async fn async_query_uniprot_multiple(ensembl_ids: &Vec<String>) -> reqwest::Result<Vec<reqwest::Result<Option<UniprotInfo>>>> {
     let query_handles = ensembl_ids
         .iter()
@@ -159,6 +163,7 @@ async fn async_query_uniprot_multiple(ensembl_ids: &Vec<String>) -> reqwest::Res
     Ok(results)
 }
 
+/// A synchronous function to perform a query for each of the terms provided.
 pub fn query(terms: &Vec<String>) -> anyhow::Result<UniprotInfoContainer> {
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
