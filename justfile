@@ -6,7 +6,7 @@ archs4: archs4_correlate archs4_tissue
 
 ensembl: ensembl_search ensembl_database ensembl_release
 
-develop: build
+develop:
   maturin develop --release
 
 build: 
@@ -25,7 +25,7 @@ lint: build
     -A clippy::missing_errors_doc \
     -A clippy::module_name_repetitions
 
-install: develop
+install: build
   cargo install --path .
 
 
@@ -52,3 +52,13 @@ ensembl_database: build
 
 ensembl_release: build
   time target/release/ggetrs ensembl release
+
+uniprot_query_ensembl: build
+  time target/release/ggetrs uniprot query \
+    ENSG00000080298 \
+    ENSG00000042753 
+
+uniprot_query_genes: build
+  time target/release/ggetrs uniprot query \
+    RFX3 \
+    AP2S1 

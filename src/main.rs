@@ -3,7 +3,7 @@ use ggetrs::{
     RequestError, 
     enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}
+    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}, uniprot::launch_uniprot_query
 };
 
 #[derive(Parser)]
@@ -69,7 +69,11 @@ enum Commands {
 
     /// Queries information from Ensembl
     #[clap(subcommand)]
-    Ensembl(ModEnsembl)
+    Ensembl(ModEnsembl),
+
+    /// Queries information from Uniprot
+    #[clap(subcommand)]
+    Uniprot(ModUniprot),
 }
 
 #[derive(Subcommand)]
@@ -186,6 +190,20 @@ enum ModEnsembl {
     }
 }
 
+#[derive(Subcommand)]
+enum ModUniprot{
+    /// Searches through descriptions on Uniprot
+    Query {
+        /// Search terms to query
+        #[clap(value_parser, min_values=1, required=true)]
+        search_terms: Vec<String>,
+        
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+}
+
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -218,6 +236,11 @@ fn main() -> Result<(), RequestError> {
             },
             ModEnsembl::Species { release, datatype, output} => {
                 launch_ensembl_list_species(*release, datatype, output)?;
+            }
+        },
+        Commands::Uniprot(sub) => match sub {
+            ModUniprot::Query { search_terms, output } => { 
+                launch_uniprot_query(search_terms, output)?;
             }
         }
     };
