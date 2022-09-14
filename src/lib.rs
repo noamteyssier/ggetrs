@@ -9,6 +9,9 @@ pub mod archs4;
 /// `ENSEMBL` submodule
 pub mod ensembl;
 
+/// `Uniprot` submodule
+pub mod uniprot;
+
 /// Module for constants and utils shared throughout the crate
 pub mod constants;
 
