@@ -6,6 +6,9 @@ archs4: archs4_correlate archs4_tissue
 
 ensembl: ensembl_search ensembl_database ensembl_release
 
+install: 
+  cargo install --path .
+
 develop:
   maturin develop --release
 
@@ -24,9 +27,6 @@ lint: build
     -W clippy::pedantic \
     -A clippy::missing_errors_doc \
     -A clippy::module_name_repetitions
-
-install: build
-  cargo install --path .
 
 
 enrichr_query: build
