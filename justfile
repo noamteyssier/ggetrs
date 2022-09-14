@@ -52,3 +52,8 @@ ensembl_database: build
 
 ensembl_release: build
   time target/release/ggetrs ensembl release
+
+uniprot_query: build
+  time target/release/ggetrs uniprot query \
+    ENSG00000080298 \
+    ENSG00000042753 
