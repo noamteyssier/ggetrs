@@ -12,6 +12,7 @@ crate-type = ["cdylib", "rlib"]
 anyhow = "1.0.64"
 clap = { version = "3.2.20", features = ["derive"] }
 ftp = "3.0.1"
+futures = "0.3.24"
 mysql = "22.2.0"
 pyo3 = { version = "0.16.5", features = ["extension-module"] }
 reqwest = { version = "0.11.11", features = ["json", "multipart", "blocking"] }
