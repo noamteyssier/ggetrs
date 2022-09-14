@@ -197,6 +197,10 @@ enum ModUniprot{
         /// Search terms to query
         #[clap(value_parser, min_values=1, required=true)]
         search_terms: Vec<String>,
+
+        /// Taxon to filter results (human: 9606, mouse: 10090)
+        #[clap(short, long, value_parser)]
+        taxon: Option<usize>,
         
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
@@ -239,8 +243,8 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Uniprot(sub) => match sub {
-            ModUniprot::Query { search_terms, output } => { 
-                launch_uniprot_query(search_terms, output)?;
+            ModUniprot::Query { search_terms, taxon, output } => { 
+                launch_uniprot_query(search_terms, taxon, output)?;
             }
         }
     };
