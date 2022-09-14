@@ -26,7 +26,19 @@ lint: build
   cargo clippy -- \
     -W clippy::pedantic \
     -A clippy::missing_errors_doc \
-    -A clippy::module_name_repetitions
+    -A clippy::module_name_repetitions \
+    -A clippy::cast_precision_loss \
+    -A clippy::cast_sign_loss \
+    -A clippy::cast_possible_truncation
+
+lint-fix: build
+  cargo clippy --fix -- \
+    -W clippy::pedantic \
+    -A clippy::missing_errors_doc \
+    -A clippy::module_name_repetitions \
+    -A clippy::cast_precision_loss \
+    -A clippy::cast_sign_loss \
+    -A clippy::cast_possible_truncation
 
 
 enrichr_query: build
