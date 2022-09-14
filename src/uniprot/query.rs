@@ -25,6 +25,8 @@ pub struct UniprotInfo {
     uniprot_description: String,
     ncbi_id: Option<String>,
     pdb_id: Option<String>,
+    taxon_id: usize,
+    organism_name: String,
     query: String
 }
 impl fmt::Display for UniprotInfo {
@@ -42,6 +44,8 @@ impl UniprotInfo {
         let uniprot_description = Self::get_uniprot_description(&value);
         let ncbi_id = Self::get_ncbi_id(&value);
         let pdb_id = Self::get_pdb_id(&value);
+        let taxon_id = Self::get_taxon_id(&value);
+        let organism_name = Self::get_organism_name(&value);
         let query = query.to_string();
         Some(Self {
             uniprot_id,
@@ -51,6 +55,8 @@ impl UniprotInfo {
             uniprot_description,
             ncbi_id,
             pdb_id,
+            taxon_id,
+            organism_name,
             query 
         })
     }
@@ -129,6 +135,17 @@ impl UniprotInfo {
             },
             None => None
         }
+    }
+
+    fn get_taxon_id(value: &Value) -> usize {
+        value["results"][0]["organism"]["taxonId"]
+            .as_u64()
+            .expect("Missing taxon_id") as usize
+    }
+
+    fn get_organism_name(value: &Value) -> String {
+        value["results"][0]["organism"]["commonName"]
+            .as_str().unwrap().to_string()
     }
 }
 
