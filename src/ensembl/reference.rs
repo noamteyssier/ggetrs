@@ -1,10 +1,10 @@
 use crate::constants::convert_mem_label;
 use anyhow::Result;
-use clap::clap_derive::ValueEnum;
 use ftp::FtpStream;
 use pyo3::{types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
 use std::fmt;
+use super::DataType;
 
 /// A representation of a FTP file
 #[derive(Serialize, Deserialize, Debug)]
@@ -46,65 +46,6 @@ impl FtpFile {
         dict.set_item("release_time", &self.release_time)?;
         dict.set_item("bytes", &self.bytes)?;
         Ok(dict)
-    }
-}
-
-/// The different data types present within the Ensembl FTP
-#[derive(ValueEnum, Clone, Debug)]
-pub enum DataType {
-    CDNA,
-    CDS,
-    DNA,
-    GFF3,
-    GTF,
-    NCRNA,
-    PEP,
-}
-impl DataType {
-    #[must_use]
-    pub fn directory(&self) -> &str {
-        match self {
-            Self::GTF => "gtf",
-            Self::GFF3 => "gff3",
-            _ => "fasta",
-        }
-    }
-
-    #[must_use]
-    pub fn subdirectory(&self) -> Option<&str> {
-        match self {
-            Self::CDNA => Some("cdna"),
-            Self::CDS => Some("cds"),
-            Self::DNA => Some("dna"),
-            Self::NCRNA => Some("ncrna"),
-            Self::PEP => Some("pep"),
-            _ => None,
-        }
-    }
-
-    #[must_use]
-    pub fn expected_substring(&self, release: usize) -> Vec<String> {
-        match self {
-            Self::CDNA => vec![".cdna.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-            Self::CDS => vec![".cds.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-            Self::GFF3 => vec![format!("{}.gff3.gz", release)],
-            Self::GTF => vec![format!("{}.gtf.gz", release)],
-            Self::NCRNA => vec![".ncrna.fa"].iter().map(|x| (*x).to_string()).collect(),
-            Self::PEP => vec![".pep.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-        }
     }
 }
 

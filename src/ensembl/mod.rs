@@ -13,9 +13,6 @@ mod release;
 /// submodule for retrieving data from Ensembl FTP
 mod reference;
 
-/// submodule for retrieving species from Ensembl FTP
-mod list_species;
-
 /// submodule for command line usage
 mod submodule;
 
@@ -25,11 +22,11 @@ mod python;
 /// submodule for constants shared between multiple functions
 mod constants;
 
-pub use functions::database;
+pub use functions::{database, list_species};
+pub use types::DataType;
 pub use constants::{ENSEMBL_RELEASE, ENSEMBL_RELEASE_STR};
-pub use list_species::list_species;
 pub use python::{python_ensembl, python_ensembl_database, python_ensembl_search};
-pub use reference::{reference, DataType};
+pub use reference::reference;
 pub use release::release;
 pub use search::search;
 pub use submodule::{
