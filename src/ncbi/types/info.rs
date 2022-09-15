@@ -1,5 +1,5 @@
 use super::NcbiTranscript;
-use crate::utils::parsing::parse_secondary_string;
+use crate::utils::parsing::{parse_secondary_string, parse_secondary_vec_string, parse_secondary_vec_optional_string};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -7,6 +7,10 @@ use serde_json::Value;
 pub struct NcbiInfo {
     gene_id: String,
     symbol: String,
+    ensembl_ids: Vec<String>,
+    uniprot_ids: Vec<String>,
+    synonyms: Option<Vec<String>>,
+    chromosomes: Vec<String>,
     description: String,
     taxon_id: String,
     taxon_name: String,
@@ -24,6 +28,10 @@ impl NcbiInfo {
         }
         let gene_id = parse_secondary_string(value, "gene", "gene_id");
         let symbol = parse_secondary_string(value, "gene", "symbol");
+        let ensembl_ids = parse_secondary_vec_string(value, "gene", "ensembl_gene_ids");
+        let uniprot_ids = parse_secondary_vec_string(value, "gene", "swiss_prot_accessions");
+        let synonyms = parse_secondary_vec_optional_string(value, "gene", "synonyms");
+        let chromosomes = parse_secondary_vec_string(value, "gene", "chromosomes");
         let description = parse_secondary_string(value, "gene", "description");
         let taxon_id = parse_secondary_string(value, "gene", "tax_id");
         let taxon_name = parse_secondary_string(value, "gene", "taxname");
@@ -31,6 +39,10 @@ impl NcbiInfo {
         Some(Self {
             gene_id,
             symbol,
+            ensembl_ids,
+            uniprot_ids,
+            synonyms,
+            chromosomes,
             description,
             taxon_id,
             taxon_name,
