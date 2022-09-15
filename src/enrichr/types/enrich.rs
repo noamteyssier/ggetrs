@@ -1,7 +1,5 @@
-use pyo3::types::PyDict;
-use pyo3::{pyclass, PyResult, Python};
-use reqwest::Result;
 use serde::{Deserialize, Serialize};
+use pyo3::{pyclass, PyResult, Python, types::PyDict};
 use std::collections::HashMap;
 use std::fmt;
 
@@ -83,16 +81,4 @@ impl ResultEnrichr {
         dict.set_item("old_adj_pvalue", self.old_adj_pvalue)?;
         Ok(dict)
     }
-}
-
-/// Performs an API call to the `Enrichr`'s `enrich`.
-///
-/// This measures the significance of overlap of the provided gene list to the provided library
-/// name.
-pub fn enrich(list_id: usize, library_name: &str) -> Result<ResponseEnrich> {
-    let url = format!(
-        "https://maayanlab.cloud/Enrichr/enrich?userListId={}&backgroundType={}",
-        list_id, library_name
-    );
-    reqwest::blocking::get(url)?.json::<ResponseEnrich>()
 }
