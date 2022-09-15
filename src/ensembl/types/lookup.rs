@@ -1,5 +1,5 @@
-use std::{fmt, collections::HashMap};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use std::{collections::HashMap, fmt};
 
 /// Struct to handle the results of an ID/symbol lookup
 #[derive(Serialize, Deserialize, Debug)]
@@ -19,7 +19,7 @@ pub struct LookupResult {
     id: String,
     object_type: String,
     species: String,
-    db_type: String
+    db_type: String,
 }
 impl fmt::Display for LookupResult {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -43,4 +43,3 @@ impl fmt::Display for LookupResponse {
         )
     }
 }
-

@@ -1,8 +1,8 @@
-use reqwest::{Result, blocking::Client};
-use serde_json::json;
 use crate::ensembl::types::LookupResponse;
+use reqwest::{blocking::Client, Result};
+use serde_json::json;
 
-/// Lookup ensembl ids in a batched manner. 
+/// Lookup ensembl ids in a batched manner.
 ///
 /// Limited to 1000 ensembl_ids at once.
 ///
@@ -10,7 +10,7 @@ use crate::ensembl::types::LookupResponse;
 /// <https://rest.ensembl.org/documentation/info/lookup_post>
 pub fn lookup_id(ensembl_ids: &[String]) -> Result<LookupResponse> {
     let url = "https://rest.ensembl.org/lookup/id";
-    let data = json!({"ids": ensembl_ids});
+    let data = json!({ "ids": ensembl_ids });
     let results = Client::new()
         .post(url)
         .header("content-type", "application/json")

@@ -1,4 +1,7 @@
-use super::{database, list_species, reference, release, search, DataType, functions::lookup_id, lookup_symbol};
+use super::{
+    database, functions::lookup_id, list_species, lookup_symbol, reference, release, search,
+    DataType,
+};
 use std::{fs::File, io::Write};
 
 /// Main entrypoint for `Ensembl` description search
@@ -107,7 +110,10 @@ pub fn launch_ensembl_list_species(
 }
 
 /// Main entrypoint for `Ensembl` lookup id
-pub fn launch_ensembl_lookup_id(ensembl_ids: &[String], output: &Option<String>) -> anyhow::Result<()> {
+pub fn launch_ensembl_lookup_id(
+    ensembl_ids: &[String],
+    output: &Option<String>,
+) -> anyhow::Result<()> {
     let results = lookup_id(ensembl_ids)?;
     match output {
         Some(path) => {
@@ -125,7 +131,11 @@ pub fn launch_ensembl_lookup_id(ensembl_ids: &[String], output: &Option<String>)
 }
 
 /// Main entrypoint for `Ensembl` lookup symbol
-pub fn launch_ensembl_lookup_symbol(symbols: &[String], species: &str, output: &Option<String>) -> anyhow::Result<()> {
+pub fn launch_ensembl_lookup_symbol(
+    symbols: &[String],
+    species: &str,
+    output: &Option<String>,
+) -> anyhow::Result<()> {
     let results = lookup_symbol(symbols, species)?;
     match output {
         Some(path) => {
