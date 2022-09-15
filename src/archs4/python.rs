@@ -14,12 +14,8 @@ pub fn python_archs4_correlate<'py>(py: Python<'py>, gene_name: &str, count: usi
 /// Wraps the `ARCHS4` tissue expression analysis
 #[pyfunction(name="tissue")]
 pub fn python_archs4_tissue<'py>(py: Python<'py>, gene_name: &str, species: &str) -> PyResult<&'py PyDict> {
-    let species = match species {
-        "human" => Species::Human,
-        "mouse" => Species::Mouse,
-        _ => return Err(PyAssertionError::new_err("unexpected species name"))
-    };
-    let results = tissue(gene_name, &species).expect("Unable to query `archs4/tissue`");
+    let species_enum = Species::from_str(species, true).unwrap_or_default();
+    let results = tissue(gene_name, &species_enum).expect("Unable to query `archs4/tissue`");
     results.as_pydict(py)
 }
 
