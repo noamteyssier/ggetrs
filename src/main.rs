@@ -3,8 +3,9 @@ use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
     enrichr::launch_enrich,
     ensembl::{
-        launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_reference,
-        launch_ensembl_release, launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
+        launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
+        launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
+        launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
     },
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
@@ -155,6 +156,32 @@ enum ModEnsembl {
         /// Provides a substring filter to only return databases which contain the substring
         #[clap(short, long, value_parser)]
         filter: Option<String>,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Lookup information for genes/transcripts providing ensembl ids
+    LookupId {
+        /// Ensembl IDS to query
+        #[clap(value_parser, min_values = 1, required = true)]
+        ensembl_ids: Vec<String>,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Lookup information for genes/transcripts providing symbols and species
+    LookupSymbol {
+        /// Gene symbols to query
+        #[clap(value_parser, min_values = 1, required = true)]
+        symbols: Vec<String>,
+
+        /// Species/alias to specify
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
+        species: String,
 
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
@@ -321,6 +348,19 @@ fn main() -> Result<(), RequestError> {
             }
             ModEnsembl::Database { filter, output } => {
                 launch_ensembl_database(filter, output)?;
+            }
+            ModEnsembl::LookupId {
+                ensembl_ids,
+                output,
+            } => {
+                launch_ensembl_lookup_id(ensembl_ids, output)?;
+            }
+            ModEnsembl::LookupSymbol {
+                symbols,
+                species,
+                output,
+            } => {
+                launch_ensembl_lookup_symbol(symbols, species, output)?;
             }
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
