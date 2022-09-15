@@ -29,7 +29,10 @@ lint: build
     -A clippy::module_name_repetitions \
     -A clippy::cast_precision_loss \
     -A clippy::cast_sign_loss \
-    -A clippy::cast_possible_truncation
+    -A clippy::cast_possible_truncation \
+    -A clippy::missing_panics_doc \
+    -A clippy::used_underscore_binding \
+    -A clippy::borrow_deref_ref
 
 lint-fix: build
   cargo clippy --fix -- \
