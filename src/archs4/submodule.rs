@@ -1,10 +1,14 @@
 use reqwest::Result;
-use std::{io::Write, fs::File};
+use std::{fs::File, io::Write};
 
-use super::{correlation, Species, tissue};
+use super::{correlation, tissue, Species};
 
 /// Main entrypoint to launching the `correlation` function for `ARCHS4`
-pub fn launch_archs4_correlation(gene_name: &str, count: usize, output: &Option<String>) -> Result<()> {
+pub fn launch_archs4_correlation(
+    gene_name: &str,
+    count: usize,
+    output: &Option<String>,
+) -> Result<()> {
     let results = correlation(gene_name, count)?;
     match output {
         Some(path) => {
@@ -13,7 +17,7 @@ pub fn launch_archs4_correlation(gene_name: &str, count: usize, output: &Option<
             } else {
                 println!("{}", results);
             }
-        },
+        }
         None => {
             println!("{}", results);
         }
@@ -22,7 +26,11 @@ pub fn launch_archs4_correlation(gene_name: &str, count: usize, output: &Option<
 }
 
 /// Main entrypoint to launching the `tissue` function for `ARCHS4`
-pub fn launch_archs4_tissue(gene_name: &str, species: &Species, output: &Option<String>) -> Result<()> {
+pub fn launch_archs4_tissue(
+    gene_name: &str,
+    species: &Species,
+    output: &Option<String>,
+) -> Result<()> {
     let results = tissue(gene_name, species)?;
     match output {
         Some(path) => {
@@ -31,7 +39,7 @@ pub fn launch_archs4_tissue(gene_name: &str, species: &Species, output: &Option<
             } else {
                 println!("{}", results);
             }
-        },
+        }
         None => {
             println!("{}", results);
         }

@@ -1,22 +1,22 @@
+use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
 use clap::ArgEnum;
 use pyo3::{
-    pyfunction, Python, PyResult, wrap_pyfunction,
-    types::{PyDict, PyModule}
+    pyfunction,
+    types::{PyDict, PyModule},
+    wrap_pyfunction, PyResult, Python,
 };
-use super::{search, database, release, DataType, reference, ENSEMBL_RELEASE, list_species};
 
-
-#[pyfunction(name="search")]
+#[pyfunction(name = "search")]
 #[allow(clippy::needless_pass_by_value)]
 pub fn python_ensembl_search<'py>(
-        py: Python<'py>, 
-        search_terms: Vec<String>, 
-        database: Option<String>,
-        species: Option<&str>, 
-        db_type: Option<&str>, 
-        release: Option<usize>, 
-        assembly: Option<&str>) -> PyResult<&'py PyDict> 
-{
+    py: Python<'py>,
+    search_terms: Vec<String>,
+    database: Option<String>,
+    species: Option<&str>,
+    db_type: Option<&str>,
+    release: Option<usize>,
+    assembly: Option<&str>,
+) -> PyResult<&'py PyDict> {
     let db_name = match database {
         Some(name) => name,
         None => {
@@ -31,7 +31,7 @@ pub fn python_ensembl_search<'py>(
     results.as_pydict(py)
 }
 
-#[pyfunction(name="database")]
+#[pyfunction(name = "database")]
 #[must_use]
 #[allow(clippy::needless_pass_by_value)]
 pub fn python_ensembl_database(_py: Python, filter: Option<String>) -> Vec<String> {
@@ -39,56 +39,51 @@ pub fn python_ensembl_database(_py: Python, filter: Option<String>) -> Vec<Strin
     results.as_vec()
 }
 
-#[pyfunction(name="release")]
+#[pyfunction(name = "release")]
 pub fn python_ensembl_release(_py: Python) -> usize {
     release().expect("Could not query ensembl release number")
 }
 
-#[pyfunction(name="reference")]
+#[pyfunction(name = "reference")]
 pub fn python_ensembl_reference<'py>(
-        py: Python<'py>, 
-        species: Option<&str>,
-        release: Option<usize>, 
-        datatype: Option<Vec<String>>) -> Vec<&'py PyDict>
-{
+    py: Python<'py>,
+    species: Option<&str>,
+    release: Option<usize>,
+    datatype: Option<Vec<String>>,
+) -> Vec<&'py PyDict> {
     let species = species.unwrap_or("homo_sapiens");
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
-        Some(datatype) => {
-            datatype
-                .iter()
-                .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
-                .collect::<Vec<DataType>>()
-        },
+        Some(datatype) => datatype
+            .iter()
+            .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
+            .collect::<Vec<DataType>>(),
         None => {
             vec![DataType::DNA]
         }
     };
 
-    reference(species, release, &datatype).expect("Could not query FTP")
+    reference(species, release, &datatype)
+        .expect("Could not query FTP")
         .iter()
         .map(|x| x.as_pydict(py).expect("could not create dictionary"))
         .collect()
 }
 
-#[pyfunction(name="species")]
+#[pyfunction(name = "species")]
 pub fn python_ensembl_species(
-        _py: Python,
-        release: Option<usize>,
-        datatype: Option<String>) -> Vec<String>
-{
-    let datatype = datatype
-        .map_or(
-            DataType::DNA, |x| 
-            DataType::from_str(&x, true)
-                .expect("Unexpected datatype provided")
-        );
+    _py: Python,
+    release: Option<usize>,
+    datatype: Option<String>,
+) -> Vec<String> {
+    let datatype = datatype.map_or(DataType::DNA, |x| {
+        DataType::from_str(&x, true).expect("Unexpected datatype provided")
+    });
     let release = match release {
         Some(x) => x,
-        None => ENSEMBL_RELEASE
+        None => ENSEMBL_RELEASE,
     };
-    list_species(release, &datatype)
-        .expect("Could not query species FTP")
+    list_species(release, &datatype).expect("Could not query species FTP")
 }
 
 pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {

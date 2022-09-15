@@ -22,11 +22,14 @@ mod python;
 /// submodule for constants shared between multiple functions
 mod constants;
 
-pub use database::database;
-pub use search::search;
-pub use release::release;
-pub use reference::{reference, DataType};
-pub use list_species::list_species;
-pub use submodule::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, launch_ensembl_list_species};
-pub use python::{python_ensembl_database, python_ensembl_search, python_ensembl};
 pub use constants::{ENSEMBL_RELEASE, ENSEMBL_RELEASE_STR};
+pub use database::database;
+pub use list_species::list_species;
+pub use python::{python_ensembl, python_ensembl_database, python_ensembl_search};
+pub use reference::{reference, DataType};
+pub use release::release;
+pub use search::search;
+pub use submodule::{
+    launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_reference,
+    launch_ensembl_release, launch_ensembl_search,
+};

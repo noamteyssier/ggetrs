@@ -1,9 +1,9 @@
+use crate::constants::convert_mem_label;
 use anyhow::Result;
 use clap::clap_derive::ValueEnum;
 use ftp::FtpStream;
+use pyo3::{types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
-use crate::constants::convert_mem_label;
-use pyo3::{Python, PyResult, types::PyDict};
 use std::fmt;
 
 /// A representation of a FTP file
@@ -13,11 +13,15 @@ pub struct FtpFile {
     ensembl_release: usize,
     release_date: String,
     release_time: String,
-    bytes: String
+    bytes: String,
 }
 impl fmt::Display for FtpFile {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl FtpFile {
@@ -30,7 +34,7 @@ impl FtpFile {
             ensembl_release: release,
             release_date: modtime.date().to_string(),
             release_time: modtime.time().to_string(),
-            bytes: convert_mem_label(size)
+            bytes: convert_mem_label(size),
         })
     }
 
@@ -48,38 +52,58 @@ impl FtpFile {
 /// The different data types present within the Ensembl FTP
 #[derive(ValueEnum, Clone, Debug)]
 pub enum DataType {
-    CDNA, CDS, DNA, GFF3,
-    GTF, NCRNA, PEP,
+    CDNA,
+    CDS,
+    DNA,
+    GFF3,
+    GTF,
+    NCRNA,
+    PEP,
 }
 impl DataType {
-    #[must_use] pub fn directory(&self) -> &str {
+    #[must_use]
+    pub fn directory(&self) -> &str {
         match self {
             Self::GTF => "gtf",
             Self::GFF3 => "gff3",
-            _ => "fasta"
+            _ => "fasta",
         }
     }
 
-    #[must_use] pub fn subdirectory(&self) -> Option<&str> {
+    #[must_use]
+    pub fn subdirectory(&self) -> Option<&str> {
         match self {
             Self::CDNA => Some("cdna"),
             Self::CDS => Some("cds"),
             Self::DNA => Some("dna"),
             Self::NCRNA => Some("ncrna"),
             Self::PEP => Some("pep"),
-            _ => None
+            _ => None,
         }
     }
 
-    #[must_use] pub fn expected_substring(&self, release: usize) -> Vec<String> {
+    #[must_use]
+    pub fn expected_substring(&self, release: usize) -> Vec<String> {
         match self {
-            Self::CDNA => vec![".cdna.all.fa"].iter().map(|x| (*x).to_string()).collect(),
-            Self::CDS => vec![".cds.all.fa"].iter().map(|x| (*x).to_string()).collect(),
-            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::CDNA => vec![".cdna.all.fa"]
+                .iter()
+                .map(|x| (*x).to_string())
+                .collect(),
+            Self::CDS => vec![".cds.all.fa"]
+                .iter()
+                .map(|x| (*x).to_string())
+                .collect(),
+            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"]
+                .iter()
+                .map(|x| (*x).to_string())
+                .collect(),
             Self::GFF3 => vec![format!("{}.gff3.gz", release)],
             Self::GTF => vec![format!("{}.gtf.gz", release)],
             Self::NCRNA => vec![".ncrna.fa"].iter().map(|x| (*x).to_string()).collect(),
-            Self::PEP => vec![".pep.all.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::PEP => vec![".pep.all.fa"]
+                .iter()
+                .map(|x| (*x).to_string())
+                .collect(),
         }
     }
 }
@@ -96,16 +120,26 @@ pub fn find_data(filelist: &[String], release: usize, datatype: &DataType) -> Op
 }
 
 /// Recovers a specific datatype from Ensembl FTP
-pub fn show_data(stream: &mut FtpStream, species: &str, release: usize, datatype: &DataType) -> Result<Option<String>> {
+pub fn show_data(
+    stream: &mut FtpStream,
+    species: &str,
+    release: usize,
+    datatype: &DataType,
+) -> Result<Option<String>> {
     let dirname = match datatype.subdirectory() {
-        Some(subdir) => format!("release-{}/{}/{}/{}/", release, datatype.directory(), species, subdir),
-        None => format!("release-{}/{}/{}/", release, datatype.directory(), species)
+        Some(subdir) => format!(
+            "release-{}/{}/{}/{}/",
+            release,
+            datatype.directory(),
+            species,
+            subdir
+        ),
+        None => format!("release-{}/{}/{}/", release, datatype.directory(), species),
     };
     let filelist = stream.nlst(Some(&dirname))?;
     let filename = find_data(&filelist, release, datatype);
     Ok(filename)
 }
-
 
 /// Queries a set of datatypes from Ensembl FTP
 pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result<Vec<FtpFile>> {
@@ -114,18 +148,21 @@ pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result
     stream.login("anonymous", "anonymous")?;
     stream.cwd("pub")?;
 
-    let filepaths = datatype.iter()
-            .filter_map(|d| show_data(&mut stream, species, release, d).expect("could not query ftp"))
-            .collect::<Vec<String>>();
-    Ok(filepaths.iter()
-            .map(|path| FtpFile::new(&mut stream, path, release).expect("Could not represent file path"))
-            .collect())
-    
+    let filepaths = datatype
+        .iter()
+        .filter_map(|d| show_data(&mut stream, species, release, d).expect("could not query ftp"))
+        .collect::<Vec<String>>();
+    Ok(filepaths
+        .iter()
+        .map(|path| {
+            FtpFile::new(&mut stream, path, release).expect("Could not represent file path")
+        })
+        .collect())
 }
 
 #[cfg(test)]
 mod testing {
-    use super::{DataType, reference};
+    use super::{reference, DataType};
 
     #[test]
     pub fn test_reference_single() {

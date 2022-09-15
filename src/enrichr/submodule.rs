@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::io::Write;
 
-use reqwest::Result;
 use super::{add_list, enrich};
+use reqwest::Result;
 
 /// Main entrypoint to launching the `enrich` function for `Enrichr`
 pub fn launch_enrich(library: &str, gene_list: &[String], output: &Option<String>) -> Result<()> {
@@ -15,7 +15,7 @@ pub fn launch_enrich(library: &str, gene_list: &[String], output: &Option<String
             } else {
                 println!("{}", results);
             }
-        },
+        }
         None => {
             println!("{}", results);
         }

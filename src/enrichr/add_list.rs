@@ -1,4 +1,4 @@
-use reqwest::{Result, blocking::Client};
+use reqwest::{blocking::Client, Result};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -6,20 +6,23 @@ use std::fmt;
 ///
 /// details at: <https://maayanlab.cloud/Enrichr/help#api&q=1>
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all="camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct ResponseAddList {
     pub user_list_id: usize,
-    pub short_id: String
+    pub short_id: String,
 }
 impl fmt::Display for ResponseAddList {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 
 /// Performs a function call to the `addList` API.
 pub fn add_list(gene_list: &[String]) -> Result<ResponseAddList> {
-
     // defines the web client
     let client = Client::new();
 
@@ -38,9 +41,9 @@ pub fn add_list(gene_list: &[String]) -> Result<ResponseAddList> {
         .text("description", description);
 
     // query the server
-    client.post(url)
+    client
+        .post(url)
         .multipart(form)
         .send()?
         .json::<ResponseAddList>()
 }
-
