@@ -23,7 +23,7 @@ impl NcbiTranscript {
         value["name"].is_null()
     }
 
-    pub fn from_value(value: &Value) -> Option<Self> {
+    #[must_use] pub fn from_value(value: &Value) -> Option<Self> {
         if Self::is_null(value) { return None }
         let name = parse_primary_string(value, "name");
         let ensembl_transcript = parse_primary_optional_string(value, "ensembl_transcript");
@@ -35,13 +35,13 @@ impl NcbiTranscript {
         let end = Self::parse_genomic_range(value, "end")
             .parse::<usize>().expect("Malformed genomic range end");
         let strand = Self::parse_genomic_range(value, "orientation");
-        Some(Self{name, ensembl_transcript, biotype, length, accession_version, start, end, strand})
+        Some(Self { name, biotype, ensembl_transcript, length, accession_version, start, end, strand })
     }
 
     fn parse_genomic_range(value: &Value, id: &str) -> String {
         value["genomic_range"]["range"][0][id]
             .as_str()
-            .expect(&format!("Missing: genomic_range/range/[0]/{}", id))
+            .unwrap_or_else(|| panic!("Missing: genomic_range/range/[0]/{}", id))
             .to_string()
     }
 }

@@ -33,7 +33,7 @@ impl fmt::Display for UniprotInfo {
     }
 }
 impl UniprotInfo {
-    pub fn from_value(value: Value, query: &str) -> Option<Self> {
+    #[must_use] pub fn from_value(value: Value, query: &str) -> Option<Self> {
         if !Self::is_valid(&value) { return None }
         let uniprot_id = Self::get_uniprot_id(&value);
         let primary_gene_name = Self::get_primary_gene_name(&value);
@@ -104,12 +104,7 @@ impl UniprotInfo {
                     .filter(|x| x["database"] == "GeneID")
                     .take(1)
                     .next();
-                match reference {
-                    Some(v) => {
-                        Some(v["id"].as_str().unwrap().to_string())
-                    },
-                    None => None
-                }
+                reference.map(|v| v["id"].as_str().unwrap().to_string())
 
             },
             None => None
@@ -123,12 +118,7 @@ impl UniprotInfo {
                     .filter(|x| x["database"] == "PDB")
                     .take(1)
                     .next();
-                match reference {
-                    Some(v) => {
-                        Some(v["id"].as_str().unwrap().to_string())
-                    },
-                    None => None
-                }
+                reference.map(|v| v["id"].as_str().unwrap().to_string())
 
             },
             None => None

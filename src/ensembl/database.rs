@@ -27,7 +27,7 @@ pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
     let opts = get_mysql_options();
     let mut conn = Conn::new(opts)?;
     let query = build_search_query(filter);
-    let results: Vec<Database> = conn.query_map(query, |x: String| Database(x))?;
+    let results: Vec<Database> = conn.query_map(query, Database)?;
     Ok(ResponseDatabases(results))
 }
 

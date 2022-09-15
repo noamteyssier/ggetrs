@@ -38,7 +38,7 @@ impl ResponseTissue {
     fn parse_str(response: &str) -> Vec<ResultTissue> {
         response
             .split('\n')
-            .filter_map(|x| ResultTissue::from_line(x))
+            .filter_map(ResultTissue::from_line)
             .collect()
     }
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
@@ -131,7 +131,7 @@ impl ResultTissue {
 
 }
 
-/// Returns the tissue-specific expression of a provided gene_name
+/// Returns the tissue-specific expression of a provided `gene_name`
 pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {
     let client = Client::new();
 

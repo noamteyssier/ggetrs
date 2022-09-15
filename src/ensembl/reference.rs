@@ -22,8 +22,8 @@ impl fmt::Display for FtpFile {
 }
 impl FtpFile {
     pub fn new(stream: &mut FtpStream, path: &str, release: usize) -> Result<Self> {
-        let size = stream.size(&path)?.unwrap();
-        let modtime = stream.mdtm(&path)?.unwrap();
+        let size = stream.size(path)?.unwrap();
+        let modtime = stream.mdtm(path)?.unwrap();
         let url = format!("http://ftp.ensembl.org/pub/{}", path);
         Ok(Self {
             url,
@@ -52,7 +52,7 @@ pub enum DataType {
     GTF, NCRNA, PEP,
 }
 impl DataType {
-    pub fn directory(&self) -> &str {
+    #[must_use] pub fn directory(&self) -> &str {
         match self {
             Self::GTF => "gtf",
             Self::GFF3 => "gff3",
@@ -60,7 +60,7 @@ impl DataType {
         }
     }
 
-    pub fn subdirectory(&self) -> Option<&str> {
+    #[must_use] pub fn subdirectory(&self) -> Option<&str> {
         match self {
             Self::CDNA => Some("cdna"),
             Self::CDS => Some("cds"),
@@ -71,15 +71,15 @@ impl DataType {
         }
     }
 
-    pub fn expected_substring(&self, release: usize) -> Vec<String> {
+    #[must_use] pub fn expected_substring(&self, release: usize) -> Vec<String> {
         match self {
-            Self::CDNA => vec![".cdna.all.fa"].iter().map(|x| x.to_string()).collect(),
-            Self::CDS => vec![".cds.all.fa"].iter().map(|x| x.to_string()).collect(),
-            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"].iter().map(|x| x.to_string()).collect(),
+            Self::CDNA => vec![".cdna.all.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::CDS => vec![".cds.all.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"].iter().map(|x| (*x).to_string()).collect(),
             Self::GFF3 => vec![format!("{}.gff3.gz", release)],
             Self::GTF => vec![format!("{}.gtf.gz", release)],
-            Self::NCRNA => vec![".ncrna.fa"].iter().map(|x| x.to_string()).collect(),
-            Self::PEP => vec![".pep.all.fa"].iter().map(|x| x.to_string()).collect(),
+            Self::NCRNA => vec![".ncrna.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::PEP => vec![".pep.all.fa"].iter().map(|x| (*x).to_string()).collect(),
         }
     }
 }
@@ -87,7 +87,7 @@ impl DataType {
 /// Searches through filelists to recover an expected file format
 pub fn find_data(filelist: &Vec<String>, release: usize, datatype: &DataType) -> Option<String> {
     for substring in datatype.expected_substring(release) {
-        match filelist.iter().filter(|x| x.contains(&substring)).next() {
+        match filelist.iter().find(|x| x.contains(&substring)) {
             Some(s) => return Some(s.clone()),
             None => {}
         }

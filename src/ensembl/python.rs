@@ -17,12 +17,12 @@ pub fn python_ensembl_search<'py>(
         assembly: Option<&str>) -> PyResult<&'py PyDict> 
 {
     let db_name = match database {
-        Some(name) => name.clone(),
+        Some(name) => name,
         None => {
-            let species = match species { Some(x) => x, None => "homo_sapiens" };
-            let db_type = match db_type { Some(x) => x, None => "core" };
-            let release = match release { Some(x) => x, None => 107 };
-            let assembly = match assembly { Some(x) => x, None => "38" };
+            let species = species.unwrap_or("homo_sapiens");
+            let db_type = db_type.unwrap_or("core");
+            let release = release.unwrap_or(107);
+            let assembly = assembly.unwrap_or("38");
             format!("{}_{}_{}_{}", species, db_type, release, assembly)
         }
     };
@@ -49,10 +49,7 @@ pub fn python_ensembl_reference<'py>(
         release: Option<usize>, 
         datatype: Option<Vec<String>>) -> PyResult<Vec<&'py PyDict>> 
 {
-    let species = match species {
-        Some(x) => x,
-        None => "homo_sapiens"
-    };
+    let species = species.unwrap_or("homo_sapiens");
 
     let release = match release {
         Some(x) => x,

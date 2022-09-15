@@ -17,7 +17,7 @@ impl NcbiInfo {
         value["gene"].is_null()
     }
 
-    pub fn from_value(value: &Value) -> Option<Self> {
+    #[must_use] pub fn from_value(value: &Value) -> Option<Self> {
         if Self::is_null(value) { return None }
         let gene_id = parse_secondary_string(value, "gene", "gene_id");
         let symbol = parse_secondary_string(value, "gene", "symbol");
@@ -38,7 +38,7 @@ impl NcbiInfo {
     fn parse_transcripts(value: &Value) -> Vec<NcbiTranscript> {
         match value["gene"]["transcripts"].as_array() {
             Some(arr) => {
-                arr.iter().filter_map(|x| NcbiTranscript::from_value(x)).collect()
+                arr.iter().filter_map(NcbiTranscript::from_value).collect()
             },
             None => Vec::new()
         }

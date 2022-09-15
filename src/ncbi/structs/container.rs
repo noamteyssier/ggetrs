@@ -7,10 +7,10 @@ pub struct NcbiResults {
     results: Vec<NcbiInfo>
 }
 impl NcbiResults {
-    pub fn from_value(value: &Value) -> Option<Self> {
+    #[must_use] pub fn from_value(value: &Value) -> Option<Self> {
         let results = match value["genes"].as_array() {
             Some(x) => {
-                x.iter().filter_map(|x| NcbiInfo::from_value(x)).collect()
+                x.iter().filter_map(NcbiInfo::from_value).collect()
             },
             None => return None
         };
