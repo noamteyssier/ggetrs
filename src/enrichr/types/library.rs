@@ -1,4 +1,3 @@
-use reqwest::Result;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -67,10 +66,4 @@ impl fmt::Display for ResponseLibraries {
             serde_json::to_string_pretty(&self).expect("cannot serialize")
         )
     }
-}
-
-/// Performs a `GET` call to retrieve the known libraries of `Enrichr`
-pub fn get_libraries() -> Result<ResponseLibraries> {
-    let url = "https://maayanlab.cloud/Enrichr/datasetStatistics";
-    reqwest::blocking::get(url)?.json::<ResponseLibraries>()
 }
