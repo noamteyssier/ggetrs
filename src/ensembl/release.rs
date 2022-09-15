@@ -1,9 +1,9 @@
 use reqwest::blocking::Client;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Releases {
-    releases: Vec<usize>
+    releases: Vec<usize>,
 }
 impl Releases {
     pub fn max(&self) -> usize {

@@ -8,5 +8,5 @@ mod uniprotinfo;
 mod submodule;
 
 pub use query::query;
-pub use uniprotinfo::{UniprotInfo, UniprotInfoContainer};
 pub use submodule::launch_uniprot_query;
+pub use uniprotinfo::{UniprotInfo, UniprotInfoContainer};

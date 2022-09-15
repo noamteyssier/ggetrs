@@ -1,11 +1,14 @@
-use clap::{Parser, Subcommand, AppSettings};
+use clap::{AppSettings, Parser, Subcommand};
 use ggetrs::{
-    RequestError, 
-    enrichr::launch_enrich, 
     archs4::{launch_archs4_correlation, launch_archs4_tissue, Species},
-    ensembl::{launch_ensembl_search, launch_ensembl_database, launch_ensembl_release, launch_ensembl_reference, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_list_species}, 
-    uniprot::launch_uniprot_query, 
-    ncbi::{launch_query_ncbi_ids, launch_query_ncbi_symbols}
+    enrichr::launch_enrich,
+    ensembl::{
+        launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_reference,
+        launch_ensembl_release, launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
+    },
+    ncbi::{launch_query_ncbi_ids, launch_query_ncbi_symbols},
+    uniprot::launch_uniprot_query,
+    RequestError,
 };
 
 #[derive(Parser)]
@@ -30,7 +33,7 @@ enum Commands {
         output: Option<String>,
 
         /// list of gene symbols to perform enrichment analysis on.
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         gene_list: Vec<String>,
     },
 
@@ -41,7 +44,7 @@ enum Commands {
     /// Searches through descriptions on ENSEMBL
     Search {
         /// Search terms to query
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         search_terms: Vec<String>,
 
         /// database
@@ -49,11 +52,11 @@ enum Commands {
         database: Option<String>,
 
         /// species used in database
-        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
         species: String,
 
         /// database type specied by Ensembl
-        #[clap(short='t', long, value_parser, default_value="core")]
+        #[clap(short = 't', long, value_parser, default_value = "core")]
         db_type: String,
 
         /// release number to use for database
@@ -61,7 +64,7 @@ enum Commands {
         release: usize,
 
         /// assembly to use for species
-        #[clap(short, long, value_parser, default_value="38")]
+        #[clap(short, long, value_parser, default_value = "38")]
         assembly: String,
 
         /// optional filepath to write output to [default=stdout]
@@ -83,17 +86,17 @@ enum Commands {
 }
 
 #[derive(Subcommand)]
-enum ModArchS4{
+enum ModArchS4 {
     /// Performs a gene-correlation analysis
     Correlate {
         /// Gene name to query for correlation
-        #[clap(value_parser, required=true)]
+        #[clap(value_parser, required = true)]
         gene_name: String,
 
         /// number of values to recover
-        #[clap(short, long, value_parser, default_value="100")]
+        #[clap(short, long, value_parser, default_value = "100")]
         count: usize,
-        
+
         /// output filepath to write to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -101,17 +104,17 @@ enum ModArchS4{
     /// Perform a tissue-enrichment analysis
     Tissue {
         /// Gene name to query for tissue
-        #[clap(value_parser, required=true)]
+        #[clap(value_parser, required = true)]
         gene_name: String,
-        
+
         /// number of values to recover
-        #[clap(short, long, value_parser, default_value="human")]
+        #[clap(short, long, value_parser, default_value = "human")]
         species: Species,
-        
+
         /// output filepath to write to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
-    }
+    },
 }
 
 #[derive(Subcommand)]
@@ -119,29 +122,29 @@ enum ModEnsembl {
     /// Searches through descriptions on ENSEMBL
     Search {
         /// Search terms to query
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         search_terms: Vec<String>,
-        
+
         /// database
         #[clap(short, long, value_parser)]
         database: Option<String>,
-        
+
         /// species used in database
-        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
         species: String,
-        
+
         /// database type specied by Ensembl
-        #[clap(short='t', long, value_parser, default_value="core")]
+        #[clap(short = 't', long, value_parser, default_value = "core")]
         db_type: String,
-        
+
         /// release number to use for database
         #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
-        
+
         /// assembly to use for species
-        #[clap(short, long, value_parser, default_value="38")]
+        #[clap(short, long, value_parser, default_value = "38")]
         assembly: String,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -152,7 +155,7 @@ enum ModEnsembl {
         /// Provides a substring filter to only return databases which contain the substring
         #[clap(short, long, value_parser)]
         filter: Option<String>,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -164,17 +167,25 @@ enum ModEnsembl {
     /// Retrieves reference files from Ensembl FTP site
     Ref {
         /// Species to query data for
-        #[clap(short, long, value_parser, default_value="homo_sapiens")]
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
         species: String,
 
         /// Release to use - will default to latest release
         #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
-        
+
         /// Datatype to query for, provided as a comma-separated list (example: cdna,dna,gtf)
-        #[clap(short, long, value_enum, value_parser, value_delimiter=',', min_values=1, required=true)]
+        #[clap(
+            short,
+            long,
+            value_enum,
+            value_parser,
+            value_delimiter = ',',
+            min_values = 1,
+            required = true
+        )]
         datatype: Vec<DataType>,
-        
+
         /// Optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -185,29 +196,29 @@ enum ModEnsembl {
         /// Release to use - will default to latest release
         #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
-        
+
         /// Optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
-        
+
         /// Datatype to query species list
-        #[clap(short, long, value_enum, default_value="dna")]
+        #[clap(short, long, value_enum, default_value = "dna")]
         datatype: DataType,
-    }
+    },
 }
 
 #[derive(Subcommand)]
-enum ModUniprot{
+enum ModUniprot {
     /// Searches through descriptions on Uniprot
     Query {
         /// Search terms to query
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         search_terms: Vec<String>,
 
         /// Taxon to filter results (human: 9606, mouse: 10090)
         #[clap(short, long, value_parser)]
         taxon: Option<usize>,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -219,9 +230,9 @@ enum ModNcbi {
     /// Retrieves information for a list of IDs
     QueryIds {
         /// NCBI ids to query
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         ids: Vec<usize>,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -230,13 +241,13 @@ enum ModNcbi {
     /// Retrieves information for a list of symbols (must provide taxon)
     QuerySymbols {
         /// NCBI ids to query
-        #[clap(value_parser, min_values=1, required=true)]
+        #[clap(value_parser, min_values = 1, required = true)]
         symbols: Vec<String>,
 
         /// Taxon ID (human: 9606, mouse: 10090)
-        #[clap(short, long, value_parser, default_value="9606")]
+        #[clap(short, long, value_parser, default_value = "9606")]
         taxon_id: usize,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -246,50 +257,111 @@ enum ModNcbi {
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Enrichr { library, gene_list, output } => {
+        Commands::Enrichr {
+            library,
+            gene_list,
+            output,
+        } => {
             launch_enrich(library, gene_list, output)?;
-        },
+        }
         Commands::ARCHS4(sub) => match sub {
-            ModArchS4::Correlate { gene_name, count, output } => {
+            ModArchS4::Correlate {
+                gene_name,
+                count,
+                output,
+            } => {
                 launch_archs4_correlation(gene_name, *count, output)?;
-            },
-            ModArchS4::Tissue { gene_name, species, output } => {
+            }
+            ModArchS4::Tissue {
+                gene_name,
+                species,
+                output,
+            } => {
                 launch_archs4_tissue(gene_name, species, output)?;
             }
         },
-        Commands::Search { search_terms, database, species, db_type, release, assembly, output } => {
-            launch_ensembl_search(search_terms, database, species, db_type, release, assembly, output)?;
-        },
+        Commands::Search {
+            search_terms,
+            database,
+            species,
+            db_type,
+            release,
+            assembly,
+            output,
+        } => {
+            launch_ensembl_search(
+                search_terms,
+                database,
+                species,
+                db_type,
+                release,
+                assembly,
+                output,
+            )?;
+        }
         Commands::Ensembl(sub) => match sub {
-            ModEnsembl::Search { search_terms, database, species, db_type, release, assembly, output } => {
-                launch_ensembl_search(search_terms, database, species, db_type, release, assembly, output)?;
-            },
+            ModEnsembl::Search {
+                search_terms,
+                database,
+                species,
+                db_type,
+                release,
+                assembly,
+                output,
+            } => {
+                launch_ensembl_search(
+                    search_terms,
+                    database,
+                    species,
+                    db_type,
+                    release,
+                    assembly,
+                    output,
+                )?;
+            }
             ModEnsembl::Database { filter, output } => {
                 launch_ensembl_database(filter, output)?;
-            },
+            }
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
-            },
-            ModEnsembl::Ref { species, release, datatype, output } => {
+            }
+            ModEnsembl::Ref {
+                species,
+                release,
+                datatype,
+                output,
+            } => {
                 launch_ensembl_reference(species, *release, datatype, output)?;
-            },
-            ModEnsembl::Species { release, datatype, output} => {
+            }
+            ModEnsembl::Species {
+                release,
+                datatype,
+                output,
+            } => {
                 launch_ensembl_list_species(*release, datatype, output)?;
             }
         },
         Commands::Uniprot(sub) => match sub {
-            ModUniprot::Query { search_terms, taxon, output } => { 
+            ModUniprot::Query {
+                search_terms,
+                taxon,
+                output,
+            } => {
                 launch_uniprot_query(search_terms, taxon, output)?;
             }
         },
         Commands::Ncbi(sub) => match sub {
             ModNcbi::QueryIds { ids, output } => {
                 launch_query_ncbi_ids(ids, output)?;
-            },
-            ModNcbi::QuerySymbols { symbols, taxon_id, output } => {
+            }
+            ModNcbi::QuerySymbols {
+                symbols,
+                taxon_id,
+                output,
+            } => {
                 launch_query_ncbi_symbols(symbols, *taxon_id, output)?;
             }
-        }
+        },
     };
 
     Ok(())

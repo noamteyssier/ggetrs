@@ -1,13 +1,13 @@
 mod add_list;
-mod view_list;
-mod get_libraries;
 mod enrich;
-mod submodule;
+mod get_libraries;
 mod python;
+mod submodule;
+mod view_list;
 
-pub use add_list::{ResponseAddList, add_list};
-pub use view_list::{ResponseViewList, view_list};
-pub use get_libraries::{ResponseLibraries, Library, Category, get_libraries};
-pub use enrich::{ResponseEnrich, ResultEnrichr, enrich};
-pub use submodule::launch_enrich;
+pub use add_list::{add_list, ResponseAddList};
+pub use enrich::{enrich, ResponseEnrich, ResultEnrichr};
+pub use get_libraries::{get_libraries, Category, Library, ResponseLibraries};
 pub use python::python_enrichr;
+pub use submodule::launch_enrich;
+pub use view_list::{view_list, ResponseViewList};

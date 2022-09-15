@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
-use serde_json::Value;
-use crate::utils::parsing::parse_secondary_string;
 use super::NcbiTranscript;
+use crate::utils::parsing::parse_secondary_string;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NcbiInfo {
@@ -10,15 +10,18 @@ pub struct NcbiInfo {
     description: String,
     taxon_id: String,
     taxon_name: String,
-    transcripts: Vec<NcbiTranscript>
+    transcripts: Vec<NcbiTranscript>,
 }
 impl NcbiInfo {
     fn is_null(value: &Value) -> bool {
         value["gene"].is_null()
     }
 
+    #[must_use]
     pub fn from_value(value: &Value) -> Option<Self> {
-        if Self::is_null(value) { return None }
+        if Self::is_null(value) {
+            return None;
+        }
         let gene_id = parse_secondary_string(value, "gene", "gene_id");
         let symbol = parse_secondary_string(value, "gene", "symbol");
         let description = parse_secondary_string(value, "gene", "description");
@@ -31,17 +34,14 @@ impl NcbiInfo {
             description,
             taxon_id,
             taxon_name,
-            transcripts
+            transcripts,
         })
     }
 
     fn parse_transcripts(value: &Value) -> Vec<NcbiTranscript> {
         match value["gene"]["transcripts"].as_array() {
-            Some(arr) => {
-                arr.iter().filter_map(|x| NcbiTranscript::from_value(x)).collect()
-            },
-            None => Vec::new()
+            Some(arr) => arr.iter().filter_map(NcbiTranscript::from_value).collect(),
+            None => Vec::new(),
         }
-
     }
 }

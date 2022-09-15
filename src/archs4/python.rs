@@ -1,25 +1,31 @@
+use super::{correlation, tissue, Species};
+use clap::ArgEnum;
 use pyo3::{
-    pyfunction, Python, PyResult, 
-    types::{PyDict, PyModule}, 
-    exceptions::PyAssertionError, wrap_pyfunction};
-use super::{correlation, Species, tissue};
+    pyfunction,
+    types::{PyDict, PyModule},
+    wrap_pyfunction, PyResult, Python,
+};
 
 /// Wraps the `ARCHS4` correlation analysis
-#[pyfunction(name="correlate")]
-pub fn python_archs4_correlate<'py>(py: Python<'py>, gene_name: &str, count: usize) -> PyResult<&'py PyDict> {
+#[pyfunction(name = "correlate")]
+pub fn python_archs4_correlate<'py>(
+    py: Python<'py>,
+    gene_name: &str,
+    count: usize,
+) -> PyResult<&'py PyDict> {
     let results = correlation(gene_name, count).expect("Unable to query `matrixapi/coltop`");
     results.as_pydict(py)
 }
 
 /// Wraps the `ARCHS4` tissue expression analysis
-#[pyfunction(name="tissue")]
-pub fn python_archs4_tissue<'py>(py: Python<'py>, gene_name: &str, species: &str) -> PyResult<&'py PyDict> {
-    let species = match species {
-        "human" => Species::Human,
-        "mouse" => Species::Mouse,
-        _ => return Err(PyAssertionError::new_err("unexpected species name"))
-    };
-    let results = tissue(gene_name, &species).expect("Unable to query `archs4/tissue`");
+#[pyfunction(name = "tissue")]
+pub fn python_archs4_tissue<'py>(
+    py: Python<'py>,
+    gene_name: &str,
+    species: &str,
+) -> PyResult<&'py PyDict> {
+    let species_enum = Species::from_str(species, true).unwrap_or_default();
+    let results = tissue(gene_name, &species_enum).expect("Unable to query `archs4/tissue`");
     results.as_pydict(py)
 }
 
@@ -31,4 +37,3 @@ pub fn python_archs4(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_submodule(submodule)?;
     Ok(())
 }
-

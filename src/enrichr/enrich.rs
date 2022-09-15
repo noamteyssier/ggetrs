@@ -1,5 +1,5 @@
 use pyo3::types::PyDict;
-use pyo3::{pyclass, Python, PyResult};
+use pyo3::{pyclass, PyResult, Python};
 use reqwest::Result;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -11,12 +11,14 @@ use std::fmt;
 /// tested against and the values will each be an instance of [ResultEnrichr]
 #[derive(Serialize, Deserialize, Debug)]
 #[pyclass]
-pub struct ResponseEnrich (
-    pub HashMap<String, Vec<ResultEnrichr>>
-);
+pub struct ResponseEnrich(pub HashMap<String, Vec<ResultEnrichr>>);
 impl fmt::Display for ResponseEnrich {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl ResponseEnrich {
@@ -56,11 +58,15 @@ pub struct ResultEnrichr {
     #[pyo3(get, set)]
     pub old_pvalue: f64,
     #[pyo3(get, set)]
-    pub old_adj_pvalue: f64
+    pub old_adj_pvalue: f64,
 }
-impl fmt::Display for ResultEnrichr{
+impl fmt::Display for ResultEnrichr {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl ResultEnrichr {
@@ -79,16 +85,14 @@ impl ResultEnrichr {
     }
 }
 
-/// Performs an API call to the `Enrichr`'s `enrich`. 
+/// Performs an API call to the `Enrichr`'s `enrich`.
 ///
 /// This measures the significance of overlap of the provided gene list to the provided library
 /// name.
 pub fn enrich(list_id: usize, library_name: &str) -> Result<ResponseEnrich> {
     let url = format!(
         "https://maayanlab.cloud/Enrichr/enrich?userListId={}&backgroundType={}",
-        list_id,
-        library_name
+        list_id, library_name
     );
-    reqwest::blocking::get(url)?
-        .json::<ResponseEnrich>()
+    reqwest::blocking::get(url)?.json::<ResponseEnrich>()
 }

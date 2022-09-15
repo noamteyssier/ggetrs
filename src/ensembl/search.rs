@@ -1,26 +1,30 @@
-use mysql::{Conn, OptsBuilder, Row, prelude::Queryable};
 use anyhow::bail;
+use mysql::{prelude::Queryable, Conn, OptsBuilder, Row};
+use pyo3::{types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
-use pyo3::{Python, PyResult, types::PyDict};
 use std::fmt;
 
 /// A unit struct container of [`SearchResult`]
 #[derive(Serialize, Deserialize, Debug)]
-pub struct SearchResults ( Vec<SearchResult> );
+pub struct SearchResults(Vec<SearchResult>);
 impl fmt::Display for SearchResults {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl SearchResults {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
         let dict = PyDict::new(py);
         dict.set_item(
-            "results", 
+            "results",
             self.0
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create pydict"))
-                .collect::<Vec<&PyDict>>()
+                .collect::<Vec<&PyDict>>(),
         )?;
         Ok(dict)
     }
@@ -33,11 +37,15 @@ pub struct SearchResult {
     display_label: String,
     ensembl_description: String,
     xref_description: String,
-    biotype: String
+    biotype: String,
 }
 impl fmt::Display for SearchResult {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl SearchResult {
@@ -51,16 +59,22 @@ impl SearchResult {
     }
 
     /// Generates from a [`Row`]
-    pub fn from_row(row: Row) -> anyhow::Result<Self> {
-        if row.is_empty() { bail!("empty row") }
-        let stable_id = Self::parse_index(&row, 0);
-        let display_label = Self::parse_index(&row, 1);
-        let ensembl_description = Self::parse_index(&row, 2);
-        let xref_description = Self::parse_index(&row, 3);
-        let biotype = Self::parse_index(&row, 4);
+    pub fn from_row(row: &Row) -> anyhow::Result<Self> {
+        if row.is_empty() {
+            bail!("empty row")
+        }
+        let stable_id = Self::parse_index(row, 0);
+        let display_label = Self::parse_index(row, 1);
+        let ensembl_description = Self::parse_index(row, 2);
+        let xref_description = Self::parse_index(row, 3);
+        let biotype = Self::parse_index(row, 4);
 
         Ok(Self {
-            stable_id, display_label, ensembl_description, xref_description, biotype
+            stable_id,
+            display_label,
+            ensembl_description,
+            xref_description,
+            biotype,
         })
     }
 
@@ -78,18 +92,20 @@ impl SearchResult {
 /// Performs an individual search on a SQL connection for a provided search term
 fn search_term(conn: &mut Conn, search_term: &str) -> anyhow::Result<SearchResults> {
     let query = build_search_query(search_term);
-    let results = conn.query_map(query, |row| SearchResult::from_row(row).expect("unable to parse search results"))?;
+    let results = conn.query_map(query, |row| {
+        SearchResult::from_row(&row).expect("unable to parse search results")
+    })?;
     Ok(SearchResults(results))
 }
 
 /// Creates an SQL connection then iteratively performs searches for each provided term
-pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<SearchResults> {
+pub fn search(db_name: &str, search_terms: &[String]) -> anyhow::Result<SearchResults> {
     let opts = get_mysql_options(db_name);
     let mut conn = Conn::new(opts)?;
     let mut results = Vec::new();
     for term in search_terms.iter() {
         let mut term_results = search_term(&mut conn, term)?;
-        results.append(&mut term_results.0 );
+        results.append(&mut term_results.0);
     }
     Ok(SearchResults(results))
 }
@@ -130,5 +146,4 @@ mod testing {
         assert_eq!(results.0.len(), 1);
         assert_eq!(results.0[0].display_label, "AP2S1");
     }
-
 }

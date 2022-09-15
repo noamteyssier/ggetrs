@@ -1,6 +1,6 @@
+use super::DataType;
 use anyhow::Result;
 use ftp::FtpStream;
-use super::DataType;
 
 /// List all available species for the provided release and datatype
 pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> {
@@ -10,7 +10,8 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
     stream.cwd("pub")?;
 
     let dirname = format!("release-{}/{}/", release, datatype.directory());
-    let filelist = stream.nlst(Some(&dirname))?
+    let filelist = stream
+        .nlst(Some(&dirname))?
         .iter()
         .map(|x| x.strip_prefix(&dirname).unwrap())
         .map(String::from)

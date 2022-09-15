@@ -1,8 +1,12 @@
-use anyhow::Result;
-use std::{io::Write, fs::File};
 use super::query;
+use anyhow::Result;
+use std::{fs::File, io::Write};
 
-pub fn launch_uniprot_query(search_terms: &Vec<String>, taxon: &Option<usize>, output: &Option<String>) -> Result<()> {
+pub fn launch_uniprot_query(
+    search_terms: &[String],
+    taxon: &Option<usize>,
+    output: &Option<String>,
+) -> Result<()> {
     let results = query(search_terms, taxon)?;
     match output {
         Some(path) => {
@@ -11,7 +15,7 @@ pub fn launch_uniprot_query(search_terms: &Vec<String>, taxon: &Option<usize>, o
             } else {
                 println!("{}", results);
             }
-        },
+        }
         None => {
             println!("{}", results);
         }

@@ -1,33 +1,41 @@
-use std::fmt;
 use clap::clap_derive::ArgEnum;
-use pyo3::{Python, PyResult, types::PyDict};
-use reqwest::{Result, blocking::Client};
+use pyo3::{types::PyDict, PyResult, Python};
+use reqwest::{blocking::Client, Result};
 use serde::Serialize;
+use std::fmt;
 
 /// The currently supported species for tissue expression in `ARCHS4`
 #[derive(ArgEnum, Debug, Clone, Default)]
-pub enum Species{
+pub enum Species {
     #[default]
     Human,
-    Mouse
+    Mouse,
 }
 impl fmt::Display for Species {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", match self {
-            Self::Human => "human",
-            Self::Mouse => "mouse"
-        })
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::Human => "human",
+                Self::Mouse => "mouse",
+            }
+        )
     }
 }
 
 /// A struct to hold the responses from tissue expression
 #[derive(Serialize, Debug)]
 pub struct ResponseTissue {
-    results: Vec<ResultTissue>
+    results: Vec<ResultTissue>,
 }
 impl fmt::Display for ResponseTissue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl ResponseTissue {
@@ -38,7 +46,7 @@ impl ResponseTissue {
     fn parse_str(response: &str) -> Vec<ResultTissue> {
         response
             .split('\n')
-            .filter_map(|x| ResultTissue::from_line(x))
+            .filter_map(ResultTissue::from_line)
             .collect()
     }
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
@@ -48,8 +56,8 @@ impl ResponseTissue {
             self.results
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create pydict"))
-                .collect::<Vec<&PyDict>>()
-            )?;
+                .collect::<Vec<&PyDict>>(),
+        )?;
         Ok(dict)
     }
 }
@@ -63,22 +71,25 @@ pub struct ResultTissue {
     median: f64,
     q3: f64,
     max: f64,
-    color: String
+    color: String,
 }
 impl fmt::Display for ResultTissue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", serde_json::to_string_pretty(&self).expect("cannot serialize"))
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
     }
 }
 impl ResultTissue {
-
     fn parse_float(record: Option<&str>) -> Option<f64> {
         match record {
             Some(value) => match value.parse::<f64>() {
                 Ok(x) => Some(x),
-                Err(_) => None
+                Err(_) => None,
             },
-            None => None
+            None => None,
         }
     }
 
@@ -86,34 +97,40 @@ impl ResultTissue {
         let mut records = line.split(',');
         let id = match records.next() {
             Some(value) => value.to_string(),
-            None => return None
+            None => return None,
         };
         let min = match Self::parse_float(records.next()) {
             Some(value) => value,
-            None => return None
+            None => return None,
         };
         let q1 = match Self::parse_float(records.next()) {
             Some(value) => value,
-            None => return None
+            None => return None,
         };
         let median = match Self::parse_float(records.next()) {
             Some(value) => value,
-            None => return None
+            None => return None,
         };
         let q3 = match Self::parse_float(records.next()) {
             Some(value) => value,
-            None => return None
+            None => return None,
         };
         let max = match Self::parse_float(records.next()) {
             Some(value) => value,
-            None => return None
+            None => return None,
         };
         let color = match records.next() {
             Some(value) => value.to_string(),
-            None => return None
+            None => return None,
         };
         Some(Self {
-            id, min, q1, median, q3, max, color
+            id,
+            min,
+            q1,
+            median,
+            q3,
+            max,
+            color,
         })
     }
 
@@ -128,19 +145,20 @@ impl ResultTissue {
         dict.set_item("color", &self.color)?;
         Ok(dict)
     }
-
 }
 
-/// Returns the tissue-specific expression of a provided gene_name
+/// Returns the tissue-specific expression of a provided `gene_name`
 pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {
     let client = Client::new();
+    let query_string = format!("search={}&species={}&type=tissue", gene_name, species);
 
     let url = format!(
         "https://maayanlab.cloud/archs4/search/loadExpressionTissue.php?{}",
-        format!("search={}&species={}&type=tissue", gene_name, species)
-        );
+        query_string
+    );
 
-    let raw_response = client.post(url)
+    let raw_response = client
+        .post(url)
         .header("Content-Type", "application/json")
         .send()?
         .text()?;
