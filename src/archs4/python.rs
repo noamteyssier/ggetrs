@@ -1,7 +1,7 @@
+use clap::ArgEnum;
 use pyo3::{
-    pyfunction, Python, PyResult, 
-    types::{PyDict, PyModule}, 
-    exceptions::PyAssertionError, wrap_pyfunction};
+    wrap_pyfunction, pyfunction, Python, PyResult, 
+    types::{PyDict, PyModule}};
 use super::{correlation, Species, tissue};
 
 /// Wraps the `ARCHS4` correlation analysis
