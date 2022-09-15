@@ -3,8 +3,8 @@ use anyhow::Result;
 use mysql::{prelude::Queryable, Conn, OptsBuilder};
 
 /// Performs an individual search on a SQL connection for a provided search term
-fn search_term(conn: &mut Conn, search_term: &str) -> Result<SearchResults> {
-    let query = build_search_query(search_term);
+fn query_search_terms(conn: &mut Conn, search_terms: &[String]) -> Result<SearchResults> {
+    let query = build_search_query(search_terms);
     let results = conn.query_map(query, |row| {
         SearchResult::from_row(&row).expect("unable to parse search results")
     })?;
@@ -16,10 +16,8 @@ pub fn search(db_name: &str, search_terms: &[String]) -> Result<SearchResults> {
     let opts = get_mysql_options(db_name);
     let mut conn = Conn::new(opts)?;
     let mut results = Vec::new();
-    for term in search_terms.iter() {
-        let mut term_results = search_term(&mut conn, term)?;
-        results.append(&mut term_results.0);
-    }
+    let mut term_results = query_search_terms(&mut conn, search_terms)?;
+    results.append(&mut term_results.0);
     Ok(SearchResults(results))
 }
 
@@ -35,12 +33,29 @@ fn get_mysql_options(db_name: &str) -> OptsBuilder {
 /// Generates the search query.
 ///
 /// Searches through all the descriptions and display labels for the provided search term
-fn build_search_query(search_term: &str) -> String {
+fn build_search_query(search_terms: &[String]) -> String {
     format!(
         "SELECT gene.stable_id, xref.display_label, gene.description, xref.description, gene.biotype
         FROM gene
         LEFT JOIN xref ON gene.display_xref_id = xref.xref_id
-        WHERE (gene.description LIKE '%{}%' OR xref.description LIKE '%{}%' OR xref.display_label LIKE '%{}%')",
+        WHERE ({})",
+        build_multiple_query(search_terms)
+    )
+}
+
+/// Generates a single DB query for all the search terms
+fn build_multiple_query(search_terms: &[String]) -> String {
+    search_terms
+        .iter()
+        .map(|x| build_individual_query(x))
+        .collect::<Vec<String>>()
+        .join(" OR ")
+}
+
+/// Generates the query for an individual search term
+fn build_individual_query(search_term: &str) -> String {
+    format!(
+        "gene.description LIKE '%{}%' OR xref.description LIKE '%{}%' OR xref.display_label LIKE '%{}%'",
         search_term,
         search_term,
         search_term
