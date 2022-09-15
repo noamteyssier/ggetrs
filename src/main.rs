@@ -4,7 +4,7 @@ use ggetrs::{
     enrichr::launch_enrich,
     ensembl::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_reference,
-        launch_ensembl_release, launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
+        launch_ensembl_release, launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR, launch_ensembl_lookup_id,
     },
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
@@ -155,6 +155,17 @@ enum ModEnsembl {
         /// Provides a substring filter to only return databases which contain the substring
         #[clap(short, long, value_parser)]
         filter: Option<String>,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Lookup information for genes/transcripts providing ensembl ids
+    LookupId {
+        /// Ensembl IDS to query
+        #[clap(value_parser, min_values=1, required=true)]
+        ensembl_ids: Vec<String>,
 
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
@@ -321,6 +332,9 @@ fn main() -> Result<(), RequestError> {
             }
             ModEnsembl::Database { filter, output } => {
                 launch_ensembl_database(filter, output)?;
+            },
+            ModEnsembl::LookupId { ensembl_ids, output } => {
+                launch_ensembl_lookup_id(ensembl_ids, output)?;
             }
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
