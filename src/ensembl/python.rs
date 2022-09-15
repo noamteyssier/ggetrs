@@ -32,31 +32,27 @@ pub fn python_ensembl_search<'py>(
 }
 
 #[pyfunction(name="database")]
-pub fn python_ensembl_database<'py>(_py: Python<'py>, filter: Option<String>) -> PyResult<Vec<String>> {
+#[must_use]
+#[allow(clippy::needless_pass_by_value)]
+pub fn python_ensembl_database(_py: Python, filter: Option<String>) -> Vec<String> {
     let results = database(&filter).expect("Could not query ensembl SQL");
-    Ok(results.as_vec())
+    results.as_vec()
 }
 
 #[pyfunction(name="release")]
-pub fn python_ensembl_release<'py>(_py: Python<'py>) -> PyResult<usize> {
-    let results = release().expect("Could not query ensembl release number");
-    Ok(results)
+pub fn python_ensembl_release(_py: Python) -> usize {
+    release().expect("Could not query ensembl release number")
 }
 
 #[pyfunction(name="reference")]
 pub fn python_ensembl_reference<'py>(
         py: Python<'py>, 
-        species: Option<&str>, 
+        species: Option<&str>,
         release: Option<usize>, 
-        datatype: Option<Vec<String>>) -> PyResult<Vec<&'py PyDict>> 
+        datatype: Option<Vec<String>>) -> Vec<&'py PyDict>
 {
     let species = species.unwrap_or("homo_sapiens");
-
-    let release = match release {
-        Some(x) => x,
-        None => ENSEMBL_RELEASE
-    };
-
+    let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
         Some(datatype) => {
             datatype
@@ -69,18 +65,17 @@ pub fn python_ensembl_reference<'py>(
         }
     };
 
-    Ok(reference(species, release, &datatype).expect("Could not query FTP")
+    reference(species, release, &datatype).expect("Could not query FTP")
         .iter()
         .map(|x| x.as_pydict(py).expect("could not create dictionary"))
         .collect()
-    )
 }
 
 #[pyfunction(name="species")]
-pub fn python_ensembl_species<'py>(
-        _py: Python<'py>,
+pub fn python_ensembl_species(
+        _py: Python,
         release: Option<usize>,
-        datatype: Option<String>) -> PyResult<Vec<String>> 
+        datatype: Option<String>) -> Vec<String>
 {
     let datatype = datatype
         .map_or(
@@ -92,8 +87,8 @@ pub fn python_ensembl_species<'py>(
         Some(x) => x,
         None => ENSEMBL_RELEASE
     };
-    let results = list_species(release, &datatype).expect("Could not query species FTP");
-    Ok(results)
+    list_species(release, &datatype)
+        .expect("Could not query species FTP")
 }
 
 pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {
