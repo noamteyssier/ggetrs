@@ -1,12 +1,12 @@
-/// Submodule for uniprot queries
-mod query;
+/// Module for functions
+pub mod functions;
 
-/// Container for uniprot query results
-mod uniprotinfo;
+/// Module for handling result structs and containers
+pub mod types;
 
 /// Submodule for cli
 mod submodule;
 
-pub use query::query;
+pub use functions::query;
+pub use types::{UniprotInfo, UniprotInfoContainer};
 pub use submodule::launch_uniprot_query;
-pub use uniprotinfo::{UniprotInfo, UniprotInfoContainer};
