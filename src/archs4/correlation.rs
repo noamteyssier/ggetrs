@@ -18,6 +18,7 @@ impl fmt::Display for ResultCorrelation {
     }
 }
 /// Implementation to convert to human-friendly format
+#[allow(clippy::from_over_into)]
 impl Into<Correlations> for ResultCorrelation {
     fn into(self) -> Correlations {
         let correlations = self.rowids.iter()

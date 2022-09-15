@@ -7,6 +7,7 @@ use super::{search, database, release, DataType, reference, ENSEMBL_RELEASE, lis
 
 
 #[pyfunction(name="search")]
+#[allow(clippy::needless_pass_by_value)]
 pub fn python_ensembl_search<'py>(
         py: Python<'py>, 
         search_terms: Vec<String>, 
