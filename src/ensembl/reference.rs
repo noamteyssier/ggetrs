@@ -85,7 +85,7 @@ impl DataType {
 }
 
 /// Searches through filelists to recover an expected file format
-pub fn find_data(filelist: &Vec<String>, release: usize, datatype: &DataType) -> Option<String> {
+pub fn find_data(filelist: &[String], release: usize, datatype: &DataType) -> Option<String> {
     for substring in datatype.expected_substring(release) {
         match filelist.iter().find(|x| x.contains(&substring)) {
             Some(s) => return Some(s.clone()),

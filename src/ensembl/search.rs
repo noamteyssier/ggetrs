@@ -78,12 +78,12 @@ impl SearchResult {
 /// Performs an individual search on a SQL connection for a provided search term
 fn search_term(conn: &mut Conn, search_term: &str) -> anyhow::Result<SearchResults> {
     let query = build_search_query(search_term);
-    let results = conn.query_map(query, |row| SearchResult::from_row(row).expect("unable to parse search results"))?;
+    let results = conn.query_map(query, |row| SearchResult::from_row(&row).expect("unable to parse search results"))?;
     Ok(SearchResults(results))
 }
 
 /// Creates an SQL connection then iteratively performs searches for each provided term
-pub fn search(db_name: &str, search_terms: &Vec<String>) -> anyhow::Result<SearchResults> {
+pub fn search(db_name: &str, search_terms: &[String]) -> anyhow::Result<SearchResults> {
     let opts = get_mysql_options(db_name);
     let mut conn = Conn::new(opts)?;
     let mut results = Vec::new();

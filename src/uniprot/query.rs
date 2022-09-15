@@ -32,11 +32,11 @@ async fn async_query_uniprot(gene: &str, taxon: &Option<usize>) -> Result<Option
         .await?
         .json::<Value>()
         .await
-        .map(|x| UniprotInfo::from_value(x, gene))
+        .map(|x| UniprotInfo::from_value(&x, gene))
 }
 
 /// An asynchronous function which joins all the handles from `async_query_uniprot`
-async fn async_query_uniprot_multiple(ensembl_ids: &Vec<String>, taxon: &Option<usize>) -> Result<Vec<Result<Option<UniprotInfo>>>> {
+async fn async_query_uniprot_multiple(ensembl_ids: &[String], taxon: &Option<usize>) -> Result<Vec<Result<Option<UniprotInfo>>>> {
     let query_handles = ensembl_ids
         .iter()
         .map(|x| async_query_uniprot(x, taxon));
@@ -46,7 +46,7 @@ async fn async_query_uniprot_multiple(ensembl_ids: &Vec<String>, taxon: &Option<
 }
 
 /// A synchronous function to perform a query for each of the terms provided.
-pub fn query(terms: &Vec<String>, taxon: &Option<usize>) -> anyhow::Result<UniprotInfoContainer> {
+pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotInfoContainer> {
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()?;

@@ -2,7 +2,7 @@ use reqwest::{Result, blocking::Client};
 use serde_json::Value;
 use super::structs::NcbiResults;
 
-pub fn query_ncbi_ids(ids: &Vec<usize>) -> Result<NcbiResults> {
+pub fn query_ncbi_ids(ids: &[usize]) -> Result<NcbiResults> {
     let url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id";
     let query = ids
         .iter()
@@ -21,7 +21,7 @@ pub fn query_ncbi_ids(ids: &Vec<usize>) -> Result<NcbiResults> {
     Ok(results)
 }
 
-pub fn query_ncbi_symbols(symbols: &Vec<String>, taxon_id: usize) -> Result<NcbiResults> {
+pub fn query_ncbi_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults> {
     let query = symbols.join("%2C");
     let query_url = format!(
         "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/symbol/{}/taxon/{}?",

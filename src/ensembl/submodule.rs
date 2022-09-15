@@ -3,7 +3,7 @@ use std::{io::Write, fs::File};
 
 /// Main entrypoint for `Ensembl` description search
 pub fn launch_ensembl_search(
-        search_terms: &Vec<String>, 
+        search_terms: &[String], 
         database: &Option<String>,
         species: &str, 
         db_type: &str, 
@@ -57,7 +57,7 @@ pub fn launch_ensembl_release() -> anyhow::Result<()> {
 }
 
 /// Main entrypoint for `Ensembl` FTP query
-pub fn launch_ensembl_reference(species: &str, release: usize, datatype: &Vec<DataType>, output: &Option<String>) -> anyhow::Result<()> {
+pub fn launch_ensembl_reference(species: &str, release: usize, datatype: &[DataType], output: &Option<String>) -> anyhow::Result<()> {
     let files = reference(species, release, datatype)?;
     let repr = serde_json::to_string_pretty(&files)?;
     match output {
