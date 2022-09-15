@@ -6,7 +6,7 @@ pub fn query_ncbi_ids(ids: &Vec<usize>) -> Result<NcbiResults> {
     let url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id";
     let query = ids
         .iter()
-        .map(|x| x.to_string())
+        .map(std::string::ToString::to_string)
         .collect::<Vec<String>>()
         .join("%2C");
     let query_url = format!("{}/{}", url, query);
