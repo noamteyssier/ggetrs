@@ -1,9 +1,9 @@
-use super::{query_ncbi_ids, query_ncbi_symbols};
+use super::{query_ids, query_symbols};
 use anyhow::Result;
 use std::{fs::File, io::Write};
 
-pub fn launch_query_ncbi_ids(ids: &[usize], output: &Option<String>) -> Result<()> {
-    let results = query_ncbi_ids(ids)?;
+pub fn launch_ncbi_query_ids(ids: &[usize], output: &Option<String>) -> Result<()> {
+    let results = query_ids(ids)?;
     let repr = serde_json::to_string_pretty(&results)?;
     match output {
         Some(path) => {
@@ -20,12 +20,12 @@ pub fn launch_query_ncbi_ids(ids: &[usize], output: &Option<String>) -> Result<(
     Ok(())
 }
 
-pub fn launch_query_ncbi_symbols(
+pub fn launch_ncbi_query_symbols(
     symbols: &[String],
     taxon_id: usize,
     output: &Option<String>,
 ) -> Result<()> {
-    let results = query_ncbi_symbols(symbols, taxon_id)?;
+    let results = query_symbols(symbols, taxon_id)?;
     let repr = serde_json::to_string_pretty(&results)?;
     match output {
         Some(path) => {

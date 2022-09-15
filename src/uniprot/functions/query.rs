@@ -1,4 +1,4 @@
-use super::{UniprotInfo, UniprotInfoContainer};
+use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use futures::future::join_all;
 use reqwest::{Client, Result};
 use serde_json::Value;

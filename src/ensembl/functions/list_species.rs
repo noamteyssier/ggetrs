@@ -1,4 +1,4 @@
-use super::DataType;
+use crate::ensembl::types::DataType;
 use anyhow::Result;
 use ftp::FtpStream;
 

@@ -1,13 +1,15 @@
-mod add_list;
-mod enrich;
-mod get_libraries;
-mod python;
-mod submodule;
-mod view_list;
+/// Module for functions
+pub mod functions;
 
-pub use add_list::{add_list, ResponseAddList};
-pub use enrich::{enrich, ResponseEnrich, ResultEnrichr};
-pub use get_libraries::{get_libraries, Category, Library, ResponseLibraries};
+/// Module for handling result structs and containers
+pub mod types;
+
+/// submodule for command line usage
+mod submodule;
+
+/// submodule for python usage
+mod python;
+
+pub use functions::{add_list, enrich, get_libraries};
 pub use python::python_enrichr;
 pub use submodule::launch_enrich;
-pub use view_list::{view_list, ResponseViewList};

@@ -6,7 +6,7 @@ use ggetrs::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_reference,
         launch_ensembl_release, launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
     },
-    ncbi::{launch_query_ncbi_ids, launch_query_ncbi_symbols},
+    ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
     RequestError,
 };
@@ -352,14 +352,14 @@ fn main() -> Result<(), RequestError> {
         },
         Commands::Ncbi(sub) => match sub {
             ModNcbi::QueryIds { ids, output } => {
-                launch_query_ncbi_ids(ids, output)?;
+                launch_ncbi_query_ids(ids, output)?;
             }
             ModNcbi::QuerySymbols {
                 symbols,
                 taxon_id,
                 output,
             } => {
-                launch_query_ncbi_symbols(symbols, *taxon_id, output)?;
+                launch_ncbi_query_symbols(symbols, *taxon_id, output)?;
             }
         },
     };
