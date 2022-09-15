@@ -1,8 +1,8 @@
 use crate::constants::convert_mem_label;
-use pyo3::{types::PyDict, PyResult, Python};
-use serde::{Serialize, Deserialize};
 use anyhow::Result;
 use ftp::FtpStream;
+use pyo3::{types::PyDict, PyResult, Python};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 /// A representation of a FTP file
@@ -47,5 +47,3 @@ impl FtpFile {
         Ok(dict)
     }
 }
-
-

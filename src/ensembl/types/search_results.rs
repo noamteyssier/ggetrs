@@ -1,6 +1,6 @@
+use mysql::Row;
 use pyo3::{types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
-use mysql::Row;
 use std::fmt;
 
 /// A unit struct container of [`SearchResult`]
@@ -87,4 +87,3 @@ impl SearchResult {
         Ok(dict)
     }
 }
-

@@ -145,5 +145,3 @@ impl ResultTissue {
         Ok(dict)
     }
 }
-
-

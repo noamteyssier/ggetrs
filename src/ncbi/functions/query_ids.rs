@@ -1,6 +1,6 @@
+use crate::ncbi::types::NcbiResults;
 use reqwest::{blocking::Client, Result};
 use serde_json::Value;
-use crate::ncbi::types::NcbiResults;
 
 pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
     let url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id";
@@ -19,4 +19,3 @@ pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
     let results = NcbiResults::from_value(&response).expect("Could not parse NCBI Results");
     Ok(results)
 }
-

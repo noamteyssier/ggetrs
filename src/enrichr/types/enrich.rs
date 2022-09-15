@@ -1,5 +1,5 @@
+use pyo3::{pyclass, types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
-use pyo3::{pyclass, PyResult, Python, types::PyDict};
 use std::collections::HashMap;
 use std::fmt;
 

@@ -1,5 +1,5 @@
-use reqwest::{blocking::Client, Result};
 use crate::enrichr::types::ResponseAddList;
+use reqwest::{blocking::Client, Result};
 
 /// Performs a function call to the `addList` API.
 pub fn add_list(gene_list: &[String]) -> Result<ResponseAddList> {

@@ -1,6 +1,6 @@
+use crate::ensembl::types::{DataType, FtpFile};
 use anyhow::Result;
 use ftp::FtpStream;
-use crate::ensembl::types::{DataType, FtpFile};
 
 /// Queries a set of datatypes from Ensembl FTP
 pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result<Vec<FtpFile>> {
@@ -53,7 +53,6 @@ fn show_data(
     let filename = find_data(&filelist, release, datatype);
     Ok(filename)
 }
-
 
 #[cfg(test)]
 mod testing {

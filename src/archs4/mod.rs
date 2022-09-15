@@ -11,6 +11,6 @@ mod submodule;
 mod python;
 
 pub use functions::{correlation, tissue};
-pub use types::Species;
 pub use python::python_archs4;
 pub use submodule::{launch_archs4_correlation, launch_archs4_tissue};
+pub use types::Species;

@@ -1,4 +1,4 @@
 mod correlation;
 mod tissue;
-pub use correlation::{ResultCorrelation, Correlations, Correlation};
-pub use tissue::{ResultTissue, ResponseTissue, Species};
+pub use correlation::{Correlation, Correlations, ResultCorrelation};
+pub use tissue::{ResponseTissue, ResultTissue, Species};

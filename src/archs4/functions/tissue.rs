@@ -1,5 +1,5 @@
+use crate::archs4::types::{ResponseTissue, Species};
 use reqwest::{blocking::Client, Result};
-use crate::archs4::types::{Species, ResponseTissue};
 
 /// Returns the tissue-specific expression of a provided `gene_name`
 pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {

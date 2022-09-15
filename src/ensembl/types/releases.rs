@@ -9,4 +9,3 @@ impl Releases {
         *self.releases.iter().max().expect("No releases recovered")
     }
 }
-

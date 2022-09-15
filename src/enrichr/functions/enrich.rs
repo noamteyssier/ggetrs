@@ -1,6 +1,5 @@
-use reqwest::Result;
 use crate::enrichr::types::ResponseEnrich;
-
+use reqwest::Result;
 
 /// Performs an API call to the `Enrichr`'s `enrich`.
 ///

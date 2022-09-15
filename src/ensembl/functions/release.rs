@@ -1,5 +1,5 @@
-use reqwest::blocking::Client;
 use crate::ensembl::types::Releases;
+use reqwest::blocking::Client;
 
 /// Returns the most recent release from Ensembl REST API
 pub fn release() -> anyhow::Result<usize> {
@@ -12,4 +12,3 @@ pub fn release() -> anyhow::Result<usize> {
         .json::<Releases>()?;
     Ok(results.max())
 }
-

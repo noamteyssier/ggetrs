@@ -1,7 +1,6 @@
+use crate::archs4::types::{Correlations, ResultCorrelation};
 use reqwest::{blocking::Client, Result};
 use std::collections::HashMap;
-use crate::archs4::types::{Correlations, ResultCorrelation};
-
 
 /// Queries the most correlated genes for a provided gene.
 ///

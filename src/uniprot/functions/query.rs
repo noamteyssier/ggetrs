@@ -1,7 +1,7 @@
+use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use futures::future::join_all;
 use reqwest::{Client, Result};
 use serde_json::Value;
-use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 
 fn build_query_string(gene: &str, taxon: &Option<usize>) -> String {
     let gene_query = if gene.starts_with("ENS") {

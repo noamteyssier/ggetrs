@@ -17,4 +17,3 @@ pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults>
     let results = NcbiResults::from_value(&response).expect("Could not parse NCBI Results");
     Ok(results)
 }
-

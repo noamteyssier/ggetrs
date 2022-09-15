@@ -1,5 +1,5 @@
+use crate::ensembl::types::{Database, ResponseDatabases};
 use mysql::{prelude::Queryable, Conn, OptsBuilder};
-use crate::ensembl::types::{ResponseDatabases, Database};
 
 /// Queries all available databases on Ensembl SQL server
 pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
@@ -28,4 +28,3 @@ fn build_search_query(search_term: &Option<String>) -> String {
         String::from("SHOW databases")
     }
 }
-

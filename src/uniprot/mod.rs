@@ -8,5 +8,5 @@ pub mod types;
 mod submodule;
 
 pub use functions::query;
-pub use types::{UniprotInfo, UniprotInfoContainer};
 pub use submodule::launch_uniprot_query;
+pub use types::{UniprotInfo, UniprotInfoContainer};

@@ -1,7 +1,6 @@
-use mysql::{prelude::Queryable, Conn, OptsBuilder};
-use crate::ensembl::types::{SearchResults, SearchResult};
+use crate::ensembl::types::{SearchResult, SearchResults};
 use anyhow::Result;
-
+use mysql::{prelude::Queryable, Conn, OptsBuilder};
 
 /// Performs an individual search on a SQL connection for a provided search term
 fn search_term(conn: &mut Conn, search_term: &str) -> Result<SearchResults> {
@@ -61,4 +60,3 @@ mod testing {
         assert_eq!(results.0[0].display_label, "AP2S1");
     }
 }
-
