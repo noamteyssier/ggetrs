@@ -51,13 +51,13 @@ impl SearchResult {
     }
 
     /// Generates from a [`Row`]
-    pub fn from_row(row: Row) -> anyhow::Result<Self> {
+    pub fn from_row(row: &Row) -> anyhow::Result<Self> {
         if row.is_empty() { bail!("empty row") }
-        let stable_id = Self::parse_index(&row, 0);
-        let display_label = Self::parse_index(&row, 1);
-        let ensembl_description = Self::parse_index(&row, 2);
-        let xref_description = Self::parse_index(&row, 3);
-        let biotype = Self::parse_index(&row, 4);
+        let stable_id = Self::parse_index(row, 0);
+        let display_label = Self::parse_index(row, 1);
+        let ensembl_description = Self::parse_index(row, 2);
+        let xref_description = Self::parse_index(row, 3);
+        let biotype = Self::parse_index(row, 4);
 
         Ok(Self {
             stable_id, display_label, ensembl_description, xref_description, biotype

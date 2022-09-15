@@ -33,17 +33,17 @@ impl fmt::Display for UniprotInfo {
     }
 }
 impl UniprotInfo {
-    #[must_use] pub fn from_value(value: Value, query: &str) -> Option<Self> {
-        if !Self::is_valid(&value) { return None }
-        let uniprot_id = Self::get_uniprot_id(&value);
-        let primary_gene_name = Self::get_primary_gene_name(&value);
-        let uniprot_synonyms = Self::get_uniprot_synonyms(&value);
-        let protein_name = Self::get_protein_names(&value);
-        let uniprot_description = Self::get_uniprot_description(&value);
-        let ncbi_id = Self::get_ncbi_id(&value);
-        let pdb_id = Self::get_pdb_id(&value);
-        let taxon_id = Self::get_taxon_id(&value);
-        let organism_name = Self::get_organism_name(&value);
+    #[must_use] pub fn from_value(value: &Value, query: &str) -> Option<Self> {
+        if !Self::is_valid(value) { return None }
+        let uniprot_id = Self::get_uniprot_id(value);
+        let primary_gene_name = Self::get_primary_gene_name(value);
+        let uniprot_synonyms = Self::get_uniprot_synonyms(value);
+        let protein_name = Self::get_protein_names(value);
+        let uniprot_description = Self::get_uniprot_description(value);
+        let ncbi_id = Self::get_ncbi_id(value);
+        let pdb_id = Self::get_pdb_id(value);
+        let taxon_id = Self::get_taxon_id(value);
+        let organism_name = Self::get_organism_name(value);
         let query = query.to_string();
         Some(Self {
             uniprot_id,
