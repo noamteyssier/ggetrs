@@ -68,6 +68,10 @@ ensembl_database: build
 ensembl_release: build
   time target/release/ggetrs ensembl release
 
+ensembl_lookup_id: build
+  time target/release/ggetrs ensembl lookup-id \
+    ENSG00000080298
+
 uniprot_query_ensembl: build
   time target/release/ggetrs uniprot query \
     ENSG00000080298 \
