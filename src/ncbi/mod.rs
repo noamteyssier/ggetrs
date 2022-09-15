@@ -1,8 +1,8 @@
-/// Module for handling result structs and containers
-pub mod types;
-
 /// Module for functions
 pub mod functions;
+
+/// Module for handling result structs and containers
+pub mod types;
 
 /// Module for CLI
 mod submodule;
