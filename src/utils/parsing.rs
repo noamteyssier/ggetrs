@@ -47,14 +47,19 @@ pub fn parse_secondary_vec_string(value: &Value, primary: &str, secondary: &str)
 
 /// Parses an optional vec from a json object from a secondary level
 #[must_use]
-pub fn parse_secondary_vec_optional_string(value: &Value, primary: &str, secondary: &str) -> Option<Vec<String>> {
+pub fn parse_secondary_vec_optional_string(
+    value: &Value,
+    primary: &str,
+    secondary: &str,
+) -> Option<Vec<String>> {
     match value[primary][secondary].as_array() {
         Some(arr) => {
-            let vec = arr.iter()
+            let vec = arr
+                .iter()
                 .map(|x| x.as_str().expect("Non-string found in array").to_string())
                 .collect();
             Some(vec)
-        },
-        None => None
+        }
+        None => None,
     }
 }
