@@ -1,5 +1,7 @@
 use super::NcbiTranscript;
-use crate::utils::parsing::{parse_secondary_string, parse_secondary_vec_string, parse_secondary_vec_optional_string};
+use crate::utils::parsing::{
+    parse_secondary_string, parse_secondary_vec_optional_string, parse_secondary_vec_string,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
