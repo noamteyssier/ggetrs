@@ -4,20 +4,20 @@ use std::{collections::HashMap, fmt};
 /// Struct to handle the results of an ID/symbol lookup
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LookupResult {
-    end: usize,
+    id: String,
+    display_name: String,
     canonical_transcript: String,
-    logic_name: String,
+    description: String,
     start: usize,
+    end: usize,
     strand: isize,
     biotype: String,
-    display_name: String,
+    logic_name: String,
+    object_type: String,
     version: usize,
     source: String,
     seq_region_name: String,
-    description: String,
     assembly_name: String,
-    id: String,
-    object_type: String,
     species: String,
     db_type: String,
 }
