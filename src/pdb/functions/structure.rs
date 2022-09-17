@@ -3,6 +3,7 @@ use reqwest::blocking::Client;
 
 use crate::pdb::types::PdbFormat;
 
+/// requests a pdb structure from rcsb pdb
 pub fn structure(pdb_id: &str, header_only: bool, format: &PdbFormat) -> Result<Option<String>> {
     let base_url = if header_only {
         "https://files.rcsb.org/header"

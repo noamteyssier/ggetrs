@@ -1,4 +1,7 @@
-use super::{functions::structure, types::PdbFormat};
+use super::{
+    functions::{resource_info, structure},
+    types::{PdbFormat, PdbResource},
+};
 use anyhow::Result;
 use std::{fs::File, io::Write};
 
@@ -25,6 +28,30 @@ pub fn launch_pdb_structure(
         }
     } else {
         eprintln!("No PDB record found: {}", pdb_id);
+    }
+    Ok(())
+}
+
+/// main entrypoint for pdb resource info
+pub fn launch_pdb_resource(
+    pdb_id: &str,
+    resource: &PdbResource,
+    identifier: &Option<String>,
+    output: &Option<String>,
+) -> Result<()> {
+    let results = resource_info(pdb_id, resource, identifier)?;
+    let repr = serde_json::to_string_pretty(&results)?;
+    match output {
+        Some(path) => {
+            if let Ok(mut writer) = File::create(path) {
+                write!(writer, "{}", repr)?;
+            } else {
+                print!("{}", repr)
+            }
+        }
+        None => {
+            print!("{}", repr)
+        }
     }
     Ok(())
 }
