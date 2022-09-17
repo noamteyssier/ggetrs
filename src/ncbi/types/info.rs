@@ -1,22 +1,24 @@
 use super::NcbiTranscript;
 use crate::utils::parsing::{
-    parse_secondary_string, parse_secondary_vec_optional_string, parse_secondary_vec_string,
+    parse_primary_vec_string, parse_secondary_string, parse_secondary_vec_optional_string,
+    parse_secondary_vec_string,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct NcbiInfo {
-    gene_id: String,
-    symbol: String,
-    ensembl_ids: Vec<String>,
-    uniprot_ids: Vec<String>,
-    synonyms: Option<Vec<String>>,
-    chromosomes: Vec<String>,
-    description: String,
-    taxon_id: String,
-    taxon_name: String,
-    transcripts: Vec<NcbiTranscript>,
+    pub gene_id: String,
+    pub symbol: String,
+    pub ensembl_ids: Vec<String>,
+    pub uniprot_ids: Vec<String>,
+    pub synonyms: Option<Vec<String>>,
+    pub chromosomes: Vec<String>,
+    pub description: String,
+    pub taxon_id: String,
+    pub taxon_name: String,
+    pub transcripts: Vec<NcbiTranscript>,
+    pub query: String,
 }
 impl NcbiInfo {
     fn is_null(value: &Value) -> bool {
@@ -38,6 +40,7 @@ impl NcbiInfo {
         let taxon_id = parse_secondary_string(value, "gene", "tax_id");
         let taxon_name = parse_secondary_string(value, "gene", "taxname");
         let transcripts = Self::parse_transcripts(value);
+        let query = parse_primary_vec_string(value, "query")[0].clone();
         Some(Self {
             gene_id,
             symbol,
@@ -49,6 +52,7 @@ impl NcbiInfo {
             taxon_id,
             taxon_name,
             transcripts,
+            query,
         })
     }
 
