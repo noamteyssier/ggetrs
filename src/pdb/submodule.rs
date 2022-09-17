@@ -3,8 +3,8 @@ use super::functions::structure;
 use std::{fs::File, io::Write};
 
 /// main entrypoint for pdb structure
-pub fn launch_pdb_structure(pdb_id: &str, output: &Option<String>) -> Result<()> {
-    let results = structure(pdb_id)?;
+pub fn launch_pdb_structure(pdb_id: &str, header_only: bool, output: &Option<String>) -> Result<()> {
+    let results = structure(pdb_id, header_only)?;
     if let Some(pdb_text) = results {
         match output {
             Some(path) => {

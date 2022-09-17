@@ -329,6 +329,10 @@ enum ModPdb{
         #[clap(value_parser, min_values = 1, max_values = 1, required = true)]
         pdb_id: String,
 
+        /// Retrieve only the PDB header
+        #[clap(short = 'm', long, action)]
+        header_only: bool,
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
@@ -473,8 +477,8 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Pdb(sub) => match sub {
-            ModPdb::Structure{ pdb_id, output } => {
-                launch_pdb_structure(pdb_id, output)?;
+            ModPdb::Structure{ pdb_id, header_only, output } => {
+                launch_pdb_structure(pdb_id, *header_only, output)?;
             }
         }
     };
