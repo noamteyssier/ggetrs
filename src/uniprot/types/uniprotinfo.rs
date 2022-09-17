@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::fmt;
+use std::{fmt, collections::HashMap};
 
 /// A container of [`UniprotInfo`]
 #[derive(Serialize, Deserialize, Debug)]
-pub struct UniprotInfoContainer(pub Vec<UniprotInfo>);
+pub struct UniprotInfoContainer(pub HashMap<String, UniprotInfo>);
 impl fmt::Display for UniprotInfoContainer {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
@@ -18,16 +18,16 @@ impl fmt::Display for UniprotInfoContainer {
 /// A structure to handle the relevant results of a `Uniprot` query.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfo {
-    uniprot_id: String,
-    primary_gene_name: String,
-    uniprot_synonyms: Vec<String>,
-    protein_name: String,
-    uniprot_description: String,
-    ncbi_id: Option<String>,
-    pdb_id: Option<String>,
-    taxon_id: usize,
-    organism_name: String,
-    query: String,
+    pub uniprot_id: String,
+    pub primary_gene_name: String,
+    pub uniprot_synonyms: Vec<String>,
+    pub protein_name: String,
+    pub uniprot_description: String,
+    pub ncbi_id: Option<String>,
+    pub pdb_id: Option<String>,
+    pub taxon_id: usize,
+    pub organism_name: String,
+    pub query: String,
 }
 impl fmt::Display for UniprotInfo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

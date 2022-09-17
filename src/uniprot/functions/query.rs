@@ -60,6 +60,7 @@ pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotI
         })
         .into_iter()
         .filter_map(|x| x.expect("could not create results"))
+        .map(|x| (x.query.to_string(), x))
         .collect();
     Ok(UniprotInfoContainer(results))
 }
