@@ -5,8 +5,8 @@ pub mod functions;
 pub mod types;
 
 /// Submodule for cli
-mod submodule;
+mod cli;
 
+pub use cli::launch_uniprot_query;
 pub use functions::query;
-pub use submodule::launch_uniprot_query;
 pub use types::{UniprotInfo, UniprotInfoContainer};

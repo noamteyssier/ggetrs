@@ -5,7 +5,7 @@ pub mod functions;
 pub mod types;
 
 /// Module for CLI
-mod submodule;
+mod cli;
 
+pub use cli::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons};
 pub use functions::{query_ids, query_symbols};
-pub use submodule::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons};

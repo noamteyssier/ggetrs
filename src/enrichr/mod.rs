@@ -5,11 +5,11 @@ pub mod functions;
 pub mod types;
 
 /// submodule for command line usage
-mod submodule;
+mod cli;
 
 /// submodule for python usage
 mod python;
 
+pub use cli::launch_enrich;
 pub use functions::{add_list, enrich, get_libraries};
 pub use python::python_enrichr;
-pub use submodule::launch_enrich;
