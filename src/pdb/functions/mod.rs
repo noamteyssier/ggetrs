@@ -1,4 +1,4 @@
-mod structure;
 mod resource;
-pub use structure::structure;
+mod structure;
 pub use resource::resource_info;
+pub use structure::structure;

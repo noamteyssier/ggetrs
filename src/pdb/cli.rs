@@ -1,4 +1,7 @@
-use super::{functions::{structure, resource_info}, types::{PdbFormat, PdbResource}};
+use super::{
+    functions::{resource_info, structure},
+    types::{PdbFormat, PdbResource},
+};
 use anyhow::Result;
 use std::{fs::File, io::Write};
 
@@ -34,7 +37,7 @@ pub fn launch_pdb_resource(
     pdb_id: &str,
     resource: &PdbResource,
     identifier: &Option<String>,
-    output: &Option<String>
+    output: &Option<String>,
 ) -> Result<()> {
     let results = resource_info(pdb_id, resource, identifier)?;
     let repr = serde_json::to_string_pretty(&results)?;
@@ -45,7 +48,7 @@ pub fn launch_pdb_resource(
             } else {
                 print!("{}", repr)
             }
-        },
+        }
         None => {
             print!("{}", repr)
         }

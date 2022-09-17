@@ -9,7 +9,10 @@ use ggetrs::{
     },
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    pdb::{launch_pdb_structure, types::{PdbFormat, PdbResource}, launch_pdb_resource},
+    pdb::{
+        launch_pdb_resource, launch_pdb_structure,
+        types::{PdbFormat, PdbResource},
+    },
     uniprot::launch_uniprot_query,
     RequestError,
 };
@@ -359,7 +362,7 @@ enum ModPdb {
         /// Optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
-    }
+    },
 }
 
 fn main() -> Result<(), RequestError> {
@@ -506,8 +509,13 @@ fn main() -> Result<(), RequestError> {
                 output,
             } => {
                 launch_pdb_structure(pdb_id, *header_only, format, output)?;
-            },
-            ModPdb::Info { pdb_id, resource, identifier, output } => {
+            }
+            ModPdb::Info {
+                pdb_id,
+                resource,
+                identifier,
+                output,
+            } => {
                 launch_pdb_resource(pdb_id, resource, identifier, output)?;
             }
         },
