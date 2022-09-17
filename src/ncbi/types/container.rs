@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct NcbiResults (pub HashMap<String, NcbiInfo>);
+pub struct NcbiResults(pub HashMap<String, NcbiInfo>);
 
 impl NcbiResults {
     #[must_use]
@@ -18,12 +18,12 @@ impl NcbiResults {
                     .map(|x| (x.query.to_string(), x))
                     .collect();
                 Some(map)
-            },
+            }
             None => None,
         };
         match results {
             Some(map) => Some(Self(map)),
-            None => None
+            None => None,
         }
     }
 }

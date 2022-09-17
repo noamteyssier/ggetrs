@@ -1,6 +1,7 @@
 use super::NcbiTranscript;
 use crate::utils::parsing::{
-    parse_secondary_string, parse_secondary_vec_optional_string, parse_secondary_vec_string, parse_primary_vec_string,
+    parse_primary_vec_string, parse_secondary_string, parse_secondary_vec_optional_string,
+    parse_secondary_vec_string,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -17,7 +18,7 @@ pub struct NcbiInfo {
     pub taxon_id: String,
     pub taxon_name: String,
     pub transcripts: Vec<NcbiTranscript>,
-    pub query: String
+    pub query: String,
 }
 impl NcbiInfo {
     fn is_null(value: &Value) -> bool {
@@ -51,7 +52,7 @@ impl NcbiInfo {
             taxon_id,
             taxon_name,
             transcripts,
-            query
+            query,
         })
     }
 
