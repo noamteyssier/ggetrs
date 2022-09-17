@@ -4,7 +4,7 @@ use serde_json::json;
 
 /// Lookup ensembl ids in a batched manner.
 ///
-/// Limited to 1000 ensembl_ids at once.
+/// Limited to 1000 `ensembl_ids` at once.
 ///
 /// API documentation found here:
 /// <https://rest.ensembl.org/documentation/info/lookup_post>
