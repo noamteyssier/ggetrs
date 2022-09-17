@@ -76,15 +76,15 @@ impl Info {
             Some(result) => result,
             None => return None,
         };
-        let ensembl_id = ensembl_result.id.to_owned();
-        let uniprot_id = uniprot_result.uniprot_id.to_owned();
-        let ncbi_id = ncbi_result.gene_id.to_owned();
-        let symbol = ncbi_result.symbol.to_owned();
-        let ensembl_description = ensembl_result.description.to_owned();
-        let uniprot_description = uniprot_result.uniprot_description.to_owned();
-        let ncbi_description = ncbi_result.description.to_owned();
-        let species = ensembl_result.species.to_owned();
-        let assembly_name = ensembl_result.assembly_name.to_owned();
+        let ensembl_id = ensembl_result.id.clone();
+        let uniprot_id = uniprot_result.uniprot_id.clone();
+        let ncbi_id = ncbi_result.gene_id.clone();
+        let symbol = ncbi_result.symbol.clone();
+        let ensembl_description = ensembl_result.description.clone();
+        let uniprot_description = uniprot_result.uniprot_description.clone();
+        let ncbi_description = ncbi_result.description.clone();
+        let species = ensembl_result.species.clone();
+        let assembly_name = ensembl_result.assembly_name.clone();
 
         Some(Self {
             ensembl_id,
