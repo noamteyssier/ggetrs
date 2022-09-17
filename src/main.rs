@@ -73,10 +73,23 @@ enum Commands {
         output: Option<String>,
     },
 
+    /// Queries symbols or Ensembl IDs across multiple databases and aggregates results
     Info {
         /// Search terms to query
         #[clap(value_parser, min_values = 1, required = true)]
         search_terms: Vec<String>,
+
+        /// Taxon ID to use: currently this MUST match the taxon_id
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
+        species: String,
+
+        /// Taxon ID to use: currently this MUST match the species
+        #[clap(short, long, value_parser, default_value = "9606")]
+        taxon_id: usize,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
     },
 
     /// Queries information from Ensembl
@@ -332,8 +345,8 @@ fn main() -> Result<(), RequestError> {
                 output,
             )?;
         },
-        Commands::Info { search_terms } => {
-            launch_info(search_terms, "homo_sapiens", 9606)?;
+        Commands::Info { search_terms, species, taxon_id, output } => {
+            launch_info(search_terms, species, *taxon_id, output)?;
         }
         Commands::Ensembl(sub) => match sub {
             ModEnsembl::Search {
