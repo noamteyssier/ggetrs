@@ -1,6 +1,23 @@
-use super::{query_ids, query_symbols};
+use super::{functions::taxons, query_ids, query_symbols};
 use anyhow::Result;
 use std::{fs::File, io::Write};
+
+pub fn launch_ncbi_taxons(query: &str, limit: usize, output: &Option<String>) -> Result<()> {
+    let results = taxons(query, limit)?;
+    match output {
+        Some(path) => {
+            if let Ok(mut writer) = File::create(path) {
+                writeln!(writer, "{}", results).expect("Unable to write to file");
+            } else {
+                println!("{}", results);
+            }
+        }
+        None => {
+            println!("{}", results);
+        }
+    }
+    Ok(())
+}
 
 pub fn launch_ncbi_query_ids(ids: &[usize], output: &Option<String>) -> Result<()> {
     let results = query_ids(ids)?;
