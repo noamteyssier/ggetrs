@@ -18,7 +18,8 @@ impl fmt::Display for InfoContainer {
     }
 }
 impl InfoContainer {
-    #[must_use] pub fn from_queries(
+    #[must_use]
+    pub fn from_queries(
         ensembl: &LookupResponse,
         uniprot: &UniprotInfoContainer,
         ncbi: &NcbiResults,
@@ -26,7 +27,9 @@ impl InfoContainer {
         let map = ncbi
             .0
             .keys()
-            .filter_map(|k| Info::from_queries(ensembl, uniprot, ncbi, k).map(|info| (k.to_string(), info)))
+            .filter_map(|k| {
+                Info::from_queries(ensembl, uniprot, ncbi, k).map(|info| (k.to_string(), info))
+            })
             .collect();
         Self(map)
     }
@@ -55,7 +58,8 @@ impl fmt::Display for Info {
     }
 }
 impl Info {
-    #[must_use] pub fn from_queries(
+    #[must_use]
+    pub fn from_queries(
         ensembl: &LookupResponse,
         uniprot: &UniprotInfoContainer,
         ncbi: &NcbiResults,

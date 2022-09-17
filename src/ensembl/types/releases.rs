@@ -5,7 +5,8 @@ pub struct Releases {
     releases: Vec<usize>,
 }
 impl Releases {
-    #[must_use] pub fn max(&self) -> usize {
+    #[must_use]
+    pub fn max(&self) -> usize {
         *self.releases.iter().max().expect("No releases recovered")
     }
 }
