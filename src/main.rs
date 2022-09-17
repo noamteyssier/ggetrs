@@ -10,6 +10,7 @@ use ggetrs::{
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
     uniprot::launch_uniprot_query,
+    pdb::launch_pdb_structure,
     RequestError,
 };
 
@@ -104,6 +105,10 @@ enum Commands {
     /// Queries information from NCBI
     #[clap(subcommand)]
     Ncbi(ModNcbi),
+
+    /// Retrieves structures and information from RCSB PDB
+    #[clap(subcommand)]
+    Pdb(ModPdb),
 }
 
 #[derive(Subcommand)]
@@ -316,6 +321,21 @@ enum ModNcbi {
     },
 }
 
+#[derive(Subcommand)]
+enum ModPdb{
+    /// Retrieves pdb structure for a provided ID
+    Structure {
+        /// PDB id to retreive structure
+        #[clap(value_parser, min_values = 1, max_values = 1, required = true)]
+        pdb_id: String,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+}
+
+
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -452,6 +472,11 @@ fn main() -> Result<(), RequestError> {
                 launch_ncbi_query_symbols(symbols, *taxon_id, output)?;
             }
         },
+        Commands::Pdb(sub) => match sub {
+            ModPdb::Structure{ pdb_id, output } => {
+                launch_pdb_structure(pdb_id, output)?;
+            }
+        }
     };
 
     Ok(())
