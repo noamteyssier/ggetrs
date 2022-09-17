@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::{fmt, collections::HashMap};
+use std::{collections::HashMap, fmt};
 
 /// A container of [`UniprotInfo`]
 #[derive(Serialize, Deserialize, Debug)]
