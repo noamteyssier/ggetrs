@@ -15,6 +15,9 @@ pub mod uniprot;
 /// `NCBI` submodule
 pub mod ncbi;
 
+/// `RCSB PDB` submodule
+pub mod pdb;
+
 /// Module for constants shared throughout the crate
 pub mod constants;
 
