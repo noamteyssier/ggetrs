@@ -1,6 +1,6 @@
 pub mod functions;
-mod submodule;
+mod cli;
 pub mod types;
 pub use functions::info;
-pub use submodule::launch_info;
+pub use cli::launch_info;
 pub use types::Info;

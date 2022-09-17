@@ -1,5 +1,5 @@
 pub mod functions;
-mod submodule;
 pub mod types;
+mod cli;
 
-pub use submodule::launch_pdb_structure;
+pub use cli::launch_pdb_structure;
