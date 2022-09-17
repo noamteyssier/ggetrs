@@ -41,6 +41,7 @@ pub struct Info {
     ensembl_id: String,
     uniprot_id: String,
     ncbi_id: String,
+    pdb_id: Option<String>,
     symbol: String,
     ensembl_description: String,
     uniprot_description: String,
@@ -89,12 +90,14 @@ impl Info {
         let ncbi_description = ncbi_result.description.clone();
         let species = ensembl_result.species.clone();
         let assembly_name = ensembl_result.assembly_name.clone();
+        let pdb_id = uniprot_result.pdb_id.clone();
 
         Some(Self {
             ensembl_id,
             uniprot_id,
             ncbi_id,
             symbol,
+            pdb_id,
             ensembl_description,
             uniprot_description,
             ncbi_description,
