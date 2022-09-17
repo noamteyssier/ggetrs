@@ -18,7 +18,7 @@ impl fmt::Display for InfoContainer {
     }
 }
 impl InfoContainer {
-    pub fn from_queries(
+    #[must_use] pub fn from_queries(
         ensembl: &LookupResponse,
         uniprot: &UniprotInfoContainer,
         ncbi: &NcbiResults,
@@ -58,7 +58,7 @@ impl fmt::Display for Info {
     }
 }
 impl Info {
-    pub fn from_queries(
+    #[must_use] pub fn from_queries(
         ensembl: &LookupResponse,
         uniprot: &UniprotInfoContainer,
         ncbi: &NcbiResults,

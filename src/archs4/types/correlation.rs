@@ -68,7 +68,7 @@ pub struct Correlation {
     pub pearson_correlation: f64,
 }
 impl Correlation {
-    pub fn new(gene_symbol: &str, pearson_correlation: f64) -> Self {
+    #[must_use] pub fn new(gene_symbol: &str, pearson_correlation: f64) -> Self {
         Self {
             gene_symbol: gene_symbol.to_string(),
             pearson_correlation,
