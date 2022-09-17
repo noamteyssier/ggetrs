@@ -1,13 +1,15 @@
 use anyhow::Result;
 use reqwest::blocking::Client;
 
-pub fn structure(pdb_id: &str, header_only: bool) -> Result<Option<String>> {
+use crate::pdb::types::PdbFormat;
+
+pub fn structure(pdb_id: &str, header_only: bool, format: &PdbFormat) -> Result<Option<String>> {
     let base_url = if header_only {
         "https://files.rcsb.org/header"
     } else {
         "https://files.rcsb.org/view"
     };
-    let url = format!("{}/{}.pdb", base_url, pdb_id);
+    let url = format!("{}/{}.{}", base_url, pdb_id, format);
     let response = Client::new()
         .get(url)
         .send()?;
