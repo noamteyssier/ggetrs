@@ -9,7 +9,7 @@ use ggetrs::{
     },
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    pdb::{launch_pdb_structure, types::PdbFormat},
+    pdb::{launch_pdb_structure, types::{PdbFormat, PdbResource}, launch_pdb_resource},
     uniprot::launch_uniprot_query,
     RequestError,
 };
@@ -341,6 +341,25 @@ enum ModPdb {
         #[clap(short, long, value_parser)]
         output: Option<String>,
     },
+
+    /// Retrieves pdb information for a provided ID and resource
+    Info {
+        /// PDB Id to request info
+        #[clap(value_parser, min_values = 1, max_values = 1, required = true)]
+        pdb_id: String,
+
+        /// Specify the structure format
+        #[clap(short, long, value_parser, default_value = "entry")]
+        resource: PdbResource,
+
+        /// Specifies the Entry or Chain Identifier
+        #[clap(short, long, value_parser)]
+        identifier: Option<String>,
+
+        /// Optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    }
 }
 
 fn main() -> Result<(), RequestError> {
@@ -487,6 +506,9 @@ fn main() -> Result<(), RequestError> {
                 output,
             } => {
                 launch_pdb_structure(pdb_id, *header_only, format, output)?;
+            },
+            ModPdb::Info { pdb_id, resource, identifier, output } => {
+                launch_pdb_resource(pdb_id, resource, identifier, output)?;
             }
         },
     };
