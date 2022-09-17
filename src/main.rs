@@ -280,6 +280,10 @@ enum ModNcbi {
         #[clap(value_parser, min_values = 1, max_values = 1, required = true)]
         query: String,
 
+        /// number of search results to return
+        #[clap(short, long, value_parser, default_value="5")]
+        limit: usize,
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>
@@ -430,8 +434,8 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Ncbi(sub) => match sub {
-            ModNcbi::Taxons { query, output } => {
-                launch_ncbi_taxons(query, output)?;
+            ModNcbi::Taxons { query, limit, output } => {
+                launch_ncbi_taxons(query, *limit, output)?;
             }
             ModNcbi::QueryIds { ids, output } => {
                 launch_ncbi_query_ids(ids, output)?;

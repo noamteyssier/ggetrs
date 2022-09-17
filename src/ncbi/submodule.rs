@@ -2,8 +2,8 @@ use super::{query_ids, query_symbols, functions::taxons};
 use anyhow::Result;
 use std::{fs::File, io::Write};
 
-pub fn launch_ncbi_taxons(query: &str, output: &Option<String>) -> Result<()> {
-    let results = taxons(query)?;
+pub fn launch_ncbi_taxons(query: &str, limit: usize, output: &Option<String>) -> Result<()> {
+    let results = taxons(query, limit)?;
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
