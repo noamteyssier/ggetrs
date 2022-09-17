@@ -25,6 +25,17 @@ pub fn parse_primary_usize(value: &Value, primary: &str) -> usize {
         .unwrap_or_else(|| panic!("Missing: {}", primary)) as usize
 }
 
+/// Parses a vec from a json object from a primary level
+#[must_use]
+pub fn parse_primary_vec_string(value: &Value, primary: &str) -> Vec<String> {
+    value[primary]
+        .as_array()
+        .unwrap_or_else(|| panic!("Missing: {}", primary))
+        .iter()
+        .map(|x| x.as_str().expect("Non-string found in array").to_string())
+        .collect()
+}
+
 /// Parses a usize from a json object from a secondary level
 #[must_use]
 pub fn parse_secondary_string(value: &Value, primary: &str, secondary: &str) -> String {

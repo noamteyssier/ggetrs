@@ -38,6 +38,7 @@ impl NcbiInfo {
         let taxon_id = parse_secondary_string(value, "gene", "tax_id");
         let taxon_name = parse_secondary_string(value, "gene", "taxname");
         let transcripts = Self::parse_transcripts(value);
+        let query = parse_primary_vec_string(value, "query")[0].clone();
         Some(Self {
             gene_id,
             symbol,
@@ -49,6 +50,7 @@ impl NcbiInfo {
             taxon_id,
             taxon_name,
             transcripts,
+            query
         })
     }
 
