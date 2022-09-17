@@ -21,9 +21,6 @@ impl NcbiResults {
             }
             None => None,
         };
-        match results {
-            Some(map) => Some(Self(map)),
-            None => None,
-        }
+        results.map(Self)
     }
 }

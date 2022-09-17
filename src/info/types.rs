@@ -26,10 +26,7 @@ impl InfoContainer {
         let map = ncbi
             .0
             .keys()
-            .filter_map(|k| match Info::from_queries(ensembl, uniprot, ncbi, k) {
-                Some(info) => Some((k.to_string(), info)),
-                None => None,
-            })
+            .filter_map(|k| Info::from_queries(ensembl, uniprot, ncbi, k).map(|info| (k.to_string(), info)))
             .collect();
         Self(map)
     }
