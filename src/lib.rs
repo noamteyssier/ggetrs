@@ -18,6 +18,9 @@ pub mod ncbi;
 /// `RCSB PDB` submodule
 pub mod pdb;
 
+/// `UCSC` Genome Browser submodule
+pub mod ucsc;
+
 /// Module for constants shared throughout the crate
 pub mod constants;
 
