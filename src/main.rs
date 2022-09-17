@@ -7,9 +7,10 @@ use ggetrs::{
         launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
         launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
     },
+    info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
-    RequestError, info::launch_info,
+    RequestError,
 };
 
 #[derive(Parser)]
@@ -344,8 +345,13 @@ fn main() -> Result<(), RequestError> {
                 assembly,
                 output,
             )?;
-        },
-        Commands::Info { search_terms, species, taxon_id, output } => {
+        }
+        Commands::Info {
+            search_terms,
+            species,
+            taxon_id,
+            output,
+        } => {
             launch_info(search_terms, species, *taxon_id, output)?;
         }
         Commands::Ensembl(sub) => match sub {

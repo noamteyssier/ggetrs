@@ -1,11 +1,13 @@
+use crate::{
+    ensembl::types::LookupResponse, ncbi::types::NcbiResults, uniprot::UniprotInfoContainer,
+};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use serde::{Serialize, Deserialize};
-use crate::{ensembl::types::LookupResponse, uniprot::UniprotInfoContainer, ncbi::types::NcbiResults};
 use std::fmt;
 
 /// Container for `Info` which aggregates results from multiple databases
 #[derive(Serialize, Deserialize, Debug)]
-pub struct InfoContainer (pub HashMap<String, Info>);
+pub struct InfoContainer(pub HashMap<String, Info>);
 impl fmt::Display for InfoContainer {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
@@ -17,23 +19,20 @@ impl fmt::Display for InfoContainer {
 }
 impl InfoContainer {
     pub fn from_queries(
-        ensembl: &LookupResponse, 
-        uniprot: &UniprotInfoContainer, 
-        ncbi: &NcbiResults) -> Self 
-    {
+        ensembl: &LookupResponse,
+        uniprot: &UniprotInfoContainer,
+        ncbi: &NcbiResults,
+    ) -> Self {
         let map = ncbi
             .0
             .keys()
-            .filter_map(|k| {
-                match Info::from_queries(ensembl, uniprot, ncbi, k) {
-                    Some(info) => Some((k.to_string(), info)),
-                    None => None
-                }
+            .filter_map(|k| match Info::from_queries(ensembl, uniprot, ncbi, k) {
+                Some(info) => Some((k.to_string(), info)),
+                None => None,
             })
             .collect();
         Self(map)
     }
-
 }
 
 /// Container which aggregates query results from multiple databases
@@ -60,25 +59,25 @@ impl fmt::Display for Info {
 }
 impl Info {
     pub fn from_queries(
-        ensembl: &LookupResponse, 
-        uniprot: &UniprotInfoContainer, 
+        ensembl: &LookupResponse,
+        uniprot: &UniprotInfoContainer,
         ncbi: &NcbiResults,
-        key: &str) -> Option<Self>
-    {
+        key: &str,
+    ) -> Option<Self> {
         let ensembl_result = match ensembl.0.get(key) {
             Some(opt_result) => match opt_result {
                 Some(result) => result,
-                None => return None
+                None => return None,
             },
-            None => return None
+            None => return None,
         };
         let uniprot_result = match uniprot.0.get(key) {
             Some(result) => result,
-            None => return None
+            None => return None,
         };
         let ncbi_result = match ncbi.0.get(key) {
             Some(result) => result,
-            None => return None
+            None => return None,
         };
         let ensembl_id = ensembl_result.id.to_owned();
         let uniprot_id = uniprot_result.uniprot_id.to_owned();
