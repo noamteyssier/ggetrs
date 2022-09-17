@@ -8,4 +8,4 @@ pub mod types;
 mod submodule;
 
 pub use functions::{query_ids, query_symbols};
-pub use submodule::{launch_ncbi_query_ids, launch_ncbi_query_symbols};
+pub use submodule::{launch_ncbi_taxons, launch_ncbi_query_ids, launch_ncbi_query_symbols};
