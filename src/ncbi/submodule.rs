@@ -1,4 +1,4 @@
-use super::{query_ids, query_symbols, functions::taxons};
+use super::{functions::taxons, query_ids, query_symbols};
 use anyhow::Result;
 use std::{fs::File, io::Write};
 

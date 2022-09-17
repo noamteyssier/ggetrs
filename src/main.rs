@@ -8,7 +8,7 @@ use ggetrs::{
         launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
     },
     info::launch_info,
-    ncbi::{launch_ncbi_taxons, launch_ncbi_query_ids, launch_ncbi_query_symbols},
+    ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
     uniprot::launch_uniprot_query,
     RequestError,
 };
@@ -281,12 +281,12 @@ enum ModNcbi {
         query: String,
 
         /// number of search results to return
-        #[clap(short, long, value_parser, default_value="5")]
+        #[clap(short, long, value_parser, default_value = "5")]
         limit: usize,
 
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
-        output: Option<String>
+        output: Option<String>,
     },
 
     /// Retrieves information for a list of IDs
@@ -434,7 +434,11 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Ncbi(sub) => match sub {
-            ModNcbi::Taxons { query, limit, output } => {
+            ModNcbi::Taxons {
+                query,
+                limit,
+                output,
+            } => {
                 launch_ncbi_taxons(query, *limit, output)?;
             }
             ModNcbi::QueryIds { ids, output } => {

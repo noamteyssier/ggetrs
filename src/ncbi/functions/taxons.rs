@@ -1,10 +1,13 @@
 use reqwest::blocking::Client;
 use serde_json::Value;
 
-use crate::ncbi::types::{TaxonContainer, Taxon};
+use crate::ncbi::types::{Taxon, TaxonContainer};
 
 pub fn taxons(query: &str, limit: usize) -> anyhow::Result<TaxonContainer> {
-    let url = format!("https://api.ncbi.nlm.nih.gov/datasets/v1/gene/taxon_suggest/{}", query);
+    let url = format!(
+        "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/taxon_suggest/{}",
+        query
+    );
     let response = Client::new()
         .get(url)
         .header("accept", "application/json")
