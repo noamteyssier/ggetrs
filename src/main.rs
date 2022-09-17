@@ -7,6 +7,7 @@ use ggetrs::{
         launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
         launch_ensembl_search, DataType, ENSEMBL_RELEASE_STR,
     },
+    info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
     RequestError,
@@ -67,6 +68,25 @@ enum Commands {
         /// assembly to use for species
         #[clap(short, long, value_parser, default_value = "38")]
         assembly: String,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
+    /// Queries symbols or Ensembl IDs across multiple databases and aggregates results
+    Info {
+        /// Search terms to query
+        #[clap(value_parser, min_values = 1, required = true)]
+        search_terms: Vec<String>,
+
+        /// Taxon ID to use: currently this MUST match the taxon_id
+        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
+        species: String,
+
+        /// Taxon ID to use: currently this MUST match the species
+        #[clap(short, long, value_parser, default_value = "9606")]
+        taxon_id: usize,
 
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
@@ -325,6 +345,14 @@ fn main() -> Result<(), RequestError> {
                 assembly,
                 output,
             )?;
+        }
+        Commands::Info {
+            search_terms,
+            species,
+            taxon_id,
+            output,
+        } => {
+            launch_info(search_terms, species, *taxon_id, output)?;
         }
         Commands::Ensembl(sub) => match sub {
             ModEnsembl::Search {

@@ -38,6 +38,7 @@ impl fmt::Display for ResponseTissue {
     }
 }
 impl ResponseTissue {
+    #[must_use]
     pub fn from_str(response: &str) -> Self {
         let results = Self::parse_str(response);
         Self { results }
@@ -92,6 +93,7 @@ impl ResultTissue {
         }
     }
 
+    #[must_use]
     pub fn from_line(line: &str) -> Option<Self> {
         let mut records = line.split(',');
         let id = match records.next() {

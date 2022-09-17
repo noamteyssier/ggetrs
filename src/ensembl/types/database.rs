@@ -13,6 +13,7 @@ impl fmt::Display for ResponseDatabases {
     }
 }
 impl ResponseDatabases {
+    #[must_use]
     pub fn as_vec(&self) -> Vec<String> {
         self.0.iter().map(|x| x.0.to_string()).collect()
     }
