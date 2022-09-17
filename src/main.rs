@@ -9,8 +9,8 @@ use ggetrs::{
     },
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    uniprot::launch_uniprot_query,
     pdb::{launch_pdb_structure, types::PdbFormat},
+    uniprot::launch_uniprot_query,
     RequestError,
 };
 
@@ -322,7 +322,7 @@ enum ModNcbi {
 }
 
 #[derive(Subcommand)]
-enum ModPdb{
+enum ModPdb {
     /// Retrieves pdb structure for a provided ID
     Structure {
         /// PDB id to retrieve structure
@@ -342,7 +342,6 @@ enum ModPdb{
         output: Option<String>,
     },
 }
-
 
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
@@ -481,10 +480,15 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Pdb(sub) => match sub {
-            ModPdb::Structure{ pdb_id, header_only, format, output } => {
+            ModPdb::Structure {
+                pdb_id,
+                header_only,
+                format,
+                output,
+            } => {
                 launch_pdb_structure(pdb_id, *header_only, format, output)?;
             }
-        }
+        },
     };
 
     Ok(())
