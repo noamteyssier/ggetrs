@@ -13,8 +13,9 @@ use ggetrs::{
         launch_pdb_resource, launch_pdb_structure,
         types::{PdbFormat, PdbResource},
     },
+    ucsc::{launch_ucsc_blat, types::SeqType},
     uniprot::launch_uniprot_query,
-    RequestError, ucsc::{types::SeqType, launch_ucsc_blat},
+    RequestError,
 };
 
 #[derive(Parser)]
@@ -546,10 +547,15 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Ucsc(sub) => match sub {
-            ModUcsc::Blat { sequence, seqtype, db_name, output } => {
+            ModUcsc::Blat {
+                sequence,
+                seqtype,
+                db_name,
+                output,
+            } => {
                 launch_ucsc_blat(sequence, seqtype, db_name, output)?;
-            },
-        }
+            }
+        },
     };
 
     Ok(())
