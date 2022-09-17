@@ -21,6 +21,9 @@ pub mod constants;
 /// Module for utilities shared throughout the crate
 pub mod utils;
 
+/// Module for Info command
+pub mod info;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 

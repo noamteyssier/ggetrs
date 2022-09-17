@@ -9,7 +9,7 @@ use ggetrs::{
     },
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols},
     uniprot::launch_uniprot_query,
-    RequestError,
+    RequestError, info::launch_info,
 };
 
 #[derive(Parser)]
@@ -71,6 +71,12 @@ enum Commands {
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long, value_parser)]
         output: Option<String>,
+    },
+
+    Info {
+        /// Search terms to query
+        #[clap(value_parser, min_values = 1, required = true)]
+        search_terms: Vec<String>,
     },
 
     /// Queries information from Ensembl
@@ -325,6 +331,9 @@ fn main() -> Result<(), RequestError> {
                 assembly,
                 output,
             )?;
+        },
+        Commands::Info { search_terms } => {
+            launch_info(search_terms, "homo_sapiens", 9606)?;
         }
         Commands::Ensembl(sub) => match sub {
             ModEnsembl::Search {
