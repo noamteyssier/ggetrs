@@ -13,6 +13,7 @@ use ggetrs::{
         launch_pdb_resource, launch_pdb_structure,
         types::{PdbFormat, PdbResource},
     },
+    ucsc::{launch_ucsc_blat, types::SeqType},
     uniprot::launch_uniprot_query,
     RequestError,
 };
@@ -112,6 +113,10 @@ enum Commands {
     /// Retrieves structures and information from RCSB PDB
     #[clap(subcommand)]
     Pdb(ModPdb),
+
+    /// Retrieves information from UCSC Genome Browser
+    #[clap(subcommand)]
+    Ucsc(ModUcsc),
 }
 
 #[derive(Subcommand)]
@@ -365,6 +370,28 @@ enum ModPdb {
     },
 }
 
+#[derive(Subcommand)]
+enum ModUcsc {
+    /// Performs a BLAT sequence search on a provided database
+    Blat {
+        /// PDB Id to request info
+        #[clap(value_parser, min_values = 1, max_values = 1, required = true)]
+        sequence: String,
+
+        /// Specify the structure format
+        #[clap(short, long, value_parser, default_value = "dna")]
+        seqtype: SeqType,
+
+        /// Specifies the database name to query
+        #[clap(short, long, value_parser, default_value = "hg38")]
+        db_name: String,
+
+        /// Optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+}
+
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -517,6 +544,16 @@ fn main() -> Result<(), RequestError> {
                 output,
             } => {
                 launch_pdb_resource(pdb_id, resource, identifier, output)?;
+            }
+        },
+        Commands::Ucsc(sub) => match sub {
+            ModUcsc::Blat {
+                sequence,
+                seqtype,
+                db_name,
+                output,
+            } => {
+                launch_ucsc_blat(sequence, seqtype, db_name, output)?;
             }
         },
     };
