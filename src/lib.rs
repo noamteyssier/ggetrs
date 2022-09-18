@@ -28,6 +28,8 @@ pub mod utils;
 pub mod info;
 
 /// Module for handling CLI
+///
+/// Each submodule will have a separate [`clap`] interface. 
 pub mod cli;
 
 /// Useful generic type for Request Errors
