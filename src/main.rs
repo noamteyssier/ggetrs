@@ -1,7 +1,7 @@
 use clap::Parser;
 use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
-    cli::{Cli, Commands, ModArchS4, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot},
+    cli::{Cli, Commands, ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot},
     enrichr::launch_enrich,
     ensembl::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
@@ -13,7 +13,7 @@ use ggetrs::{
     pdb::{launch_pdb_resource, launch_pdb_structure},
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
-    RequestError,
+    RequestError, chembl::launch_chembl_activity,
 };
 
 fn main() -> Result<(), RequestError> {
@@ -42,6 +42,11 @@ fn main() -> Result<(), RequestError> {
                 launch_archs4_tissue(gene_name, species, output)?;
             }
         },
+        Commands::Chembl(sub) => match sub {
+            ModChembl::Activity { query, output } => {
+                launch_chembl_activity(query, output)?;
+            },
+        }
         Commands::Search {
             search_terms,
             database,
