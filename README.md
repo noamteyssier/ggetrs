@@ -1,5 +1,9 @@
 # ggetrs
 
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
+![actions status](https://github.com/noamteyssier/ggetrs/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/noamteyssier/ggetrs/branch/main/graph/badge.svg?token=CEQWH6MMCV)](https://codecov.io/gh/noamteyssier/ggetrs)
+
 A rust implementation of [gget](https://github.com/pachterlab/gget).
 
 ## Installation
