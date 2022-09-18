@@ -1,8 +1,6 @@
 # ggetrs
 
 ![actions status](https://github.com/noamteyssier/ggetrs/workflows/CI/badge.svg)
-![actions status](https://github.com/noamteyssier/ggetrs/workflows/Rust/badge.svg)
-![actions status](https://github.com/noamteyssier/ggetrs/workflows/Python/badge.svg)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![codecov](https://codecov.io/gh/noamteyssier/ggetrs/branch/main/graph/badge.svg?token=CEQWH6MMCV)](https://codecov.io/gh/noamteyssier/ggetrs)
 
