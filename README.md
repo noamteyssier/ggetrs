@@ -1,5 +1,10 @@
 # ggetrs
 
+[![actions status](https://github.com/noamteyssier/ggetrs/workflows/ci/badge.svg)](https://github.com/noamteyssier/ggetrs/actions)
+[![actions status](https://github.com/noamteyssier/ggetrs/workflows/rust/badge.svg)](https://github.com/noamteyssier/ggetrs/actions)
+[![actions status](https://github.com/noamteyssier/ggetrs/workflows/python/badge.svg)](https://github.com/noamteyssier/ggetrs/actions)
+[![codecov](https://codecov.io/gh/noamteyssier/ggetrs/branch/main/graph/badge.svg?token=CEQWH6MMCV)](https://codecov.io/gh/noamteyssier/ggetrs)
+
 A rust implementation of [gget](https://github.com/pachterlab/gget).
 
 ## Installation
