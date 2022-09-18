@@ -43,8 +43,8 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Chembl(sub) => match sub {
-            ModChembl::Activity { query, output } => {
-                launch_chembl_activity(query, output)?;
+            ModChembl::Activity { query, limit, output } => {
+                launch_chembl_activity(query, *limit, output)?;
             },
         }
         Commands::Search {
