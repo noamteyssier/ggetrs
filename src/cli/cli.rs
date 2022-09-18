@@ -1,6 +1,6 @@
-use clap::{Parser, AppSettings, Subcommand};
-use crate::ensembl::ENSEMBL_RELEASE_STR;
 use super::{ModArchS4, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
+use crate::ensembl::ENSEMBL_RELEASE_STR;
+use clap::{AppSettings, Parser, Subcommand};
 
 #[derive(Parser)]
 #[clap(author, version, about)]

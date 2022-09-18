@@ -10,9 +10,7 @@ use ggetrs::{
     },
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    pdb::{
-        launch_pdb_resource, launch_pdb_structure,
-    },
+    pdb::{launch_pdb_resource, launch_pdb_structure},
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
     RequestError,

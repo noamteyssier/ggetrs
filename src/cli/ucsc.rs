@@ -1,5 +1,5 @@
-use clap::Subcommand;
 use crate::ucsc::types::SeqType;
+use clap::Subcommand;
 
 #[derive(Subcommand)]
 pub enum ModUcsc {
