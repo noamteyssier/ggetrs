@@ -7,10 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Coverage
+    - name: Install LLVM-Coverage
       uses: taiki-e/install-action@cargo-llvm-cov
-    - run: cargo llvm-cov --lcov --output-path coverage.lcov
-    - uses: codecov/codecov-action@v3
+    - name: Measure Coverage
+      run: cargo llvm-cov --lcov --output-path coverage.lcov
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.lcov
