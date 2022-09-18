@@ -1,5 +1,6 @@
 mod archs4;
 mod cli;
+mod chembl;
 mod ensembl;
 mod ncbi;
 mod pdb;
@@ -7,6 +8,7 @@ mod ucsc;
 mod uniprot;
 pub use archs4::ModArchS4;
 pub use cli::{Cli, Commands};
+pub use chembl::ModChembl;
 pub use ensembl::ModEnsembl;
 pub use ncbi::ModNcbi;
 pub use pdb::ModPdb;
