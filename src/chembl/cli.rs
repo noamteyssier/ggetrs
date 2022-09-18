@@ -1,6 +1,6 @@
+use super::functions::activity;
 use anyhow::Result;
 use std::{fs::File, io::Write};
-use super::functions::activity;
 
 pub fn launch_chembl_activity(query: &str, limit: usize, output: &Option<String>) -> Result<()> {
     let results = activity(query, limit)?;

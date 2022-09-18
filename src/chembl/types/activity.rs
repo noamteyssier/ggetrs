@@ -1,11 +1,11 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ActivityResponse {
     pub activities: Vec<Activity>,
     #[serde(skip_serializing)]
-    pub page_meta: PageMeta
+    pub page_meta: PageMeta,
 }
 impl fmt::Display for ActivityResponse {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -39,14 +39,13 @@ impl fmt::Display for Activity {
     }
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct PageMeta {
     limit: usize,
     next: Option<String>,
     offset: usize,
     previous: Option<String>,
-    total_count: usize
+    total_count: usize,
 }
 impl fmt::Display for PageMeta {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
