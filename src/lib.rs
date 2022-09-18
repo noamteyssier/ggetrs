@@ -9,6 +9,9 @@ pub mod archs4;
 /// Command Line Interface
 pub mod cli;
 
+/// `Chembl` submodule
+pub mod chembl;
+
 /// `ENSEMBL` submodule
 pub mod ensembl;
 

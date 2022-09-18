@@ -1,4 +1,4 @@
-use super::{ModArchS4, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
+use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
 use crate::ensembl::ENSEMBL_RELEASE_STR;
 use clap::{AppSettings, Parser, Subcommand};
 
@@ -31,6 +31,10 @@ pub enum Commands {
     /// Queries gene-specific information using ARCHS4
     #[clap(subcommand)]
     ARCHS4(ModArchS4),
+
+    /// Queries information from Chembl Chemical Database
+    #[clap(subcommand)]
+    Chembl(ModChembl),
 
     /// Searches through descriptions on ENSEMBL
     Search {
