@@ -1,11 +1,11 @@
-mod cli;
 mod archs4;
+mod cli;
 mod ensembl;
 mod ncbi;
 mod pdb;
 mod uniprot;
-pub use cli::{Cli, Commands};
 pub use archs4::ModArchS4;
+pub use cli::{Cli, Commands};
 pub use ensembl::ModEnsembl;
 pub use ncbi::ModNcbi;
 pub use pdb::ModPdb;

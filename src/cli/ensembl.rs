@@ -1,5 +1,5 @@
+use crate::ensembl::{DataType, ENSEMBL_RELEASE_STR};
 use clap::Subcommand;
-use crate::ensembl::{ENSEMBL_RELEASE_STR, DataType};
 
 #[derive(Subcommand)]
 pub enum ModEnsembl {
@@ -116,4 +116,3 @@ pub enum ModEnsembl {
         datatype: DataType,
     },
 }
-

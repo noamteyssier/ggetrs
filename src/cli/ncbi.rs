@@ -43,4 +43,3 @@ pub enum ModNcbi {
         output: Option<String>,
     },
 }
-

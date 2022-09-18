@@ -1,5 +1,5 @@
-use clap::Subcommand;
 use crate::pdb::types::{PdbFormat, PdbResource};
+use clap::Subcommand;
 
 #[derive(Subcommand)]
 pub enum ModPdb {
@@ -41,4 +41,3 @@ pub enum ModPdb {
         output: Option<String>,
     },
 }
-

@@ -17,4 +17,3 @@ pub enum ModUniprot {
         output: Option<String>,
     },
 }
-

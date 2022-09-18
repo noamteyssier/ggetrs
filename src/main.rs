@@ -7,16 +7,13 @@ use ggetrs::{
     ensembl::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
         launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
-        launch_ensembl_search
+        launch_ensembl_search,
     },
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    pdb::{
-        launch_pdb_resource, launch_pdb_structure,
-    },
+    pdb::{launch_pdb_resource, launch_pdb_structure},
     uniprot::launch_uniprot_query,
 };
-
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
