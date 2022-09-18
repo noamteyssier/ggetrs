@@ -27,6 +27,9 @@ pub mod utils;
 /// Module for Info command
 pub mod info;
 
+/// Module for handling CLI
+pub mod cli;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
