@@ -61,3 +61,49 @@ impl PdbResource {
         }
     }
 }
+
+#[cfg(test)]
+mod testing {
+    use clap::ArgEnum;
+    use super::PdbResource;
+
+    fn validate_enum(resource: PdbResource, _expected: PdbResource) {
+        assert!(matches!(resource, _expected))
+    }
+
+    #[test]
+    fn pdb_resource_from_entry() {
+        let examples = vec!["entry", "Entry", "ENTRY", "EnTrY"];
+        let expected = PdbResource::Entry;
+        for s in examples {
+            validate_enum(
+                PdbResource::from_str(s, true).unwrap(), 
+                expected.clone()
+            );
+        }
+    }
+
+    #[test]
+    fn pdb_resource_from_pubmed() {
+        let examples = vec!["pubmed", "Pubmed", "PUBMED", "pUbMeD"];
+        let expected = PdbResource::Pubmed;
+        for s in examples {
+            validate_enum(
+                PdbResource::from_str(s, true).unwrap(), 
+                expected.clone()
+            );
+        }
+    }
+
+    #[test]
+    fn pdb_resource_from_assembly() {
+        let examples = vec!["assembly", "Assembly", "ASSEMBLY", "aSsEmBlY"];
+        let expected = PdbResource::Assembly;
+        for s in examples {
+            validate_enum(
+                PdbResource::from_str(s, true).unwrap(), 
+                expected.clone()
+            );
+        }
+    }
+}
