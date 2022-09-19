@@ -21,8 +21,8 @@ pub fn structure(pdb_id: &str, header_only: bool, format: &PdbFormat) -> Result<
 
 #[cfg(test)]
 mod testing {
-    use crate::pdb::types::PdbFormat;
     use super::structure;
+    use crate::pdb::types::PdbFormat;
 
     #[test]
     fn test_structure_pdb() {

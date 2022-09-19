@@ -64,8 +64,8 @@ impl PdbResource {
 
 #[cfg(test)]
 mod testing {
-    use clap::ArgEnum;
     use super::PdbResource;
+    use clap::ArgEnum;
 
     fn validate_enum(resource: PdbResource, _expected: PdbResource) {
         assert!(matches!(resource, _expected))
@@ -76,10 +76,7 @@ mod testing {
         let examples = vec!["entry", "Entry", "ENTRY", "EnTrY"];
         let expected = PdbResource::Entry;
         for s in examples {
-            validate_enum(
-                PdbResource::from_str(s, true).unwrap(), 
-                expected.clone()
-            );
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
         }
     }
 
@@ -88,10 +85,7 @@ mod testing {
         let examples = vec!["pubmed", "Pubmed", "PUBMED", "pUbMeD"];
         let expected = PdbResource::Pubmed;
         for s in examples {
-            validate_enum(
-                PdbResource::from_str(s, true).unwrap(), 
-                expected.clone()
-            );
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
         }
     }
 
@@ -100,10 +94,7 @@ mod testing {
         let examples = vec!["assembly", "Assembly", "ASSEMBLY", "aSsEmBlY"];
         let expected = PdbResource::Assembly;
         for s in examples {
-            validate_enum(
-                PdbResource::from_str(s, true).unwrap(), 
-                expected.clone()
-            );
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
         }
     }
 }

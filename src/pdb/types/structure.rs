@@ -18,8 +18,8 @@ impl fmt::Display for PdbFormat {
 
 #[cfg(test)]
 mod testing {
-    use clap::ArgEnum;
     use super::PdbFormat;
+    use clap::ArgEnum;
 
     fn validate_enum(resource: PdbFormat, _expected: PdbFormat) {
         assert!(matches!(resource, _expected))
@@ -36,10 +36,7 @@ mod testing {
         let examples = vec!["pdb", "PDB", "pDb"];
         let expected = PdbFormat::Pdb;
         for s in examples {
-            validate_enum(
-                PdbFormat::from_str(s, true).unwrap(), 
-                expected.clone()
-            );
+            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected.clone());
         }
     }
 
@@ -48,10 +45,7 @@ mod testing {
         let examples = vec!["cif", "CIF", "cIf"];
         let expected = PdbFormat::Cif;
         for s in examples {
-            validate_enum(
-                PdbFormat::from_str(s, true).unwrap(), 
-                expected.clone()
-            );
+            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected.clone());
         }
     }
 }

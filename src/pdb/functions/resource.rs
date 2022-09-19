@@ -42,14 +42,14 @@ pub fn resource_info(
     let response = Client::new().get(rest_url).send()?.json::<Value>()?;
     match response["status"].as_u64() {
         Some(code) => bail!(format!("Error: HTTP Code {}", code)),
-        None => Ok(response)
+        None => Ok(response),
     }
 }
 
 #[cfg(test)]
 mod testing {
-    use crate::pdb::types::PdbResource;
     use super::resource_info;
+    use crate::pdb::types::PdbResource;
 
     #[test]
     fn test_resource_entry() {
@@ -106,5 +106,4 @@ mod testing {
             assert!(response.is_err());
         }
     }
-
 }
