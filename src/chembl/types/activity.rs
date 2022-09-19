@@ -19,15 +19,15 @@ impl fmt::Display for ActivityResponse {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Activity {
-    activity_id: usize,
-    activity_comment: Option<String>,
-    assay_chembl_id: String,
-    assay_description: Option<String>,
-    canonical_smiles: String,
-    molecule_chembl_id: String,
-    molecule_pref_name: Option<String>,
-    target_chembl_id: String,
-    assay_type: String,
+    pub activity_id: usize,
+    pub activity_comment: Option<String>,
+    pub assay_chembl_id: String,
+    pub assay_description: Option<String>,
+    pub canonical_smiles: String,
+    pub molecule_chembl_id: String,
+    pub molecule_pref_name: Option<String>,
+    pub target_chembl_id: String,
+    pub assay_type: String,
 }
 impl fmt::Display for Activity {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
