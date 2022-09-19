@@ -1,5 +1,6 @@
 use crate::archs4::types::{Correlations, ResultCorrelation};
-use reqwest::{blocking::Client, Result};
+use anyhow::{bail, Result};
+use reqwest::blocking::Client;
 use std::collections::HashMap;
 
 /// Queries the most correlated genes for a provided gene.
@@ -13,8 +14,11 @@ pub fn correlation(gene_name: &str, count: usize) -> Result<Correlations> {
         .post(url)
         .json(&map)
         .send()?
-        .json::<ResultCorrelation>()?;
-    Ok(correlations.into())
+        .json::<ResultCorrelation>();
+    match correlations {
+        Err(_) => bail!(format!("Could not parse response for symbol: {}", gene_name)),
+        Ok(rc) => Ok(rc.into())
+    }
 }
 
 /// Builds the `HashMap` to be converted to a JSON
@@ -30,7 +34,7 @@ mod testing {
     use super::correlation;
 
     #[test]
-    fn test_known() {
+    fn test_correlation() {
         let symbol = "AP2S1";
         let count = 5;
         let results = correlation(symbol, count).unwrap();
@@ -40,5 +44,13 @@ mod testing {
         assert_eq!(results.correlations[2].gene_symbol, "MRPL28");
         assert_eq!(results.correlations[3].gene_symbol, "SSNA1");
         assert_eq!(results.correlations[4].gene_symbol, "COX8A");
+    }
+
+    #[test]
+    fn test_correlation_nonsense_query() {
+        let symbol = "AJIWDJOAWD";
+        let count = 5;
+        let results = correlation(symbol, count);
+        assert!(results.is_err());
     }
 }
