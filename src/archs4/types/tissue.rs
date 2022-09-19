@@ -26,7 +26,7 @@ impl fmt::Display for Species {
 /// A struct to hold the responses from tissue expression
 #[derive(Serialize, Debug)]
 pub struct ResponseTissue {
-    results: Vec<ResultTissue>,
+    pub results: Vec<ResultTissue>,
 }
 impl fmt::Display for ResponseTissue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -65,13 +65,13 @@ impl ResponseTissue {
 /// Individual tissue responses
 #[derive(Serialize, Debug)]
 pub struct ResultTissue {
-    id: String,
-    min: f64,
-    q1: f64,
-    median: f64,
-    q3: f64,
-    max: f64,
-    color: String,
+    pub id: String,
+    pub min: f64,
+    pub q1: f64,
+    pub median: f64,
+    pub q3: f64,
+    pub max: f64,
+    pub color: String,
 }
 impl fmt::Display for ResultTissue {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

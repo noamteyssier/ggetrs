@@ -21,3 +21,29 @@ pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {
 
     Ok(response)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::tissue;
+    use crate::archs4::Species;
+
+    #[test]
+    fn test_tissue() {
+        let symbol = "AP2S1";
+        let species = Species::Human;
+        let results = tissue(symbol, &species).unwrap();
+        assert!(results.results.len() > 1);
+        assert_eq!(
+            results.results[0].id,
+            "System.Connective Tissue.Bone marrow.BONE MARROW"
+        );
+    }
+
+    #[test]
+    fn test_tissue_nonsense_query() {
+        let symbol = "asiodaoiwdasd";
+        let species = Species::Human;
+        let results = tissue(symbol, &species).unwrap();
+        assert_eq!(results.results.len(), 0);
+    }
+}
