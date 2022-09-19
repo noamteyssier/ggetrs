@@ -15,3 +15,43 @@ impl fmt::Display for PdbFormat {
         write!(f, "{}", repr)
     }
 }
+
+#[cfg(test)]
+mod testing {
+    use clap::ArgEnum;
+    use super::PdbFormat;
+
+    fn validate_enum(resource: PdbFormat, _expected: PdbFormat) {
+        assert!(matches!(resource, _expected))
+    }
+
+    #[test]
+    fn pdb_structure_repr() {
+        assert_eq!(PdbFormat::Pdb.to_string(), String::from("pdb"));
+        assert_eq!(PdbFormat::Cif.to_string(), String::from("cif"));
+    }
+
+    #[test]
+    fn pdb_structure_from_pdb() {
+        let examples = vec!["pdb", "PDB", "pDb"];
+        let expected = PdbFormat::Pdb;
+        for s in examples {
+            validate_enum(
+                PdbFormat::from_str(s, true).unwrap(), 
+                expected.clone()
+            );
+        }
+    }
+
+    #[test]
+    fn pdb_structure_from_cif() {
+        let examples = vec!["cif", "CIF", "cIf"];
+        let expected = PdbFormat::Cif;
+        for s in examples {
+            validate_enum(
+                PdbFormat::from_str(s, true).unwrap(), 
+                expected.clone()
+            );
+        }
+    }
+}
