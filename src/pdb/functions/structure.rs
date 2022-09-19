@@ -18,3 +18,54 @@ pub fn structure(pdb_id: &str, header_only: bool, format: &PdbFormat) -> Result<
         Ok(None)
     }
 }
+
+#[cfg(test)]
+mod testing {
+    use crate::pdb::types::PdbFormat;
+    use super::structure;
+
+    #[test]
+    fn test_structure_pdb() {
+        let pdb_id = "6URI";
+        let header_only = false;
+        let format = PdbFormat::Pdb;
+        let response = structure(pdb_id, header_only, &format).unwrap();
+        assert!(response.is_some());
+    }
+
+    #[test]
+    fn test_structure_cif() {
+        let pdb_id = "6URI";
+        let header_only = false;
+        let format = PdbFormat::Cif;
+        let response = structure(pdb_id, header_only, &format).unwrap();
+        assert!(response.is_some());
+    }
+
+    #[test]
+    fn test_structure_pdb_header() {
+        let pdb_id = "6URI";
+        let header_only = true;
+        let format = PdbFormat::Pdb;
+        let response = structure(pdb_id, header_only, &format).unwrap();
+        assert!(response.is_some());
+    }
+
+    #[test]
+    fn test_structure_cif_header() {
+        let pdb_id = "6URI";
+        let header_only = true;
+        let format = PdbFormat::Cif;
+        let response = structure(pdb_id, header_only, &format).unwrap();
+        assert!(response.is_some());
+    }
+
+    #[test]
+    fn test_structure_missing_id() {
+        let pdb_id = "BLAHBLAHBLAH";
+        let header_only = false;
+        let format = PdbFormat::Pdb;
+        let response = structure(pdb_id, header_only, &format).unwrap();
+        assert!(response.is_none());
+    }
+}
