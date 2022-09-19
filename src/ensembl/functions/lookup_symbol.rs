@@ -20,3 +20,33 @@ pub fn lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse
         .json::<LookupResponse>()?;
     Ok(results)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::lookup_symbol;
+
+    #[test]
+    fn test_ensembl_lookup_symbol() {
+        let ensembl_symbols = vec!["AP2S1".to_string()];
+        let species = "homo_sapiens";
+        let response = lookup_symbol(&ensembl_symbols, species).unwrap();
+        assert_eq!(response.0.len(), 1);
+        assert!(response.0.get("AP2S1").unwrap().is_some())
+    }
+
+    #[test]
+    fn test_ensembl_lookup_symbol_nonsense() {
+        let ensembl_symbols = vec!["AWDIAJWIDJIAWD".to_string()];
+        let species = "homo_sapiens";
+        let response = lookup_symbol(&ensembl_symbols, species).unwrap();
+        assert_eq!(response.0.len(), 0);
+    }
+
+    #[test]
+    fn test_ensembl_lookup_symbol_false_species() {
+        let ensembl_symbols = vec!["AWDIAJWIDJIAWD".to_string()];
+        let species = "aokdowaodawd";
+        let response = lookup_symbol(&ensembl_symbols, species).unwrap();
+        assert_eq!(response.0.len(), 0);
+    }
+}
