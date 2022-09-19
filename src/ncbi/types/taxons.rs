@@ -12,12 +12,13 @@ impl fmt::Display for TaxonContainer {
         )
     }
 }
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Taxon {
-    sci_name: String,
-    tax_id: String,
-    common_name: Option<String>,
-    matched_term: Option<String>,
+    pub sci_name: String,
+    pub tax_id: String,
+    pub common_name: Option<String>,
+    pub matched_term: Option<String>,
 }
 impl fmt::Display for Taxon {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
