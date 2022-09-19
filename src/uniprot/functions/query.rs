@@ -64,3 +64,16 @@ pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotI
         .collect();
     Ok(UniprotInfoContainer(results))
 }
+
+#[cfg(test)]
+mod testing {
+    use super::query;
+
+    #[test]
+    fn test_uniprot_query() {
+        let terms = vec!["AP2S1".to_string()];
+        let taxon = None;
+        let response = query(&terms, &taxon);
+        assert!(response.is_ok());
+    }
+}
