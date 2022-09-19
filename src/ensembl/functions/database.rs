@@ -13,7 +13,7 @@ pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
     } else {
         match filter {
             Some(f) => bail!(format!("No databases found with filter: {}", f)),
-            None => bail!("No databases found")
+            None => bail!("No databases found"),
         }
     }
 }

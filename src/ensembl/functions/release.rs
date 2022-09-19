@@ -1,5 +1,5 @@
-use anyhow::Result;
 use crate::ensembl::types::Releases;
+use anyhow::Result;
 use reqwest::blocking::Client;
 
 /// Returns the most recent release from Ensembl REST API

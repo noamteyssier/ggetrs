@@ -22,8 +22,8 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
 
 #[cfg(test)]
 mod testing {
-    use crate::ensembl::{ENSEMBL_RELEASE, DataType};
     use super::list_species;
+    use crate::ensembl::{DataType, ENSEMBL_RELEASE};
 
     #[test]
     fn test_list_species() {
