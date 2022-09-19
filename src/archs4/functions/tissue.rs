@@ -24,8 +24,8 @@ pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {
 
 #[cfg(test)]
 mod testing {
-    use crate::archs4::Species;
     use super::tissue;
+    use crate::archs4::Species;
 
     #[test]
     fn test_tissue() {
@@ -33,7 +33,10 @@ mod testing {
         let species = Species::Human;
         let results = tissue(symbol, &species).unwrap();
         assert!(results.results.len() > 1);
-        assert_eq!(results.results[0].id, "System.Connective Tissue.Bone marrow.BONE MARROW");
+        assert_eq!(
+            results.results[0].id,
+            "System.Connective Tissue.Bone marrow.BONE MARROW"
+        );
     }
 
     #[test]

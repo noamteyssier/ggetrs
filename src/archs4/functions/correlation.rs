@@ -16,8 +16,11 @@ pub fn correlation(gene_name: &str, count: usize) -> Result<Correlations> {
         .send()?
         .json::<ResultCorrelation>();
     match correlations {
-        Err(_) => bail!(format!("Could not parse response for symbol: {}", gene_name)),
-        Ok(rc) => Ok(rc.into())
+        Err(_) => bail!(format!(
+            "Could not parse response for symbol: {}",
+            gene_name
+        )),
+        Ok(rc) => Ok(rc.into()),
     }
 }
 

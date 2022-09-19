@@ -1,6 +1,6 @@
+use super::{correlation, tissue, Species};
 use anyhow::Result;
 use std::{fs::File, io::Write};
-use super::{correlation, tissue, Species};
 
 /// Main entrypoint to launching the `correlation` function for `ARCHS4`
 pub fn launch_archs4_correlation(
