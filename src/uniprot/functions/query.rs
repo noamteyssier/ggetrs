@@ -1,4 +1,7 @@
+use std::collections::HashMap;
+
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
+use anyhow::bail;
 use futures::future::join_all;
 use reqwest::{Client, Result};
 use serde_json::Value;
@@ -61,8 +64,13 @@ pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotI
         .into_iter()
         .filter_map(|x| x.expect("could not create results"))
         .map(|x| (x.query.to_string(), x))
-        .collect();
-    Ok(UniprotInfoContainer(results))
+        .collect::<HashMap<String, UniprotInfo>>();
+
+    if results.len() > 0 {
+        Ok(UniprotInfoContainer(results))
+    } else {
+        bail!(format!("Found no results for terms: {:?}", terms))
+    }
 }
 
 #[cfg(test)]
@@ -75,5 +83,13 @@ mod testing {
         let taxon = None;
         let response = query(&terms, &taxon);
         assert!(response.is_ok());
+    }
+
+    #[test]
+    fn test_uniprot_nonsense_query() {
+        let terms = vec!["AOSDKAPOWDNASD".to_string()];
+        let taxon = None;
+        let response = query(&terms, &taxon);
+        assert!(response.is_err());
     }
 }
