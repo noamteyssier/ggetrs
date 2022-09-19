@@ -1,7 +1,7 @@
-use anyhow::{Result, bail};
+use crate::ncbi::types::{Taxon, TaxonContainer};
+use anyhow::{bail, Result};
 use reqwest::blocking::Client;
 use serde_json::Value;
-use crate::ncbi::types::{Taxon, TaxonContainer};
 
 /// Finds taxon information from a string query
 pub fn taxons(query: &str, limit: usize) -> Result<TaxonContainer> {

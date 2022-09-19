@@ -1,5 +1,5 @@
-use anyhow::{Result, bail};
 use crate::ncbi::types::NcbiResults;
+use anyhow::{bail, Result};
 use reqwest::blocking::Client;
 use serde_json::Value;
 
@@ -26,8 +26,8 @@ pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults>
             } else {
                 bail!(format!("No results found for symbols: {:?}", symbols))
             }
-        },
-        None => bail!("Unable to parse response from NCBI")
+        }
+        None => bail!("Unable to parse response from NCBI"),
     }
 }
 
@@ -58,5 +58,4 @@ mod testing {
         let response = query_symbols(&symbols, taxon_id);
         assert!(response.is_err());
     }
-
 }

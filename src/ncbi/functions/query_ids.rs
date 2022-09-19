@@ -1,5 +1,5 @@
-use anyhow::{Result, bail};
 use crate::ncbi::types::NcbiResults;
+use anyhow::{bail, Result};
 use reqwest::blocking::Client;
 use serde_json::Value;
 
@@ -29,8 +29,8 @@ pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
             } else {
                 bail!(format!("No results found for ids: {:?}", ids))
             }
-        },
-        None => bail!("Unable to parse response from NCBI")
+        }
+        None => bail!("Unable to parse response from NCBI"),
     }
 }
 
