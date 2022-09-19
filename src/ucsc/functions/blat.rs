@@ -19,8 +19,8 @@ pub fn blat(sequence: &str, seqtype: &SeqType, db_name: &str) -> Result<BlatResu
 
 #[cfg(test)]
 mod testing {
-    use crate::ucsc::types::SeqType;
     use super::blat;
+    use crate::ucsc::types::SeqType;
 
     #[test]
     fn test_blat_short_seq() {
