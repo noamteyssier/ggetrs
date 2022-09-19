@@ -20,3 +20,24 @@ pub fn lookup_id(ensembl_ids: &[String]) -> Result<LookupResponse> {
         .json::<LookupResponse>()?;
     Ok(results)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::lookup_id;
+
+    #[test]
+    fn test_ensembl_lookup_id() {
+        let ensembl_ids = vec!["ENSG00000042753".to_string()]; // AP2S1
+        let response = lookup_id(&ensembl_ids).unwrap();
+        assert_eq!(response.0.len(), 1);
+        assert!(response.0.get("ENSG00000042753").unwrap().is_some())
+    }
+
+    #[test]
+    fn test_ensembl_lookup_id_nonsense() {
+        let ensembl_ids = vec!["AWDIAJWIDJIAWD".to_string()];
+        let response = lookup_id(&ensembl_ids).unwrap();
+        assert_eq!(response.0.len(), 1);
+        assert!(response.0.get("AWDIAJWIDJIAWD").unwrap().is_none())
+    }
+}

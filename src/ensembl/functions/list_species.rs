@@ -19,3 +19,17 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
 
     Ok(filelist)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::list_species;
+    use crate::ensembl::{DataType, ENSEMBL_RELEASE};
+
+    #[test]
+    fn test_list_species() {
+        let release = ENSEMBL_RELEASE;
+        let datatype = DataType::DNA;
+        let response = list_species(release, &datatype).unwrap();
+        assert!(response.len() > 1);
+    }
+}
