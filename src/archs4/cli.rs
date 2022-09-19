@@ -1,6 +1,5 @@
-use reqwest::Result;
+use anyhow::Result;
 use std::{fs::File, io::Write};
-
 use super::{correlation, tissue, Species};
 
 /// Main entrypoint to launching the `correlation` function for `ARCHS4`
@@ -13,7 +12,7 @@ pub fn launch_archs4_correlation(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{}", results)?;
             } else {
                 println!("{}", results);
             }
@@ -35,7 +34,7 @@ pub fn launch_archs4_tissue(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{}", results)?;
             } else {
                 println!("{}", results);
             }
