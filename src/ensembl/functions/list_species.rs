@@ -1,10 +1,13 @@
-use crate::ensembl::types::DataType;
-use anyhow::Result;
+use crate::{ensembl::types::DataType, utils::ping};
+use anyhow::{bail, Result};
 use ftp::FtpStream;
 
 /// List all available species for the provided release and datatype
 pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> {
     let site = "ftp.ensembl.org:21";
+    if !ping(site, 3) {
+        bail!("Ensembl ftp site is inaccessible. Try again later")
+    }
     let mut stream = FtpStream::connect(site)?;
     stream.login("anonymous", "anonymous")?;
     stream.cwd("pub")?;
@@ -23,13 +26,21 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
 #[cfg(test)]
 mod testing {
     use super::list_species;
-    use crate::ensembl::{DataType, ENSEMBL_RELEASE};
+    use crate::{
+        ensembl::{DataType, ENSEMBL_RELEASE},
+        utils::ping,
+    };
 
     #[test]
     fn test_list_species() {
-        let release = ENSEMBL_RELEASE;
-        let datatype = DataType::DNA;
-        let response = list_species(release, &datatype).unwrap();
-        assert!(response.len() > 1);
+        if ping("ftp.ensembl.org", 3) {
+            let release = ENSEMBL_RELEASE;
+            let datatype = DataType::DNA;
+            let response = list_species(release, &datatype).unwrap();
+            assert!(response.len() > 1);
+        } else {
+            // ensembl ftp is currently down - skip check
+            assert!(true)
+        }
     }
 }
