@@ -59,7 +59,7 @@ jobs:
 
       - name: Install prerequisites
         run: |
-          pip install maturin pytest
+          pip install maturin pytest requests
 
       - name: Develop Rust/Python Bindings
         run: |
