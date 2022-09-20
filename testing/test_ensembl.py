@@ -1,4 +1,13 @@
 import ggetrs
+import requests
+
+def ping_ensembl_ftp():
+    try:
+        requests.head("https://ftp.ensembl.org", timeout = 5)
+        return True
+    except:
+        # ensembl ftp server is down; skip check
+        return False
 
 def test_search_toplevel():
     search_terms = ["AP2S1"]
@@ -22,24 +31,27 @@ def test_database_nofilter():
     assert(len(results) > 1)
 
 def test_database_filter():
-    results = ggetrs.ensembl.database("homo_sapiens_core_107_38")
-    assert(isinstance(results, list))
-    assert(len(results) == 1)
-    assert(results[0] == "homo_sapiens_core_107_38")
+    if ping_ensembl_ftp():
+        results = ggetrs.ensembl.database("homo_sapiens_core_107_38")
+        assert(isinstance(results, list))
+        assert(len(results) == 1)
+        assert(results[0] == "homo_sapiens_core_107_38")
 
 def test_release():
     results = ggetrs.ensembl.release()
     assert(results == 107)
 
 def test_reference():
-    results = ggetrs.ensembl.reference(datatype=["dna"])
-    assert(isinstance(results, list))
-    assert(len(results) == 1)
-    assert(isinstance(results[0], dict))
-    assert(results[0]["url"] == "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
+    if ping_ensembl_ftp():
+        results = ggetrs.ensembl.reference(datatype=["dna"])
+        assert(isinstance(results, list))
+        assert(len(results) == 1)
+        assert(isinstance(results[0], dict))
+        assert(results[0]["url"] == "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
 
 def test_species():
-    results = ggetrs.ensembl.species()
-    assert(isinstance(results, list))
-    assert(len(results) > 1)
-    assert("homo_sapiens" in results)
+    if ping_ensembl_ftp():
+        results = ggetrs.ensembl.species()
+        assert(isinstance(results, list))
+        assert(len(results) > 1)
+        assert("homo_sapiens" in results)
