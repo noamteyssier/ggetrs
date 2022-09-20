@@ -5,7 +5,7 @@ use ftp::FtpStream;
 /// List all available species for the provided release and datatype
 pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> {
     let site = "ftp.ensembl.org:21";
-    if !ping(site, 3) {
+    if !ping("https://ftp.ensembl.org", 3) {
         bail!("Ensembl ftp site is inaccessible. Try again later")
     }
     let mut stream = FtpStream::connect(site)?;
