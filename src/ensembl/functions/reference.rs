@@ -1,12 +1,15 @@
-use crate::{ensembl::types::{DataType, FtpFile}, utils::ping};
+use crate::{
+    ensembl::types::{DataType, FtpFile},
+    utils::ping,
+};
 use anyhow::{bail, Result};
 use ftp::FtpStream;
 
 /// Queries a set of datatypes from Ensembl FTP
 pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result<Vec<FtpFile>> {
     let site = "ftp.ensembl.org:21";
-    if !ping(site, 3) { 
-        bail!("Ensembl ftp site is inaccessible. Try again later") 
+    if !ping(site, 3) {
+        bail!("Ensembl ftp site is inaccessible. Try again later")
     }
     let mut stream = FtpStream::connect(site)?;
     stream.login("anonymous", "anonymous")?;
@@ -95,6 +98,5 @@ mod testing {
             // ensembl ftp is currently down - skip check
             assert!(true)
         }
-
     }
 }

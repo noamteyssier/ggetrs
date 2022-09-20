@@ -1,5 +1,5 @@
-use std::time::Duration;
 use reqwest::blocking::Client;
+use std::time::Duration;
 
 /// Pings a provided url to see if it is accessible.
 ///

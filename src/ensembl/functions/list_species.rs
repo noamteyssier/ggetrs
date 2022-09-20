@@ -5,8 +5,8 @@ use ftp::FtpStream;
 /// List all available species for the provided release and datatype
 pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> {
     let site = "ftp.ensembl.org:21";
-    if !ping(site, 3) { 
-        bail!("Ensembl ftp site is inaccessible. Try again later") 
+    if !ping(site, 3) {
+        bail!("Ensembl ftp site is inaccessible. Try again later")
     }
     let mut stream = FtpStream::connect(site)?;
     stream.login("anonymous", "anonymous")?;
@@ -26,7 +26,10 @@ pub fn list_species(release: usize, datatype: &DataType) -> Result<Vec<String>> 
 #[cfg(test)]
 mod testing {
     use super::list_species;
-    use crate::{ensembl::{DataType, ENSEMBL_RELEASE}, utils::ping};
+    use crate::{
+        ensembl::{DataType, ENSEMBL_RELEASE},
+        utils::ping,
+    };
 
     #[test]
     fn test_list_species() {
@@ -39,6 +42,5 @@ mod testing {
             // ensembl ftp is currently down - skip check
             assert!(true)
         }
-
     }
 }
