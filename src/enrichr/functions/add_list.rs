@@ -27,3 +27,19 @@ pub fn add_list(gene_list: &[String]) -> Result<ResponseAddList> {
         .send()?
         .json::<ResponseAddList>()
 }
+
+#[cfg(test)]
+mod testing {
+    use super::add_list;
+
+    #[test]
+    fn test_add_list() {
+        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>();
+        let response = add_list(&gene_list).unwrap();
+        assert!(response.user_list_id > 1);
+        assert!(response.short_id.len() > 1);
+    }
+}
