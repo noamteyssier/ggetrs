@@ -37,7 +37,7 @@ jobs:
     - name: Install LLVM-Coverage
       uses: taiki-e/install-action@cargo-llvm-cov
     - name: Measure Coverage
-      run: cargo llvm-cov --lcov --output-path coverage.lcov
+      run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov
     - name: Upload Coverage
       uses: codecov/codecov-action@v3
       with:
