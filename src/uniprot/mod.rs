@@ -9,4 +9,4 @@ mod cli;
 
 pub use cli::launch_uniprot_query;
 pub use functions::query;
-pub use types::{UniprotInfo, UniprotInfoContainer};
+pub use types::{UniprotInfo, UniprotInfoContainer, UniprotSeq, UniprotSeqContainer};

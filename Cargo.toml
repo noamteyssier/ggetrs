@@ -8,6 +8,9 @@ edition = "2021"
 name = "ggetrs"
 crate-type = ["cdylib", "rlib"]
 
+[features]
+default = ["pyo3/extension-module"]
+
 [dependencies]
 anyhow = "1.0.64"
 clap = { version = "3.2.20", features = ["derive"] }

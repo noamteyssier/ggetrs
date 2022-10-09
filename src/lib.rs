@@ -36,6 +36,9 @@ pub mod utils;
 /// Module for Info command
 pub mod info;
 
+// Module for Sequence query
+pub mod seq;
+
 /// Useful generic type for Request Errors
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
