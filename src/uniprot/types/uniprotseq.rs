@@ -205,6 +205,6 @@ impl UniprotSeq {
     }
 
     pub fn to_fasta(&self) -> String {
-        format!(">sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={} \n{}\n\n", self.uniprot_id, self.uniprot_entry_name, self.protein_name, self.organism_name, self.taxon_id, self.primary_gene_name, self.protein_existence, self.sequence_version, self.sequence)
+        format!(">sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={} \n{}\n", self.uniprot_id, self.uniprot_entry_name, self.protein_name, self.organism_name, self.taxon_id, self.primary_gene_name, self.protein_existence, self.sequence_version, self.sequence)
     }
 }

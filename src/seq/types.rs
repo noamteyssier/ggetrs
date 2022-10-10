@@ -21,6 +21,6 @@ pub struct ResultSeq {
 
 impl ResultSeq{
     pub fn to_fasta(&self) -> String {
-        format!(">{} {}\n{}\n\n", self.id, self.desc, self.seq)
+        format!(">{} {}\n{}\n", self.id, self.desc, self.seq)
     }
 }

@@ -16,3 +16,22 @@ pub fn sequence(ensembl_ids: &Vec<String>) -> Result<ResultSeqContainer> {
         .json::<ResultSeqContainer>()?;
         Ok(response)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::sequence;
+
+    #[test]
+    fn test_seq_query() {
+        let terms = vec!["ENSG00000131095".to_string()];
+        let response = sequence(&terms);
+        assert!(response.is_ok());
+    }
+
+    #[test]
+    fn test_uniprot_nonsense_query() {
+        let terms = vec!["AOSDKAPOWDNASD".to_string()];
+        let response = sequence(&terms);
+        assert!(response.is_err());
+    }
+}
