@@ -86,6 +86,18 @@ pub enum Commands {
         output: Option<String>,
     },
 
+    /// Queries sequences from ensembl and UniProt
+    Seq {
+        /// Search terms to query
+        #[clap(value_parser, min_values = 1, required = true)]
+        ensembl_ids: Vec<String>,
+        #[clap(short, long, action)]
+        transcribe: bool,
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
+    },
+
     /// Queries information from Ensembl
     #[clap(subcommand)]
     Ensembl(ModEnsembl),

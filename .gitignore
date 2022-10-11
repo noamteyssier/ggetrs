@@ -10,3 +10,4 @@ Cargo.lock
 **/*.rs.bk
 
 **__pycache__**
+*DS_Store*

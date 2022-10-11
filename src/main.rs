@@ -14,7 +14,8 @@ use ggetrs::{
     pdb::{launch_pdb_resource, launch_pdb_structure},
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
-    RequestError,
+    RequestError, 
+    seq::launch_seq,
 };
 
 fn main() -> Result<(), RequestError> {
@@ -190,6 +191,13 @@ fn main() -> Result<(), RequestError> {
                 launch_ucsc_blat(sequence, seqtype, db_name, output)?;
             }
         },
+        Commands::Seq {
+            ensembl_ids,
+            transcribe,
+            output
+        } => {
+            launch_seq(ensembl_ids, &transcribe, output)?;
+        }
     };
 
     Ok(())

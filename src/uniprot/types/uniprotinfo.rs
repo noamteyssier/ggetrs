@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fmt};
 
-/// A container of [`UniprotInfo`]
+// A container for UniprotInfo
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfoContainer(pub HashMap<String, UniprotInfo>);
 impl fmt::Display for UniprotInfoContainer {
@@ -15,10 +15,19 @@ impl fmt::Display for UniprotInfoContainer {
     }
 }
 
+impl UniprotInfoContainer{
+    pub fn to_fasta(&self) -> String{
+        self.0.values().into_iter()
+        .map(|x| x.to_fasta())
+        .fold(String::new(), |acc, x| acc + &x)
+    }
+}
+
 /// A structure to handle the relevant results of a `Uniprot` query.
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfo {
     pub uniprot_id: String,
+    pub uniprot_entry_name: String,
     pub primary_gene_name: String,
     pub uniprot_synonyms: Vec<String>,
     pub protein_name: String,
@@ -27,6 +36,9 @@ pub struct UniprotInfo {
     pub pdb_id: Option<String>,
     pub taxon_id: usize,
     pub organism_name: String,
+    pub sequence: String,
+    pub sequence_version: usize,
+    pub protein_existence: String,
     pub query: String,
 }
 impl fmt::Display for UniprotInfo {
@@ -45,6 +57,7 @@ impl UniprotInfo {
             return None;
         }
         let uniprot_id = Self::get_uniprot_id(value);
+        let uniprot_entry_name = Self::get_uniprot_entry_name(value);
         let primary_gene_name = Self::get_primary_gene_name(value);
         let uniprot_synonyms = Self::get_uniprot_synonyms(value);
         let protein_name = Self::get_protein_names(value);
@@ -53,9 +66,13 @@ impl UniprotInfo {
         let pdb_id = Self::get_pdb_id(value);
         let taxon_id = Self::get_taxon_id(value);
         let organism_name = Self::get_organism_name(value);
+        let sequence = Self::get_protein_sequence(value);
+        let sequence_version = Self::get_sequence_version(value);
+        let protein_existence = Self::get_protein_existence(value);
         let query = query.to_string();
         Some(Self {
             uniprot_id,
+            uniprot_entry_name,
             primary_gene_name,
             uniprot_synonyms,
             protein_name,
@@ -64,6 +81,9 @@ impl UniprotInfo {
             pdb_id,
             taxon_id,
             organism_name,
+            sequence,
+            sequence_version,
+            protein_existence,
             query,
         })
     }
@@ -79,8 +99,22 @@ impl UniprotInfo {
             .to_string()
     }
 
+    fn get_uniprot_entry_name(value: &Value) -> String {
+        value["results"][0]["uniProtkbId"]
+            .as_str()
+            .unwrap()
+            .to_string()
+    }
+
     fn get_primary_gene_name(value: &Value) -> String {
         value["results"][0]["genes"][0]["geneName"]["value"]
+            .as_str()
+            .unwrap()
+            .to_string()
+    }
+
+    fn get_protein_sequence(value: &Value) -> String {
+        value["results"][0]["sequence"]["value"]
             .as_str()
             .unwrap()
             .to_string()
@@ -149,4 +183,26 @@ impl UniprotInfo {
             .unwrap()
             .to_string()
     }
+
+    fn get_sequence_version(value: &Value) -> usize {
+        value["results"][0]["entryAudit"]["sequenceVersion"]
+            .as_u64()
+            .expect("Missing sequence_version") as usize
+    }
+
+    fn get_protein_existence(value: &Value) -> String {
+        value["results"][0]["proteinExistence"]
+            .as_str()
+            .unwrap()
+            .to_string()
+            .chars()
+            .nth(0)
+            .unwrap()
+            .to_string()
+    }
+
+    pub fn to_fasta(&self) -> String {
+        format!(">sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={} \n{}\n", self.uniprot_id, self.uniprot_entry_name, self.protein_name, self.organism_name, self.taxon_id, self.primary_gene_name, self.protein_existence, self.sequence_version, self.sequence)
+    }
+
 }
