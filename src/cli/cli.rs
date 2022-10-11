@@ -93,6 +93,9 @@ pub enum Commands {
         ensembl_ids: Vec<String>,
         #[clap(short, long, action)]
         transcribe: bool,
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
     },
 
     /// Queries information from Ensembl

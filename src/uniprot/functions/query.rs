@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer, UniprotSeq, UniprotSeqContainer};
+use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use anyhow::bail;
 use futures::future::join_all;
 use reqwest::{Client, Result};
@@ -73,57 +73,6 @@ pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotI
     }
 }
 
-/// An asynchronous function which performs a query for seq
-async fn async_query_seq_uniprot(gene: &str, taxon: &Option<usize>) -> Result<Option<UniprotSeq>> {
-    let query = build_query_string(gene, taxon);
-    let url = format!(
-        "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
-        query
-    );
-    Client::new()
-        .get(url)
-        .header("content-type", "application/json")
-        .send()
-        .await?
-        .json::<Value>()
-        .await
-        .map(|x| UniprotSeq::from_value(&x, gene))
-}
-
-/// An asynchronous function which joins all the handles from `async_query_seq_uniprot`
-async fn async_query_seq_uniprot_multiple(
-    ensembl_ids: &[String],
-    taxon: &Option<usize>,
-) -> Result<Vec<Result<Option<UniprotSeq>>>> {
-    let query_handles = ensembl_ids.iter().map(|x| async_query_seq_uniprot(x, taxon));
-
-    let results = join_all(query_handles).await;
-    Ok(results)
-}
-
-/// A synchronous function to perform a query for each of the terms provided.
-pub fn query_seq(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotSeqContainer> {
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()?;
-
-    let results = rt
-        .block_on(async move {
-            async_query_seq_uniprot_multiple(terms, taxon)
-                .await
-                .expect("could not query uniprot")
-        })
-        .into_iter()
-        .filter_map(|x| x.expect("could not create results"))
-        .map(|x| (x.query.to_string(), x))
-        .collect::<HashMap<String, UniprotSeq>>();
-
-    if results.len() > 0 {
-        Ok(UniprotSeqContainer(results))
-    } else {
-        bail!(format!("Found no results for terms: {:?}", terms))
-    }
-}
 
 #[cfg(test)]
 mod testing {

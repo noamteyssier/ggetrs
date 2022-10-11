@@ -194,8 +194,9 @@ fn main() -> Result<(), RequestError> {
         Commands::Seq {
             ensembl_ids,
             transcribe,
+            output
         } => {
-            launch_seq(ensembl_ids, &transcribe)?;
+            launch_seq(ensembl_ids, &transcribe, output)?;
         }
     };
 
