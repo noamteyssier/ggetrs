@@ -5,15 +5,15 @@ env:
 jobs:
 
   ci:
-    needs: [test, docs, coverage, pytest]
+    needs: [build, test, docs, coverage, pytest]
     name: CI
     runs-on: 'ubuntu-latest'
     steps:
       - name: Done
         run: exit 0
 
-  test:
-    name: Test
+  build:
+    name: Build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -24,6 +24,14 @@ jobs:
         uses: taiki-e/install-action@nextest
       - name: Build
         run: cargo build --verbose
+
+  test:
+    name: Test
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
       - name: Test
         run: cargo nextest run --retries 10
 
@@ -53,10 +61,7 @@ jobs:
 
   pytest:
     name: Pytest
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
+    runs-on: "ubuntu-latest"
     defaults:
       run:
         shell: bash -l {0}
