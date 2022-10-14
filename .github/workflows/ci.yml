@@ -20,10 +20,12 @@ jobs:
         os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
     steps:
       - uses: actions/checkout@v3
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
       - name: Build
         run: cargo build --verbose
       - name: Test
-        run: cargo test --verbose
+        run: cargo nextest run --retries 10
 
   docs:
     name: Docs
@@ -37,10 +39,12 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v3
+    - name: Install nextest
+      uses: taiki-e/install-action@nextest
     - name: Install LLVM-Coverage
       uses: taiki-e/install-action@cargo-llvm-cov
     - name: Measure Coverage
-      run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov
+      run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov nextest --retries 10
     - name: Upload Coverage
       uses: codecov/codecov-action@v3
       with:
