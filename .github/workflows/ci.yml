@@ -46,7 +46,10 @@ jobs:
 
   pytest:
     name: Pytest
-    runs-on: "ubuntu-latest"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
     defaults:
       run:
         shell: bash -l {0}
