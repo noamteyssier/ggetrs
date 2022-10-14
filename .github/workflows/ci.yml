@@ -69,7 +69,7 @@ jobs:
 
       - name: Install prerequisites
         run: |
-          pip install maturin pytest requests
+          pip install maturin pytest requests pytest-rerunfailures
 
       - name: Develop Rust/Python Bindings
         run: |
@@ -77,4 +77,4 @@ jobs:
 
       - name: Test Python API
         run: |
-          pytest -v
+          pytest -v --reruns 10 --reruns-delay 1
