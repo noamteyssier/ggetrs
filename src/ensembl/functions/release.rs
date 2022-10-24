@@ -16,11 +16,12 @@ pub fn release() -> Result<usize> {
 
 #[cfg(test)]
 mod testing {
+    use crate::ensembl::ENSEMBL_RELEASE;
     use super::release;
 
     #[test]
     fn test_ensembl_release() {
         let release = release().unwrap();
-        assert_eq!(release, 107);
+        assert_eq!(release, ENSEMBL_RELEASE);
     }
 }
