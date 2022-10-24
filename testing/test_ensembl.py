@@ -1,5 +1,6 @@
 import ggetrs
 import requests
+ENSEMBL_RELEASE = 108
 
 def ping_ensembl_ftp():
     try:
@@ -47,7 +48,7 @@ def test_reference():
         assert(isinstance(results, list))
         assert(len(results) == 1)
         assert(isinstance(results[0], dict))
-        assert(results[0]["url"] == "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
+        assert(results[0]["url"] == f"http://ftp.ensembl.org/pub/release-{ENSEMBL_RELEASE}/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
 
 def test_species():
     if ping_ensembl_ftp():
