@@ -1,5 +1,6 @@
 import ggetrs
 import requests
+ENSEMBL_RELEASE = 108
 
 def ping_ensembl_ftp():
     try:
@@ -32,14 +33,14 @@ def test_database_nofilter():
 
 def test_database_filter():
     if ping_ensembl_ftp():
-        results = ggetrs.ensembl.database("homo_sapiens_core_107_38")
+        results = ggetrs.ensembl.database(f"homo_sapiens_core_{ENSEMBL_RELEASE}_38")
         assert(isinstance(results, list))
         assert(len(results) == 1)
-        assert(results[0] == "homo_sapiens_core_107_38")
+        assert(results[0] == f"homo_sapiens_core_{ENSEMBL_RELEASE}_38")
 
 def test_release():
     results = ggetrs.ensembl.release()
-    assert(results == 107)
+    assert(results == ENSEMBL_RELEASE)
 
 def test_reference():
     if ping_ensembl_ftp():
@@ -47,7 +48,7 @@ def test_reference():
         assert(isinstance(results, list))
         assert(len(results) == 1)
         assert(isinstance(results[0], dict))
-        assert(results[0]["url"] == "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
+        assert(results[0]["url"] == f"http://ftp.ensembl.org/pub/release-{ENSEMBL_RELEASE}/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz")
 
 def test_species():
     if ping_ensembl_ftp():
