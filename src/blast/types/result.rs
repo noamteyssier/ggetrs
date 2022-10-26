@@ -29,24 +29,30 @@ impl BlastResult {
             query: query.to_string(),
         }
     }
+    pub fn query(&self) -> &str {
+        &self.query
+    }
+    pub fn results(&self) -> &Vec<BlastHit> {
+        &self.results
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BlastHit {
-    num: usize,
-    id: String,
-    definition: String,
-    accession: String,
-    length: usize,
-    bit_score: f64,
-    score: usize,
-    evalue: f64,
-    gap_opens: usize,
-    alignment_length: usize,
-    query_start: usize,
-    query_end: usize,
-    subject_start: usize,
-    subject_end: usize,
+    pub num: usize,
+    pub id: String,
+    pub definition: String,
+    pub accession: String,
+    pub length: usize,
+    pub bit_score: f64,
+    pub score: usize,
+    pub evalue: f64,
+    pub gap_opens: usize,
+    pub alignment_length: usize,
+    pub query_start: usize,
+    pub query_end: usize,
+    pub subject_start: usize,
+    pub subject_end: usize,
 }
 impl BlastHit {
     fn from_hit(hit: &Hit) -> Self {
