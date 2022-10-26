@@ -65,7 +65,7 @@ impl PdbResource {
 #[cfg(test)]
 mod testing {
     use super::PdbResource;
-    use clap::ArgEnum;
+    use clap::ValueEnum;
 
     fn validate_enum(resource: PdbResource, _expected: PdbResource) {
         assert!(matches!(resource, _expected))
