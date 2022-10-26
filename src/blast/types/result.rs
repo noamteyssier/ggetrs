@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use std::fmt;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,7 +19,8 @@ impl BlastResult {
     pub fn from_blast_output(output: &BlastOutput, query: &str) -> Self {
         Self {
             results: output
-                .blast_output_iterations.iterations
+                .blast_output_iterations
+                .iterations
                 .iteration_hits
                 .hits
                 .iter()
@@ -63,7 +64,7 @@ impl BlastHit {
             subject_start: hit.statistics.hsp.subject_start,
             subject_end: hit.statistics.hsp.subject_end,
             gap_opens: hit.statistics.hsp.gap_opens,
-            alignment_length: hit.statistics.hsp.alignment_length
+            alignment_length: hit.statistics.hsp.alignment_length,
         }
     }
 }
@@ -71,7 +72,7 @@ impl BlastHit {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BlastOutput {
     #[serde(rename = "BlastOutput_iterations")]
-    blast_output_iterations: BlastOutputIterations
+    blast_output_iterations: BlastOutputIterations,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -87,13 +88,13 @@ struct Iteration {
     #[serde(rename = "Iteration_query-ID")]
     iteration_query_id: String,
     #[serde(rename = "Iteration_hits")]
-    iteration_hits: IterationHits
+    iteration_hits: IterationHits,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct IterationHits {
     #[serde(rename = "Hit")]
-    hits: Vec<Hit>
+    hits: Vec<Hit>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -109,17 +110,17 @@ struct Hit {
     #[serde(rename = "Hit_len")]
     length: usize,
     #[serde(rename = "Hit_hsps")]
-    statistics: HitStatistics
+    statistics: HitStatistics,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 struct HitStatistics {
     #[serde(rename = "Hsp")]
-    hsp: Hsp
+    hsp: Hsp,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct Hsp{
+struct Hsp {
     #[serde(rename = "Hsp_bit-score")]
     bit_score: f64,
     #[serde(rename = "Hsp_score")]
@@ -137,5 +138,5 @@ struct Hsp{
     #[serde(rename = "Hsp_gaps")]
     gap_opens: usize,
     #[serde(rename = "Hsp_align-len")]
-    alignment_length: usize
+    alignment_length: usize,
 }

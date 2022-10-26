@@ -16,8 +16,8 @@ pub fn release() -> Result<usize> {
 
 #[cfg(test)]
 mod testing {
-    use crate::ensembl::ENSEMBL_RELEASE;
     use super::release;
+    use crate::ensembl::ENSEMBL_RELEASE;
 
     #[test]
     fn test_ensembl_release() {

@@ -1,5 +1,8 @@
 use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
-use crate::{ensembl::ENSEMBL_RELEASE_STR, blast::types::{BlastProgram, BlastDatabase}};
+use crate::{
+    blast::types::{BlastDatabase, BlastProgram},
+    ensembl::ENSEMBL_RELEASE_STR,
+};
 use clap::{AppSettings, Parser, Subcommand};
 
 #[derive(Parser)]
@@ -34,7 +37,6 @@ pub enum Commands {
 
     /// Performs a BLAST query for a given sequence
     Blast {
-
         /// query sequence to BLAST
         #[clap(value_parser, min_values = 1, required = true)]
         query: String,

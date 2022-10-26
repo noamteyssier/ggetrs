@@ -1,9 +1,12 @@
+use crate::blast::{
+    functions::{parse_qblast_info, parse_rid, parse_rtoe},
+    types::BlastResult,
+};
 use anyhow::{bail, Result};
 use chrono::Utc;
 use reqwest::blocking::Client;
-use crate::blast::{functions::{parse_rid, parse_rtoe, parse_qblast_info}, types::BlastResult};
 
-use super::{BlastProgram, BlastDatabase, BlastStatus};
+use super::{BlastDatabase, BlastProgram, BlastStatus};
 
 #[derive(Debug, Default)]
 pub struct BlastQuery {

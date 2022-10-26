@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ResultSeqContainer(pub Vec<ResultSeq>);
 
-impl ResultSeqContainer{
-    pub fn to_fasta(&self) -> String{
+impl ResultSeqContainer {
+    pub fn to_fasta(&self) -> String {
         self.0
-        .iter()
-        .map(|x| x.to_fasta())
-        .fold(String::new(), |acc, x| acc + &x)
+            .iter()
+            .map(|x| x.to_fasta())
+            .fold(String::new(), |acc, x| acc + &x)
     }
 }
 
@@ -19,7 +19,7 @@ pub struct ResultSeq {
     pub id: String,
 }
 
-impl ResultSeq{
+impl ResultSeq {
     pub fn to_fasta(&self) -> String {
         format!(">{} {}\n{}\n", self.id, self.desc, self.seq)
     }

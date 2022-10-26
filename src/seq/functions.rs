@@ -1,23 +1,21 @@
-use anyhow::{Result, bail};
-use serde_json::json;
-use reqwest::blocking::Client;
 use super::ResultSeqContainer;
+use anyhow::{bail, Result};
+use reqwest::blocking::Client;
+use serde_json::json;
 
 pub fn sequence(ensembl_ids: &Vec<String>) -> Result<ResultSeqContainer> {
-    if !ensembl_ids.iter().all(|x| x.starts_with("ENS")){
+    if !ensembl_ids.iter().all(|x| x.starts_with("ENS")) {
         bail!("All provided identifiers must be ensembl Ids.")
     }
     let ensembl_url = "http://rest.ensembl.org/sequence/id";
-    let data = json!({
-        "ids": ensembl_ids
-    });
+    let data = json!({ "ids": ensembl_ids });
     let response: ResultSeqContainer = Client::new()
         .post(ensembl_url)
         .header("content-type", "application/json")
         .json(&data)
         .send()?
         .json::<ResultSeqContainer>()?;
-        Ok(response)
+    Ok(response)
 }
 
 #[cfg(test)]

@@ -3,7 +3,7 @@ use anyhow::{bail, Result};
 pub enum BlastStatus {
     Waiting,
     Unknown,
-    Ready
+    Ready,
 }
 impl BlastStatus {
     pub fn from_str(value: &str) -> Result<Self> {
@@ -11,7 +11,7 @@ impl BlastStatus {
             "WAITING" => Ok(Self::Waiting),
             "UNKNOWN" => Ok(Self::Unknown),
             "READY" => Ok(Self::Ready),
-            _ => bail!(format!("Unexpected request status found: {value}"))
+            _ => bail!(format!("Unexpected request status found: {value}")),
         }
     }
 }

@@ -15,8 +15,8 @@ pub fn parse_qblast_info(text: &str, key: &str) -> Result<String> {
                     s
                 });
             Ok(value)
-        },
-        None => bail!("Could not find query string")
+        }
+        None => bail!("Could not find query string"),
     }
 }
 

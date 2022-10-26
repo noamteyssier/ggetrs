@@ -18,30 +18,28 @@ impl BlastProgram {
             Self::Blastx => "blastx",
             Self::Tblastn => "tblastn",
             Self::Tblastx => "tblastx",
-        }.to_string()
+        }
+        .to_string()
     }
     pub fn from_sequence(sequence: &str) -> Result<Self> {
         let sequence = sequence.to_uppercase();
-        let mut known_characters = sequence
-            .chars()
-            .map(|c| match c {
-                'A'|'C'|'G'|'T'|'R'|'N'|'D'|'Q'|'E'|'H'|'I'|'L'|'K'|'M'|'F'|'P'|'S'|'W'|'Y'|'V'|'B'|'Z' => Ok(c),
-                _ => bail!("Unexpected character: {c}"),
-            });
+        let mut known_characters = sequence.chars().map(|c| match c {
+            'A' | 'C' | 'G' | 'T' | 'R' | 'N' | 'D' | 'Q' | 'E' | 'H' | 'I' | 'L' | 'K' | 'M'
+            | 'F' | 'P' | 'S' | 'W' | 'Y' | 'V' | 'B' | 'Z' => Ok(c),
+            _ => bail!("Unexpected character: {c}"),
+        });
 
         let mut is_nucl = true;
         while let Some(potential_c) = known_characters.next() {
             match potential_c {
-                Ok(c) => {
-                    match c {
-                        'A' | 'C' | 'G' | 'T' => {continue},
-                        _ => {
-                            is_nucl = false;
-                            break;
-                        }
+                Ok(c) => match c {
+                    'A' | 'C' | 'G' | 'T' => continue,
+                    _ => {
+                        is_nucl = false;
+                        break;
                     }
                 },
-                Err(e) => return Err(e)
+                Err(e) => return Err(e),
             }
         }
         if is_nucl {
@@ -68,12 +66,13 @@ impl BlastDatabase {
         match &self {
             Self::Nt => "nt",
             Self::Nr => "nr",
-            Self::RefseqRna=> "refseq_rna",
+            Self::RefseqRna => "refseq_rna",
             Self::RefseqProtein => "refseq_protein",
             Self::Swissprot => "swissprot",
             Self::Pdbaa => "pdbaa",
             Self::Pdbnt => "pdbnt",
-        }.to_string()
+        }
+        .to_string()
     }
     pub fn from_program(program: &BlastProgram) -> Self {
         match program {
