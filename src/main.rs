@@ -1,6 +1,7 @@
 use clap::Parser;
 use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
+    blast::cli::launch_blast,
     chembl::launch_chembl_activity,
     cli::{Cli, Commands, ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot},
     enrichr::launch_enrich,
@@ -12,10 +13,10 @@ use ggetrs::{
     info::launch_info,
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
     pdb::{launch_pdb_resource, launch_pdb_structure},
+    seq::launch_seq,
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
-    RequestError, 
-    seq::launch_seq,
+    RequestError,
 };
 
 fn main() -> Result<(), RequestError> {
@@ -194,9 +195,30 @@ fn main() -> Result<(), RequestError> {
         Commands::Seq {
             ensembl_ids,
             transcribe,
-            output
+            output,
         } => {
             launch_seq(ensembl_ids, &transcribe, output)?;
+        }
+        Commands::Blast {
+            query,
+            program,
+            database,
+            limit,
+            expect,
+            low_comp_filter,
+            megablast,
+            output,
+        } => {
+            launch_blast(
+                &query,
+                &program,
+                &database,
+                *limit,
+                *expect,
+                *low_comp_filter,
+                *megablast,
+                output,
+            )?;
         }
     };
 

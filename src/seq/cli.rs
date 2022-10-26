@@ -1,10 +1,13 @@
-use anyhow::Result;
 use super::sequence;
 use crate::uniprot::functions::query;
+use anyhow::Result;
 use std::{fs::File, io::Write};
 
-pub fn launch_seq(ensembl_ids: &Vec<String>, &transcribe: &bool, output: &Option<String>) -> Result<()> {
-
+pub fn launch_seq(
+    ensembl_ids: &Vec<String>,
+    &transcribe: &bool,
+    output: &Option<String>,
+) -> Result<()> {
     if transcribe {
         let results = query(ensembl_ids, &None)?;
         match output {
@@ -19,8 +22,7 @@ pub fn launch_seq(ensembl_ids: &Vec<String>, &transcribe: &bool, output: &Option
                 print!("{}", results.to_fasta());
             }
         }
-    }
-    else {
+    } else {
         let results = sequence(ensembl_ids)?;
         match output {
             Some(path) => {

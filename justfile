@@ -22,6 +22,9 @@ doc:
   cargo doc \
     --verbose
 
+test:
+  cargo nextest run --retries 10
+
 lint: build
   cargo clippy -- \
     -W clippy::pedantic \

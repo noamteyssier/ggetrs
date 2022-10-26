@@ -73,7 +73,6 @@ pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotI
     }
 }
 
-
 #[cfg(test)]
 mod testing {
     use super::query;
