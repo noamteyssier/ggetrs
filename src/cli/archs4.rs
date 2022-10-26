@@ -10,11 +10,11 @@ pub enum ModArchS4 {
         gene_name: String,
 
         /// number of values to recover
-        #[clap(short, long, value_parser, default_value = "100")]
+        #[clap(short, long, default_value = "100")]
         count: usize,
 
         /// output filepath to write to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
     /// Perform a tissue-enrichment analysis
@@ -24,11 +24,11 @@ pub enum ModArchS4 {
         gene_name: String,
 
         /// number of values to recover
-        #[clap(short, long, value_parser, default_value = "human")]
+        #[clap(short, long, default_value = "human")]
         species: Species,
 
         /// output filepath to write to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
 }
