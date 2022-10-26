@@ -15,7 +15,7 @@ use ggetrs::{
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
     RequestError, 
-    seq::launch_seq,
+    seq::launch_seq, blast::cli::launch_blast,
 };
 
 fn main() -> Result<(), RequestError> {
@@ -197,6 +197,9 @@ fn main() -> Result<(), RequestError> {
             output
         } => {
             launch_seq(ensembl_ids, &transcribe, output)?;
+        },
+        Commands::Blast { query, program, database, limit, expect, low_comp_filter, megablast } => {
+            launch_blast(&query, &program, &database, *limit, *expect, *low_comp_filter, *megablast)?;
         }
     };
 

@@ -6,6 +6,9 @@ pub mod enrichr;
 /// `ARCHS4` submodule
 pub mod archs4;
 
+/// `BLAST` submodule
+pub mod blast;
+
 /// Command Line Interface
 pub mod cli;
 
