@@ -1,5 +1,6 @@
 use anyhow::{bail, Result};
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum BlastStatus {
     Waiting,
     Unknown,
