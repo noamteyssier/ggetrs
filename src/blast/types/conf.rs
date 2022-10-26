@@ -1,7 +1,7 @@
 use anyhow::{bail, Result};
 use clap::clap_derive::ArgEnum;
 
-#[derive(Debug, Default, ArgEnum, Clone, Copy)]
+#[derive(Debug, Default, ArgEnum, Clone, Copy, Eq, PartialEq)]
 pub enum BlastProgram {
     #[default]
     Blastn,
@@ -50,7 +50,7 @@ impl BlastProgram {
     }
 }
 
-#[derive(Debug, Default, ArgEnum, Clone, Copy)]
+#[derive(Debug, Default, ArgEnum, Clone, Copy, Eq, PartialEq)]
 pub enum BlastDatabase {
     #[default]
     Nt,
@@ -80,5 +80,45 @@ impl BlastDatabase {
             BlastProgram::Blastp => Self::Nr,
             _ => Self::Nt,
         }
+    }
+}
+
+#[cfg(test)]
+mod testing {
+    use super::{BlastProgram, BlastDatabase};
+
+    #[test]
+    fn test_blast_program_from_sequence_nt() {
+        let sequence = "ACTGAG";
+        let program = BlastProgram::from_sequence(sequence).unwrap();
+        assert_eq!(program, BlastProgram::Blastn);
+    }
+    
+    #[test]
+    fn test_blast_program_from_sequence_aa() {
+        let sequence = "MSVRAA";
+        let program = BlastProgram::from_sequence(sequence).unwrap();
+        assert_eq!(program, BlastProgram::Blastp);
+    }
+    
+    #[test]
+    fn test_blast_program_from_sequence_err() {
+        let sequence = "ACTGJA";
+        let program = BlastProgram::from_sequence(sequence);
+        assert!(program.is_err());
+    }
+
+    #[test]
+    fn test_blast_database_from_program_nt() {
+        let program = BlastProgram::Blastn;
+        let database = BlastDatabase::from_program(&program);
+        assert_eq!(database, BlastDatabase::Nt);
+    }
+    
+    #[test]
+    fn test_blast_database_from_program_nr() {
+        let program = BlastProgram::Blastp;
+        let database = BlastDatabase::from_program(&program);
+        assert_eq!(database, BlastDatabase::Nr);
     }
 }
