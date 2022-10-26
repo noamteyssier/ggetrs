@@ -198,8 +198,8 @@ fn main() -> Result<(), RequestError> {
         } => {
             launch_seq(ensembl_ids, &transcribe, output)?;
         },
-        Commands::Blast { query, program, database, limit, expect, low_comp_filter, megablast } => {
-            launch_blast(&query, &program, &database, *limit, *expect, *low_comp_filter, *megablast)?;
+        Commands::Blast { query, program, database, limit, expect, low_comp_filter, megablast, output } => {
+            launch_blast(&query, &program, &database, *limit, *expect, *low_comp_filter, *megablast, output)?;
         }
     };
 
