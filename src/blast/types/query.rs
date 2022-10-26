@@ -76,7 +76,6 @@ impl BlastQuery {
         Ok(())
     }
 
-
     pub fn status(&self) -> Result<BlastStatus> {
         let url = "https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get";
         let poll_url = format!("{url}&RID={}&FORMAT_OBJECT=SearchInfo", self.rid);
@@ -104,25 +103,16 @@ impl BlastQuery {
 
 #[cfg(test)]
 mod testing {
-    use crate::blast::types::{BlastProgram, BlastDatabase};
+    use crate::blast::types::{BlastDatabase, BlastProgram};
 
     use super::BlastQuery;
-
 
     #[test]
     fn test_blast_query() {
         let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
         let program = BlastProgram::from_sequence(&sequence).unwrap();
         let database = BlastDatabase::from_program(&program);
-        let query = BlastQuery::new(
-            program,
-            database,
-            sequence,
-            1,
-            10.0,
-            false,
-            true,
-        ).unwrap();
+        let query = BlastQuery::new(program, database, sequence, 1, 10.0, false, true).unwrap();
         assert!(!query.rid.is_empty());
         assert!(!query.rtoe != 0);
     }
@@ -132,16 +122,7 @@ mod testing {
         let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
         let program = BlastProgram::from_sequence(&sequence).unwrap();
         let database = BlastDatabase::from_program(&program);
-        let query = BlastQuery::new(
-            program,
-            database,
-            sequence,
-            1,
-            10.0,
-            false,
-            true,
-        ).unwrap();
+        let query = BlastQuery::new(program, database, sequence, 1, 10.0, false, true).unwrap();
         query.status().unwrap();
     }
-
 }

@@ -1,6 +1,6 @@
+use crate::blast::types::BlastStatus;
 use anyhow::{bail, Result};
 use regex::Regex;
-use crate::blast::types::BlastStatus;
 
 fn parse_qblast_info(text: &str, key: &str) -> Result<String> {
     let re = Regex::new(key)?;

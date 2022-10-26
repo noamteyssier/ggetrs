@@ -85,7 +85,7 @@ impl BlastDatabase {
 
 #[cfg(test)]
 mod testing {
-    use super::{BlastProgram, BlastDatabase};
+    use super::{BlastDatabase, BlastProgram};
 
     #[test]
     fn test_blast_program_from_sequence_nt() {
@@ -93,14 +93,14 @@ mod testing {
         let program = BlastProgram::from_sequence(sequence).unwrap();
         assert_eq!(program, BlastProgram::Blastn);
     }
-    
+
     #[test]
     fn test_blast_program_from_sequence_aa() {
         let sequence = "MSVRAA";
         let program = BlastProgram::from_sequence(sequence).unwrap();
         assert_eq!(program, BlastProgram::Blastp);
     }
-    
+
     #[test]
     fn test_blast_program_from_sequence_err() {
         let sequence = "ACTGJA";
@@ -114,7 +114,7 @@ mod testing {
         let database = BlastDatabase::from_program(&program);
         assert_eq!(database, BlastDatabase::Nt);
     }
-    
+
     #[test]
     fn test_blast_database_from_program_nr() {
         let program = BlastProgram::Blastp;

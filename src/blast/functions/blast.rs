@@ -66,7 +66,7 @@ pub fn blast(
 
 #[cfg(test)]
 mod testing {
-    use crate::blast::types::{BlastProgram, BlastDatabase};
+    use crate::blast::types::{BlastDatabase, BlastProgram};
 
     use super::blast;
 
@@ -75,7 +75,16 @@ mod testing {
         let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
         let program = BlastProgram::from_sequence(sequence).unwrap();
         let database = BlastDatabase::from_program(&program);
-        let result = blast(sequence, &Some(program), &Some(database), 1, 10.0, false, true).unwrap();
+        let result = blast(
+            sequence,
+            &Some(program),
+            &Some(database),
+            1,
+            10.0,
+            false,
+            true,
+        )
+        .unwrap();
         println!("{:#?}", result);
         assert_eq!(result.query(), sequence);
         assert_eq!(result.results().len(), 1);
