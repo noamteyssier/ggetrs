@@ -41,11 +41,11 @@ pub enum Commands {
         #[clap(value_parser, min_values = 1, required = true)]
         query: String,
 
-        /// blast program to use: One of blastn, blastp, blastx, tblastn, tblastx
+        /// blast program to use
         #[clap(short, long, value_parser)]
         program: Option<BlastProgram>,
 
-        /// blast database to use: https://ncbi.github.io/blast-cloud/blastdb/available-blastdbs.html
+        /// blast database to use
         #[clap(short, long, value_parser)]
         database: Option<BlastDatabase>,
 
