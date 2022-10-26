@@ -101,3 +101,47 @@ impl BlastQuery {
         Ok(result)
     }
 }
+
+#[cfg(test)]
+mod testing {
+    use crate::blast::types::{BlastProgram, BlastDatabase};
+
+    use super::BlastQuery;
+
+
+    #[test]
+    fn test_blast_query() {
+        let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
+        let program = BlastProgram::from_sequence(&sequence).unwrap();
+        let database = BlastDatabase::from_program(&program);
+        let query = BlastQuery::new(
+            program,
+            database,
+            sequence,
+            1,
+            10.0,
+            false,
+            true,
+        ).unwrap();
+        assert!(!query.rid.is_empty());
+        assert!(!query.rtoe != 0);
+    }
+
+    #[test]
+    fn test_blast_status() {
+        let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
+        let program = BlastProgram::from_sequence(&sequence).unwrap();
+        let database = BlastDatabase::from_program(&program);
+        let query = BlastQuery::new(
+            program,
+            database,
+            sequence,
+            1,
+            10.0,
+            false,
+            true,
+        ).unwrap();
+        query.status().unwrap();
+    }
+
+}
