@@ -1,7 +1,7 @@
 use anyhow::{bail, Result};
-use clap::clap_derive::ArgEnum;
+use clap::clap_derive::ValueEnum;
 
-#[derive(Debug, Default, ArgEnum, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Default, ValueEnum, Clone, Copy, Eq, PartialEq)]
 pub enum BlastProgram {
     #[default]
     Blastn,
@@ -50,7 +50,7 @@ impl BlastProgram {
     }
 }
 
-#[derive(Debug, Default, ArgEnum, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Default, ValueEnum, Clone, Copy, Eq, PartialEq)]
 pub enum BlastDatabase {
     #[default]
     Nt,

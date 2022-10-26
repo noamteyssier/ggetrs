@@ -3,12 +3,12 @@ use crate::{
     blast::types::{BlastDatabase, BlastProgram},
     ensembl::ENSEMBL_RELEASE_STR,
 };
-use clap::{AppSettings, Parser, Subcommand};
+use clap::{Parser, Subcommand};
+use clap_complete::Shell;
 
 #[derive(Parser)]
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
-#[clap(global_setting(AppSettings::DeriveDisplayOrder))]
 pub struct Cli {
     #[clap(subcommand)]
     pub command: Commands,
@@ -19,15 +19,15 @@ pub enum Commands {
     /// Perform an enrichment analysis on a list of genes using Enrichr.
     Enrichr {
         /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         library: String,
 
         /// optional filepath to write output to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
 
         /// list of gene symbols to perform enrichment analysis on.
-        #[clap(value_parser, min_values = 1, required = true)]
+        #[clap(value_parser, required = true)]
         gene_list: Vec<String>,
     },
 
@@ -38,23 +38,23 @@ pub enum Commands {
     /// Performs a BLAST query for a given sequence
     Blast {
         /// query sequence to BLAST
-        #[clap(value_parser, min_values = 1, required = true)]
+        #[clap(value_parser, required = true)]
         query: String,
 
         /// blast program to use
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         program: Option<BlastProgram>,
 
         /// blast database to use
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         database: Option<BlastDatabase>,
 
         /// Number of hits to return
-        #[clap(short, long, value_parser, default_value = "50")]
+        #[clap(short, long, default_value = "50")]
         limit: usize,
 
         /// Minimum expected value to consider
-        #[clap(short, long, value_parser, default_value = "10.0")]
+        #[clap(short, long, default_value = "10.0")]
         expect: f64,
 
         /// Whether to use a complexity filter (default = false)
@@ -66,7 +66,7 @@ pub enum Commands {
         megablast: bool,
 
         /// optional filepath to write output to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
 
@@ -77,62 +77,62 @@ pub enum Commands {
     /// Searches through descriptions on ENSEMBL
     Search {
         /// Search terms to query
-        #[clap(value_parser, min_values = 1, required = true)]
+        #[clap(value_parser, required = true)]
         search_terms: Vec<String>,
 
         /// database
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         database: Option<String>,
 
         /// species used in database
-        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
+        #[clap(short, long, default_value = "homo_sapiens")]
         species: String,
 
         /// database type specied by Ensembl
-        #[clap(short = 't', long, value_parser, default_value = "core")]
+        #[clap(short = 't', long, default_value = "core")]
         db_type: String,
 
         /// release number to use for database
-        #[clap(short, long, value_parser, default_value=ENSEMBL_RELEASE_STR)]
+        #[clap(short, long, default_value=ENSEMBL_RELEASE_STR)]
         release: usize,
 
         /// assembly to use for species
-        #[clap(short, long, value_parser, default_value = "38")]
+        #[clap(short, long, default_value = "38")]
         assembly: String,
 
         /// optional filepath to write output to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
 
     /// Queries symbols or Ensembl IDs across multiple databases and aggregates results
     Info {
         /// Search terms to query
-        #[clap(value_parser, min_values = 1, required = true)]
+        #[clap(required = true)]
         search_terms: Vec<String>,
 
         /// Taxon ID to use: currently this MUST match the taxon_id
-        #[clap(short, long, value_parser, default_value = "homo_sapiens")]
+        #[clap(short, long, default_value = "homo_sapiens")]
         species: String,
 
         /// Taxon ID to use: currently this MUST match the species
-        #[clap(short, long, value_parser, default_value = "9606")]
+        #[clap(short, long, default_value = "9606")]
         taxon_id: usize,
 
         /// optional filepath to write output to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
 
     /// Queries sequences from ensembl and UniProt
     Seq {
         /// Search terms to query
-        #[clap(value_parser, min_values = 1, required = true)]
+        #[clap(value_parser, required = true)]
         ensembl_ids: Vec<String>,
         #[clap(short, long, action)]
         transcribe: bool,
         /// optional filepath to write output to [default=stdout]
-        #[clap(short, long, value_parser)]
+        #[clap(short, long)]
         output: Option<String>,
     },
 
@@ -155,4 +155,12 @@ pub enum Commands {
     /// Retrieves information from UCSC Genome Browser
     #[clap(subcommand)]
     Ucsc(ModUcsc),
+
+    /// Set up autocomplete for various shells
+    Autocomplete {
+
+        /// Shell to generate autocompletions for
+        #[clap(short, long)]
+        shell: Shell
+    }
 }

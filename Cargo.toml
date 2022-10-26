@@ -1,6 +1,6 @@
 [package]
 name = "ggetrs"
-version = "0.1.50"
+version = "0.1.51"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -14,7 +14,8 @@ default = ["pyo3/extension-module"]
 [dependencies]
 anyhow = "1.0.64"
 chrono = "0.4.22"
-clap = { version = "3.2.20", features = ["derive"] }
+clap = { version = "4.0.18", features = ["derive"] }
+clap_complete = "4.0.3"
 ftp = "3.0.1"
 futures = "0.3.24"
 mysql = "22.2.0"

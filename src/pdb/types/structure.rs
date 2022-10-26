@@ -19,7 +19,7 @@ impl fmt::Display for PdbFormat {
 #[cfg(test)]
 mod testing {
     use super::PdbFormat;
-    use clap::ArgEnum;
+    use clap::ValueEnum;
 
     fn validate_enum(resource: PdbFormat, _expected: PdbFormat) {
         assert!(matches!(resource, _expected))

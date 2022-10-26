@@ -1,5 +1,5 @@
 use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
-use clap::ArgEnum;
+use clap::ValueEnum;
 use pyo3::{
     pyfunction,
     types::{PyDict, PyModule},

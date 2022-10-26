@@ -1,5 +1,5 @@
 use super::{correlation, tissue, Species};
-use clap::ArgEnum;
+use clap::ValueEnum;
 use pyo3::{
     pyfunction,
     types::{PyDict, PyModule},

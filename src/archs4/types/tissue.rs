@@ -1,10 +1,10 @@
-use clap::clap_derive::ArgEnum;
+use clap::clap_derive::ValueEnum;
 use pyo3::{types::PyDict, PyResult, Python};
 use serde::Serialize;
 use std::fmt;
 
 /// The currently supported species for tissue expression in `ARCHS4`
-#[derive(ArgEnum, Debug, Clone, Default)]
+#[derive(ValueEnum, Debug, Clone, Default)]
 pub enum Species {
     #[default]
     Human,
