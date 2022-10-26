@@ -1,5 +1,5 @@
 use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
-use crate::ensembl::ENSEMBL_RELEASE_STR;
+use crate::{ensembl::ENSEMBL_RELEASE_STR, blast::types::{BlastProgram, BlastDatabase}};
 use clap::{AppSettings, Parser, Subcommand};
 
 #[derive(Parser)]
@@ -31,6 +31,38 @@ pub enum Commands {
     /// Queries gene-specific information using ARCHS4
     #[clap(subcommand)]
     ARCHS4(ModArchS4),
+
+    /// Performs a BLAST query for a given sequence
+    Blast {
+
+        /// query sequence to BLAST
+        #[clap(value_parser, min_values = 1, required = true)]
+        query: String,
+
+        /// blast program to use: One of blastn, blastp, blastx, tblastn, tblastx
+        #[clap(short, long, value_parser)]
+        program: Option<BlastProgram>,
+
+        /// blast database to use: https://ncbi.github.io/blast-cloud/blastdb/available-blastdbs.html
+        #[clap(short, long, value_parser)]
+        database: Option<BlastDatabase>,
+
+        /// Number of hits to return
+        #[clap(short, long, value_parser, default_value = "50")]
+        limit: usize,
+
+        /// Minimum expected value to consider
+        #[clap(short, long, value_parser, default_value = "10.0")]
+        expect: f64,
+
+        /// Whether to use a complexity filter (default = false)
+        #[clap(short = 'f', long)]
+        low_comp_filter: bool,
+
+        /// Whether to use MEGABLAST (default = true)
+        #[clap(short, long)]
+        megablast: bool,
+    },
 
     /// Queries information from Chembl Chemical Database
     #[clap(subcommand)]
