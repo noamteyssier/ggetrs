@@ -62,6 +62,10 @@ pub enum Commands {
         /// Whether to use MEGABLAST (default = true)
         #[clap(short, long)]
         megablast: bool,
+
+        /// optional filepath to write output to [default=stdout]
+        #[clap(short, long, value_parser)]
+        output: Option<String>,
     },
 
     /// Queries information from Chembl Chemical Database
