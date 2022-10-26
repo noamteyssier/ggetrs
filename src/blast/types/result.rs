@@ -1,11 +1,22 @@
 use serde::{Serialize, Deserialize};
+use std::fmt;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BlastResult {
-    results: Vec<BlastHit>
+    query: String,
+    results: Vec<BlastHit>,
+}
+impl fmt::Display for BlastResult {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            serde_json::to_string_pretty(&self).expect("cannot serialize")
+        )
+    }
 }
 impl BlastResult {
-    pub fn from_blast_output(output: &BlastOutput) -> Self {
+    pub fn from_blast_output(output: &BlastOutput, query: &str) -> Self {
         Self {
             results: output
                 .blast_output_iterations.iterations
@@ -13,7 +24,8 @@ impl BlastResult {
                 .hits
                 .iter()
                 .map(|x| BlastHit::from_hit(x))
-                .collect()
+                .collect(),
+            query: query.to_string(),
         }
     }
 }

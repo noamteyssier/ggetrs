@@ -101,7 +101,7 @@ impl BlastQuery {
             .send()?
             .text()?;
         let output = serde_xml_rs::from_str(&response)?;
-        let result = BlastResult::from_blast_output(&output);
+        let result = BlastResult::from_blast_output(&output, &self.query);
         Ok(result)
     }
 }
