@@ -1,8 +1,8 @@
 use crate::blast::{
-    functions::{parse_qblast_info, parse_rid, parse_rtoe},
+    functions::{parse_rid, parse_rtoe, parse_status},
     types::BlastResult,
 };
-use anyhow::{bail, Result};
+use anyhow::Result;
 use chrono::Utc;
 use reqwest::blocking::Client;
 
@@ -76,13 +76,6 @@ impl BlastQuery {
         Ok(())
     }
 
-    fn parse_status(&self, text: &str) -> Result<BlastStatus> {
-        if let Ok(value) = parse_qblast_info(text, "      Status=") {
-            BlastStatus::from_str(&value)
-        } else {
-            bail!("No status found in response");
-        }
-    }
 
     pub fn status(&self) -> Result<BlastStatus> {
         let url = "https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get";
@@ -92,7 +85,7 @@ impl BlastQuery {
             .header("User-Agent", format!("ggetrs_{}", Utc::now().to_rfc3339()))
             .send()?
             .text()?;
-        self.parse_status(&response)
+        parse_status(&response)
     }
 
     pub fn get(&self) -> Result<BlastResult> {
