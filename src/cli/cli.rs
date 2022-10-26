@@ -155,4 +155,12 @@ pub enum Commands {
     /// Retrieves information from UCSC Genome Browser
     #[clap(subcommand)]
     Ucsc(ModUcsc),
+
+    /// Set up autocomplete for various shells
+    Autocomplete {
+
+        /// Shell to generate autocompletions for
+        #[clap(short, long)]
+        shell: Shell
+    }
 }
