@@ -1,4 +1,5 @@
 use anyhow::{bail, Result};
+use chrono::Local;
 use crate::blast::types::{BlastStatus, BlastProgram, BlastDatabase, BlastQuery, BlastResult};
 
 pub fn blast(
@@ -19,14 +20,14 @@ pub fn blast(
         None => BlastDatabase::from_program(&program)
     };
     let query = BlastQuery::new(program, database, query, limit, expect, low_comp_filter, megablast)?;
-    eprintln!("{:?}", query);
+    eprintln!("{:#?}", query);
 
     let mut idx = 0;
-    eprintln!("Request ID: {} :: Estimated Time: {}", query.rid(), query.rtoe());
+    eprintln!("[{}] Request ID: {} :: Estimated Time: {}", Local::now().to_rfc2822(), query.rid(), query.rtoe());
     std::thread::sleep(std::time::Duration::from_secs(5));
     loop {
         idx += 1;
-        eprint!("Request ID: {} :: Loop {idx}: ", query.rid());
+        eprint!("[{}] Request ID: {} :: Loop {idx}: ", Local::now().to_rfc2822(), query.rid());
         match query.status()? {
             BlastStatus::Waiting => {
                 eprintln!("Waiting (Will Poll again in 1 min)");
