@@ -63,3 +63,35 @@ pub fn blast(
     }
     query.get()
 }
+
+#[cfg(test)]
+mod testing {
+    use crate::blast::types::{BlastProgram, BlastDatabase};
+
+    use super::blast;
+
+    #[test]
+    fn test_blast_response() {
+        let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
+        let program = BlastProgram::from_sequence(sequence).unwrap();
+        let database = BlastDatabase::from_program(&program);
+        let result = blast(sequence, &Some(program), &Some(database), 1, 10.0, false, true).unwrap();
+        println!("{:#?}", result);
+        assert_eq!(result.query(), sequence);
+        assert_eq!(result.results().len(), 1);
+        assert_eq!(result.results()[0].num, 1);
+        assert_eq!(result.results()[0].id, "gi|2310188890|ref|NG_029005.2|");
+        assert_eq!(result.results()[0].definition, "Homo sapiens CASP8 and FADD like apoptosis regulator (CFLAR), RefSeqGene on chromosome 2");
+        assert_eq!(result.results()[0].accession, "NG_029005");
+        assert_eq!(result.results()[0].length, 67524);
+        assert_eq!(result.results()[0].bit_score, 222.718);
+        assert_eq!(result.results()[0].score, 120);
+        assert_eq!(result.results()[0].evalue, 6.97848e-54);
+        assert_eq!(result.results()[0].gap_opens, 0);
+        assert_eq!(result.results()[0].alignment_length, 120);
+        assert_eq!(result.results()[0].query_start, 1);
+        assert_eq!(result.results()[0].query_end, 120);
+        assert_eq!(result.results()[0].subject_start, 4992);
+        assert_eq!(result.results()[0].subject_end, 5111);
+    }
+}
