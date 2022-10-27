@@ -6,6 +6,7 @@ use std::{fs::File, io::Write};
 pub fn launch_seq(
     ensembl_ids: &Vec<String>,
     &transcribe: &bool,
+    species: &Option<String>,
     output: &Option<String>,
 ) -> Result<()> {
     if transcribe {
@@ -23,7 +24,7 @@ pub fn launch_seq(
             }
         }
     } else {
-        let results = sequence(ensembl_ids)?;
+        let results = sequence(ensembl_ids, species)?;
         match output {
             Some(path) => {
                 if let Ok(mut writer) = File::create(path) {
