@@ -107,16 +107,18 @@ fn main() -> Result<(), RequestError> {
             }
             ModEnsembl::LookupId {
                 ensembl_ids,
+                names,
                 output,
             } => {
-                launch_ensembl_lookup_id(ensembl_ids, output)?;
+                launch_ensembl_lookup_id(ensembl_ids, *names, output)?;
             }
             ModEnsembl::LookupSymbol {
                 symbols,
                 species,
+                ids,
                 output,
             } => {
-                launch_ensembl_lookup_symbol(symbols, species, output)?;
+                launch_ensembl_lookup_symbol(symbols, species, *ids, output)?;
             }
             ModEnsembl::Release => {
                 launch_ensembl_release()?;
