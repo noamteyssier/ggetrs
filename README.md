@@ -108,7 +108,114 @@ maturin build
 pip install target/wheels/<your_config>.whl
 ```
 
-### Modules
+## Modules
+
+### Enrichr
+
+Perform an enrichment analysis on a list of genes using [Enrichr](https://maayanlab.cloud/Enrichr).
+
+This requires at minimum a database name (listed [here](https://maayanlab.cloud/Enrichr/#libraries))
+and any number of gene symbols to perform enrichment analysis on.
+
+#### Example
+
+```bash
+ggetrs enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3
+```
+
+For a full list of arguments use the help flag!
+
+```bash
+ggetrs --help
+```
+
+```text
+Perform an enrichment analysis on a list of genes using Enrichr
+
+Usage: ggetrs enrichr [OPTIONS] --library <LIBRARY> <GENE_LIST>...
+
+Arguments:
+  <GENE_LIST>...  list of gene symbols to perform enrichment analysis on
+
+Options:
+  -l, --library <LIBRARY>  any database listed at: https://maayanlab.cloud/Enrichr/#libraries
+  -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
+  -h, --help               Print help information
+  -V, --version            Print version information
+```
+
+### ARCHS4
+
+Queries gene-specific information from the [ARCHS4](https://maayanlab.cloud/archs4)
+database.
+
+This tool has two submodules - `correlate` and `tissue`.
+
+#### Correlate
+
+```text
+Performs a gene-correlation analysis
+
+Usage: ggetrs archs4 correlate [OPTIONS] <GENE_NAME>
+
+Arguments:
+  <GENE_NAME>  Gene name to query for correlation
+
+Options:
+  -c, --count <COUNT>    number of values to recover [default: 100]
+  -o, --output <OUTPUT>  output filepath to write to [default=stdout]
+  -h, --help             Print help information
+  -V, --version          Print version information
+```
+
+```bash
+ggetrs archs4 correlate -c 10 AP2S1
+```
+
+#### Tissue
+
+```text
+Perform a tissue-enrichment analysis
+
+Usage: ggetrs archs4 tissue [OPTIONS] <GENE_NAME>
+
+Arguments:
+  <GENE_NAME>  Gene name to query for tissue
+
+Options:
+  -s, --species <SPECIES>  number of values to recover [default: human] [possible values: human, mouse]
+  -o, --output <OUTPUT>    output filepath to write to [default=stdout]
+  -h, --help               Print help information
+  -V, --version            Print version information
+```
+
+```bash
+ggetrs archs4 tissue AP2S1
+```
+
+### BLAST
+
+### Chembl
+
+### Search
+
+### Info
+
+### Seq
+
+### Ensembl
+
+### Uniprot
+
+### NCBI
+
+### PDB
+
+### UCSC
+
+### Autocomplete
+
+## Python Usage
 
 #### Enrichr
 
