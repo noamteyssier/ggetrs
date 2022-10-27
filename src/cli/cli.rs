@@ -19,6 +19,8 @@ pub enum Commands {
     /// Perform an enrichment analysis on a list of genes using Enrichr.
     Enrichr {
         /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
+        /// some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes,
+        /// and kinase_interactions.
         #[clap(short, long)]
         library: String,
 
