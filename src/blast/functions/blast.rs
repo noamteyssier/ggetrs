@@ -95,12 +95,16 @@ mod testing {
         assert_eq!(result.results()[0].length, 67524);
         assert_eq!(result.results()[0].bit_score, 222.718);
         assert_eq!(result.results()[0].score, 120);
-        assert_eq!(result.results()[0].evalue, 6.97848e-54);
+        assert_eq!(result.results()[0].evalue, 6.96927e-54);
         assert_eq!(result.results()[0].gap_opens, 0);
         assert_eq!(result.results()[0].alignment_length, 120);
         assert_eq!(result.results()[0].query_start, 1);
         assert_eq!(result.results()[0].query_end, 120);
         assert_eq!(result.results()[0].subject_start, 4992);
         assert_eq!(result.results()[0].subject_end, 5111);
+        assert!(
+            result.results()[0].evalue == 6.96927e-54 ||
+            result.results()[0].evalue == 6.97848e-54
+            ); // results are returned in one of two orders
     }
 }
