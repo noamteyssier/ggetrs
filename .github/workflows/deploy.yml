@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - 142-move-documentation-to-standalone-website
 
 jobs:
   deploy:
