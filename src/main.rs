@@ -194,12 +194,12 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Seq {
-            ensembl_ids,
+            search_terms,
             transcribe,
             species,
             output,
         } => {
-            launch_seq(ensembl_ids, &transcribe, species, output)?;
+            launch_seq(search_terms, &transcribe, species, output)?;
         }
         Commands::Blast {
             query,

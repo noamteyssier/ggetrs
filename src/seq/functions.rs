@@ -58,17 +58,18 @@ fn convert_to_ensembl_ids(symbols: &[String], species: &str) -> Result<Vec<Strin
     Ok(recover_ensembl_ids(symbols, &response))
 }
 
-pub fn sequence(ensembl_ids: &Vec<String>, species: &Option<String>) -> Result<ResultSeqContainer> {
-    if !ensembl_ids.iter().all(|x| x.starts_with("ENS")) {
+pub fn sequence(search_terms: &Vec<String>, species: &Option<String>) -> Result<ResultSeqContainer> {
+    // case where not all search terms are ensembl ids
+    if !search_terms.iter().all(|x| x.starts_with("ENS")) {
         let species_name = if let Some(s) = species {
             s
         } else {
             bail!("Not all provided symbols are Ensembl IDs - so a species must be provided to identify them");
         };
-        let linked_ids = convert_to_ensembl_ids(ensembl_ids, &species_name)?;
-        retrieve_sequence(&linked_ids)
+        let ensembl_ids = convert_to_ensembl_ids(search_terms, &species_name)?;
+        retrieve_sequence(&ensembl_ids)
     } else {
-        retrieve_sequence(ensembl_ids)
+        retrieve_sequence(search_terms)
     }
 }
 
