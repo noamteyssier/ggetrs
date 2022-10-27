@@ -4,7 +4,72 @@
 ![actions status](https://github.com/noamteyssier/ggetrs/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/noamteyssier/ggetrs/branch/main/graph/badge.svg?token=CEQWH6MMCV)](https://codecov.io/gh/noamteyssier/ggetrs)
 
-A rust implementation of [gget](https://github.com/pachterlab/gget).
+## Introduction
+
+`ggetrs` is a free, open-source command-line tool that enables efficient querying
+of genomic databases.
+`ggetrs` consists of a collection of separate but interoperable modules, each designed
+to facilitate one type of database querying in a single line of code.
+
+This is a rust reimplentation of the original python-based program
+[gget](https://github.com/pachterlab/gget) and was rewritten to be significantly
+faster.
+There are some minor semantic changes between function calls from the python version
+but a description for each tool is provided below.
+
+This tool is written fully in rust - but allows for a python interface using
+[pyo3](https://github.com/PyO3/pyo3).
+
+## Summary
+
+`ggetrs` currently consists of the following modules:
+
+- `ggetrs enrichr`
+  Perform an enrichment analysis on a list of genes using [Enrichr](https://maayanlab.cloud/Enrichr)
+
+- `ggetrs archs4`
+  Find the most correlated genes to a gene of interest or find the gene's tissue
+  expression atlas using [ARCHS4](https://maayanlab.cloud/archs4)
+
+- `ggetrs blast`
+  BLAST a nucleotide or amino acid sequence to any
+  [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) database
+
+- `ggetrs chembl`
+  Perform a bioactivity search for any protein of interest using [Chembl](https://ebi.ac.uk/chembl)
+
+- `ggetrs search`
+  Fetch genes and transcripts from [Ensembl](https://ensembl.org)
+  using free-form search terms.
+
+- `ggetrs info`
+  Fetch extensive gene and transcript metadata from [Ensembl](https://ensembl.org),
+  [Uniprot](https://uniprot.org), and [NCBI](https://ncbi.nlm.nih.gov).
+
+- `ggetrs seq`
+  Fetch nucleotide or amino acid sequences of genes or transcripts from
+  [Ensembl](https://ensembl.org) or [Uniprot](https://uniprot.org) respectively.
+
+- `ggetrs ensembl`
+  Perform [Ensembl](https://ensembl.org) related queries from their public
+  [API](https://rest.ensembl.org).
+
+- `ggetrs uniprot`
+  Query [Uniprot](https://uniprot.org) directly for gene/protein information.
+
+- `ggetrs ncbi`
+  Query [NCBI](https://ncbi.nlm.nih.gov) directly for gene/protein information.
+
+- `ggetrs pdb`
+  Get structure and metadata of a protein from the [RCSB Protein Data Bank](https://rcsb.org)
+
+- `ggetrs ucsc`
+  Perform a [BLAT](https://genome.ucsc.edu/cgi-bin/hgBlat) search using the
+  UCSC Genome Browser.
+
+- `ggetrs autocomplete`
+  Generates an autocompletion file for your shell of choice for a better
+  terminal experience.
 
 ## Installation
 
