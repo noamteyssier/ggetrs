@@ -56,21 +56,22 @@ pub struct BlastHit {
 }
 impl BlastHit {
     fn from_hit(hit: &Hit) -> Self {
+        let statistic = &hit.statistics.hsp[0];
         Self {
             num: hit.num,
             id: hit.id.to_string(),
             definition: hit.definition.to_string(),
             accession: hit.accession.to_string(),
             length: hit.length,
-            bit_score: hit.statistics.hsp.bit_score,
-            score: hit.statistics.hsp.score,
-            evalue: hit.statistics.hsp.evalue,
-            query_start: hit.statistics.hsp.query_start,
-            query_end: hit.statistics.hsp.query_end,
-            subject_start: hit.statistics.hsp.subject_start,
-            subject_end: hit.statistics.hsp.subject_end,
-            gap_opens: hit.statistics.hsp.gap_opens,
-            alignment_length: hit.statistics.hsp.alignment_length,
+            bit_score: statistic.bit_score,
+            score: statistic.score,
+            evalue: statistic.evalue,
+            query_start: statistic.query_start,
+            query_end: statistic.query_end,
+            subject_start: statistic.subject_start,
+            subject_end: statistic.subject_end,
+            gap_opens: statistic.gap_opens,
+            alignment_length: statistic.alignment_length,
         }
     }
 }
@@ -122,7 +123,7 @@ struct Hit {
 #[derive(Debug, Serialize, Deserialize)]
 struct HitStatistics {
     #[serde(rename = "Hsp")]
-    hsp: Hsp,
+    hsp: Vec<Hsp>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
