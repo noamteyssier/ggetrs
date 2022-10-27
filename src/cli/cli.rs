@@ -129,8 +129,11 @@ pub enum Commands {
         /// Search terms to query
         #[clap(value_parser, required = true)]
         ensembl_ids: Vec<String>,
+
+        /// Return the amino acid sequence instead of nucleotide sequence.
         #[clap(short, long, action)]
         transcribe: bool,
+        
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,
