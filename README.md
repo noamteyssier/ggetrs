@@ -169,7 +169,7 @@ Options:
   -V, --version            Print version information
 ```
 
-### Enrichr Usage
+#### Enrichr Usage
 
 ```bash
 # Perform an enrichment analysis using Enrichr
@@ -303,7 +303,7 @@ Options:
   -V, --version          Print version information
 ```
 
-#### Chembl Activity Usage
+##### Chembl Activity Usage
 
 ```bash
 # Query the Chembl database for small molecules with bioactivity targeting NSD1
@@ -382,7 +382,7 @@ Returns nucleotide or amino acid sequence for a provided ensembl ID or gene symb
 Currently the nucleotide sequence *requires* the ensembl ID.
 The amino acid sequence does not have this requirement.
 
-### Seq Help
+#### Seq Help
 
 ```text
 
@@ -400,7 +400,7 @@ Options:
   -V, --version          Print version information
 ```
 
-### Seq Usage
+#### Seq Usage
 
 ```bash
 # recover nucleotide sequence for AP2S1 (ENSG00000042753)
