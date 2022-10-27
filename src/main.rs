@@ -1,4 +1,4 @@
-use clap::{Parser, CommandFactory};
+use clap::{CommandFactory, Parser};
 use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
     blast::cli::launch_blast,
@@ -194,11 +194,12 @@ fn main() -> Result<(), RequestError> {
             }
         },
         Commands::Seq {
-            ensembl_ids,
+            search_terms,
             transcribe,
+            species,
             output,
         } => {
-            launch_seq(ensembl_ids, &transcribe, output)?;
+            launch_seq(search_terms, &transcribe, species, output)?;
         }
         Commands::Blast {
             query,
@@ -220,10 +221,8 @@ fn main() -> Result<(), RequestError> {
                 *megablast,
                 output,
             )?;
-        },
-        Commands::Autocomplete { shell } => {
-            print_completions(*shell, &mut Cli::command())
         }
+        Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
 
     Ok(())

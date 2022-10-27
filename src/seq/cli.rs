@@ -4,12 +4,13 @@ use anyhow::Result;
 use std::{fs::File, io::Write};
 
 pub fn launch_seq(
-    ensembl_ids: &Vec<String>,
+    search_terms: &Vec<String>,
     &transcribe: &bool,
+    species: &Option<String>,
     output: &Option<String>,
 ) -> Result<()> {
     if transcribe {
-        let results = query(ensembl_ids, &None)?;
+        let results = query(search_terms, &None)?;
         match output {
             Some(path) => {
                 if let Ok(mut writer) = File::create(path) {
@@ -23,7 +24,7 @@ pub fn launch_seq(
             }
         }
     } else {
-        let results = sequence(ensembl_ids)?;
+        let results = sequence(search_terms, species)?;
         match output {
             Some(path) => {
                 if let Ok(mut writer) = File::create(path) {

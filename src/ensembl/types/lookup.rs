@@ -43,3 +43,16 @@ impl fmt::Display for LookupResponse {
         )
     }
 }
+impl LookupResponse {
+    pub fn get_id(&self, symbol: &str) -> Option<String> {
+        if let Some(res) = self.0.get(symbol) {
+            if let Some(x) = res {
+                Some(x.id.clone())
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+}

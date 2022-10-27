@@ -84,3 +84,6 @@ uniprot_query_genes: build
   time target/release/ggetrs uniprot query \
     RFX3 \
     AP2S1 
+
+seq_symbol: build
+  time target/release/ggetrs seq AP2S1
