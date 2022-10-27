@@ -134,19 +134,38 @@ pub fn launch_ensembl_lookup_id(
 pub fn launch_ensembl_lookup_symbol(
     symbols: &[String],
     species: &str,
+    ids: bool,
     output: &Option<String>,
 ) -> anyhow::Result<()> {
     let results = lookup_symbol(symbols, species)?;
+    
+    let output_str = if ids {
+        symbols
+            .iter()
+            .filter_map(|x| results.get_id(x))
+            .enumerate()
+            .fold(String::new(), |mut s, (idx, i)| {
+                if idx == 0 {
+                    s.push_str(&format!("{i}"))
+                } else {
+                    s.push_str(&format!(" {i}"))
+                }
+                s
+            })
+    } else {
+        format!("{}", results)
+    };
+
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{}", output_str).expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{}", output_str);
             }
         }
         None => {
-            println!("{}", results);
+            println!("{}", output_str);
         }
     }
     Ok(())

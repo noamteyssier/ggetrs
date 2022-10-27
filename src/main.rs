@@ -114,9 +114,10 @@ fn main() -> Result<(), RequestError> {
             ModEnsembl::LookupSymbol {
                 symbols,
                 species,
+                ids,
                 output,
             } => {
-                launch_ensembl_lookup_symbol(symbols, species, output)?;
+                launch_ensembl_lookup_symbol(symbols, species, *ids, output)?;
             }
             ModEnsembl::Release => {
                 launch_ensembl_release()?;

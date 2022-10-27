@@ -66,6 +66,10 @@ pub enum ModEnsembl {
         #[clap(short, long, default_value = "homo_sapiens")]
         species: String,
 
+        /// Return a minimal output of only the found Ensembl IDs
+        #[clap(short, long)]
+        ids: bool,
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,
