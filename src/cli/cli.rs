@@ -133,6 +133,10 @@ pub enum Commands {
         /// Return the amino acid sequence instead of nucleotide sequence.
         #[clap(short, long, action)]
         transcribe: bool,
+
+        /// Species/alias to specify
+        #[clap(short, long, default_value = "homo_sapiens")]
+        species: Option<String>,
         
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
