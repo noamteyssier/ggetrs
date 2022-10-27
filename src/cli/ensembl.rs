@@ -51,6 +51,10 @@ pub enum ModEnsembl {
         #[clap(value_parser, required = true)]
         ensembl_ids: Vec<String>,
 
+        /// Return a minimal output of only the found gene names
+        #[clap(short, long)]
+        names: bool,
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,

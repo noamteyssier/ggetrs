@@ -107,9 +107,10 @@ fn main() -> Result<(), RequestError> {
             }
             ModEnsembl::LookupId {
                 ensembl_ids,
+                names,
                 output,
             } => {
-                launch_ensembl_lookup_id(ensembl_ids, output)?;
+                launch_ensembl_lookup_id(ensembl_ids, *names, output)?;
             }
             ModEnsembl::LookupSymbol {
                 symbols,

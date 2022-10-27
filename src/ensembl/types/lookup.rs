@@ -55,4 +55,15 @@ impl LookupResponse {
             None
         }
     }
+    pub fn get_symbol(&self, id: &str) -> Option<String> {
+        if let Some(res) = self.0.get(id) {
+            if let Some(x) = res {
+                Some(x.display_name.clone())
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
 }

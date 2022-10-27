@@ -112,19 +112,38 @@ pub fn launch_ensembl_list_species(
 /// Main entrypoint for `Ensembl` lookup id
 pub fn launch_ensembl_lookup_id(
     ensembl_ids: &[String],
+    names: bool,
     output: &Option<String>,
 ) -> anyhow::Result<()> {
     let results = lookup_id(ensembl_ids)?;
+
+    let output_str = if names {
+        ensembl_ids 
+            .iter()
+            .filter_map(|x| results.get_symbol(x))
+            .enumerate()
+            .fold(String::new(), |mut s, (idx, i)| {
+                if idx == 0 {
+                    s.push_str(&format!("{i}"))
+                } else {
+                    s.push_str(&format!(" {i}"))
+                }
+                s
+            })
+    } else {
+        format!("{}", results)
+    };
+
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{}", output_str).expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{}", output_str);
             }
         }
         None => {
-            println!("{}", results);
+            println!("{}", output_str);
         }
     }
     Ok(())
