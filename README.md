@@ -188,6 +188,13 @@ Options:
 ```bash
 # Perform an enrichment analysis using Enrichr
 ggetrs enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3
+
+# Perform an enrichment analysis with a shorthand library
+# this is equivalent to the above search
+ggetrs enrichr -l ontology AP2S1 NSD1 RFX3
+
+# Perform an enrichment analysis on pathway
+ggetrs enrichr -l pathway AP2S1 NSD1 RFX3
 ```
 
 ### ARCHS4
