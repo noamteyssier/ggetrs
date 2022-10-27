@@ -95,7 +95,6 @@ mod testing {
         assert_eq!(result.results()[0].length, 67524);
         assert_eq!(result.results()[0].bit_score, 222.718);
         assert_eq!(result.results()[0].score, 120);
-        assert_eq!(result.results()[0].evalue, 6.96927e-54);
         assert_eq!(result.results()[0].gap_opens, 0);
         assert_eq!(result.results()[0].alignment_length, 120);
         assert_eq!(result.results()[0].query_start, 1);
