@@ -147,7 +147,7 @@ ggetrs ensembl lookup-symbols --help
 
 ### Enrichr
 
-#### Enrichr-Help
+#### Enrichr Help
 
 Perform an enrichment analysis on a list of genes using [Enrichr](https://maayanlab.cloud/Enrichr).
 
@@ -169,7 +169,8 @@ Options:
   -V, --version            Print version information
 ```
 
-### Enrichr-Usage
+### Enrichr Usage
+
 ```bash
 # Perform an enrichment analysis using Enrichr
 ggetrs enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3
@@ -182,9 +183,9 @@ database.
 
 This tool has two submodules - `correlate` and `tissue`.
 
-#### ARCHS4-Correlate
+#### ARCHS4 Correlate
 
-##### ARCHS4-Correlate-Help
+##### ARCHS4 Correlate Help
 
 ```text
 Performs a gene-correlation analysis
@@ -201,16 +202,16 @@ Options:
   -V, --version          Print version information
 ```
 
-##### ARCHS4-Correlate-Usage
+##### ARCHS4 Correlate Usage
 
 ```bash
 # Perform a gene-correlation analysis with ARCHS4
 ggetrs archs4 correlate -c 10 AP2S1
 ```
 
-#### ARCHS4-Tissue
+#### ARCHS4 Tissue
 
-##### ARCHS4-Tissue-Help
+##### ARCHS4 Tissue Help
 
 ```text
 Perform a tissue-enrichment analysis
@@ -227,7 +228,7 @@ Options:
   -V, --version            Print version information
 ```
 
-##### ARCHS4-Tissue-Usage
+##### ARCHS4 Tissue Usage
 
 ```bash
 # Find tissue-level expression using ARCHS4
@@ -236,7 +237,7 @@ ggetrs archs4 tissue AP2S1
 
 ### BLAST
 
-#### BLAST-Help
+#### BLAST Help
 
 The BLAST program can be determined from the provided input (will assign either `blastn` or `blastp`) and the appropriate database will be used: `nt` and `nr` respectively. You may override these though by using their arguments
 
@@ -260,7 +261,7 @@ Options:
   -V, --version              Print version information
 ```
 
-#### BLAST-Usage
+#### BLAST Usage
 
 ```bash
 # Perform BLAST with a nucleotide sequence
@@ -283,9 +284,9 @@ Currently the query-APIs available are:
 
   Queries for chemical bioactivity for a provided protein-target.
 
-#### Chembl-Activity
+#### Chembl Activity
 
-##### Chembl-Activity-Help
+##### Chembl Activity Help
 
 ```text
 Queries chemical activity for a provided item
@@ -302,7 +303,7 @@ Options:
   -V, --version          Print version information
 ```
 
-#### Chembl-Activity-Usage
+#### Chembl Activity Usage
 
 ```bash
 # Query the Chembl database for small molecules with bioactivity targeting NSD1
@@ -311,7 +312,7 @@ ggetrs chembl activity NSD1
 
 ### Search
 
-#### Search-Help
+#### Search Help
 
 ```text
 Searches through descriptions on ENSEMBL
@@ -332,7 +333,7 @@ Options:
   -V, --version              Print version information
 ```
 
-#### Search-Usage
+#### Search Usage
 
 ```bash
 # searches Ensembl for all genes with `clathrin` in the description
@@ -346,8 +347,7 @@ ggetrs search clathrin heavy
 
 Fetch extensive gene and transcript metadata from [Ensembl](https://ensembl.org), [Uniprot](https://uniprot.org), and [NCBI](https://ncbi.nlm.nih.gov).
 
-
-#### Info-Help
+#### Info Help
 
 ```text
 Queries symbols or Ensembl IDs across multiple databases and aggregates results
@@ -365,7 +365,7 @@ Options:
   -V, --version              Print version information
 ```
 
-#### Info-Usage
+#### Info Usage
 
 ```bash
 # Queries information for AP2S1
@@ -382,7 +382,7 @@ Returns nucleotide or amino acid sequence for a provided ensembl ID or gene symb
 Currently the nucleotide sequence *requires* the ensembl ID.
 The amino acid sequence does not have this requirement.
 
-### Seq-Help
+### Seq Help
 
 ```text
 
@@ -400,7 +400,7 @@ Options:
   -V, --version          Print version information
 ```
 
-### Seq-Usage
+### Seq Usage
 
 ```bash
 # recover nucleotide sequence for AP2S1 (ENSG00000042753)
@@ -432,16 +432,17 @@ ref            Retrieves reference files from Ensembl FTP site
 species        Retrieves the list of species from ENSEMBL FTP site
 ```
 
-#### Ensembl-Search
+#### Ensembl Search
+
 This is another way to access [`ggetrs search`](#search).
 
-#### Ensembl-Database
+#### Ensembl Database
 
 Prints all available databases on Ensembl's SQL server.
 
 This is used if you are interested in querying a specific database and can be passed into [`ggetrs search`](#search).
 
-##### Ensembl-Database-Help
+##### Ensembl Database Help
 
 ```text
 Prints all available databases on Ensembl's SQL database
@@ -455,7 +456,7 @@ Options:
   -V, --version          Print version information
 ```
 
-##### Ensembl-Database-Usage
+##### Ensembl Database Usage
 
 ```bash
 # show all databases in the SQL server
@@ -468,9 +469,9 @@ ggetrs ensembl database -f sapiens
 ggetrs ensembl database -f cerevisiae
 ```
 
-#### Ensembl-Lookup-Id
+#### Ensembl Lookup-Id
 
-##### Ensembl-Lookup-Id-Help
+##### Ensembl Lookup-Id Help
 
 ```text
 Lookup information for genes/transcripts providing ensembl ids
@@ -486,7 +487,7 @@ Options:
   -V, --version          Print version information
 ```
 
-##### Ensembl-Lookup-Id-Usage
+##### Ensembl Lookup-Id Usage
 
 ```bash
 # Query information for AP2S1 (ENSG00000042753)
@@ -496,9 +497,9 @@ ggetrs ensembl lookup-id ENSG00000042753
 ggetrs ensembl lookup-id ENSG00000042753 ENSG00000165671
 ```
 
-#### Ensembl-Lookup-Symbol
+#### Ensembl Lookup-Symbol
 
-##### Ensembl-Lookup-Symbol-Help
+##### Ensembl Lookup-Symbol Help
 
 ```text
 Lookup information for genes/transcripts providing symbols and species
@@ -515,7 +516,7 @@ Options:
   -V, --version            Print version information
 ```
 
-##### Ensembl-Lookup-Symbol-Usage
+##### Ensembl Lookup-Symbol Usage
 
 ```bash
 # Query information for AP2S1
@@ -528,7 +529,7 @@ ggetrs ensembl lookup-symbol AP2S1 NSD1
 ggetrs ensembl lookup-symbol -s mus_musculus AP2S1 NSD1
 ```
 
-#### Ensembl-Release
+#### Ensembl Release
 
 Returns the latest Ensembl release version
 
@@ -536,11 +537,11 @@ Returns the latest Ensembl release version
 ggetrs ensembl release
 ```
 
-#### Ensembl-Ref
+#### Ensembl Ref
 
 Retrieves reference files from the Ensembl FTP site.
 
-##### Ensembl-Ref-Help
+##### Ensembl Ref Help
 
 ```text
 Retrieves reference files from Ensembl FTP site
@@ -556,7 +557,7 @@ Options:
   -V, --version              Print version information
 ```
 
-##### Ensembl-Ref-Usage
+##### Ensembl Ref Usage
 
 ```bash
 # returns the url for the human cdna transcriptome
@@ -569,11 +570,11 @@ ggetrs ensembl ref -d cdna,dna
 ggetrs ensembl ref -d cdna,dna -s mus_musculus
 ```
 
-#### Ensembl-Species
+#### Ensembl Species
 
 Returns the available species in the Ensembl FTP site
 
-##### Ensembl-Species-Help
+##### Ensembl Species Help
 
 ```text
 Retrieves the list of species from ENSEMBL FTP site
@@ -588,7 +589,7 @@ Options:
   -V, --version              Print version information
 ```
 
-##### Ensembl-Species-Usage
+##### Ensembl Species Usage
 
 ```bash
 # return all species where there is a genome (i.e. dna)
@@ -610,7 +611,7 @@ Currently there is a single module: `query` but more modules are expected to be 
 
 This provides nearly all information as `ggetrs info` but is significantly faster.
 
-#### Uniprot-Query-Help
+#### Uniprot Query Help
 
 ```text
 Searches through descriptions on Uniprot
@@ -627,7 +628,7 @@ Options:
   -V, --version          Print version information
 ```
 
-#### Uniprot-Query-Usage
+#### Uniprot Query Usage
 
 ```bash
 # Query uniprot for AP2S1
@@ -648,11 +649,11 @@ query-ids      Retrieves information for a list of IDs
 query-symbols  Retrieves information for a list of symbols (must provide taxon)
 ```
 
-#### NCBI-Taxons
+#### NCBI Taxons
 
 This retrieves possible taxons from an incomplete query string. 
 
-##### NCBI-Taxons-Help
+##### NCBI Taxons Help
 
 ```text
 Retrieves taxon information from NCBI from a query string
@@ -669,7 +670,7 @@ Options:
   -V, --version          Print version information
 ```
 
-##### NCBI-Taxons-Usage
+##### NCBI Taxons Usage
 
 ```bash
 
@@ -680,9 +681,9 @@ ggetrs ncbi taxons sapiens
 ggetrs ncbi taxons -l 3 sapi
 ```
 
-#### NCBI-Query-IDs
+#### NCBI Query-IDs
 
-##### NCBI-Query-IDs-Help
+##### NCBI Query-IDs Help
 
 ```text
 Retrieves information for a list of IDs
@@ -698,7 +699,7 @@ Options:
   -V, --version          Print version information
 ```
 
-##### NCBI-Query-IDs-Usage
+##### NCBI Query-IDs Usage
 
 ```bash
 # query NCBI for AP2S1 (ncbi ID: 1175)
@@ -708,12 +709,12 @@ ggetrs ncbi query-ids 1175
 ggetrs ncbi query-ids 1175 64324
 ```
 
-#### NCBI-Query-Symbols
+#### NCBI Query-Symbols
 
 Query NCBI for gene symbols and with a provided taxon ID.
 You can determine taxon IDs for your organism of choice with [`ggetrs ncbi taxons`](#ncbi-taxons).
 
-##### NCBI-Query-Symbols-Help
+##### NCBI Query-Symbols Help
 
 ```text
 Retrieves information for a list of symbols (must provide taxon)
@@ -730,7 +731,7 @@ Options:
   -V, --version              Print version information
 ```
 
-##### NCBI-Query-Symbols-Usage
+##### NCBI Query-Symbols Usage
 
 ```bash
 # query NCBI for the symbol AP2S1
@@ -746,7 +747,7 @@ Get structure and metadata of a protein from the [RCSB Protein Data Bank](https:
 
 There are currently two submodules in PDB: `structure` and `info`.
 
-#### PDB-Structure-Help
+#### PDB Structure Help
 
 ```text
 Retrieves pdb structure for a provided ID
@@ -764,14 +765,14 @@ Options:
   -V, --version          Print version information
 ```
 
-#### PDB-Structure-Usage
+#### PDB Structure Usage
 
 ```bash
 # return the pdb structure for AP2S1 (6URI)
 ggetrs pdb info 6URI
 ```
 
-#### PDB-Info-Help
+#### PDB Info Help
 
 ```text
 Retrieves pdb information for a provided ID and resource
@@ -789,7 +790,7 @@ Options:
   -V, --version                  Print version information
 ```
 
-#### PDB-Info-Usage
+#### PDB Info Usage
 
 ```bash
 # return information for AP2S1 (6URI)
@@ -801,11 +802,11 @@ ggetrs pdb info 6URI
 This module is used to interact with the UCSC genome browser.
 Currently there is only the BLAT API which is implemented.
 
-#### UCSC-BLAT
+#### UCSC BLAT
 
 Perform a [BLAT](https://genome.ucsc.edu/cgi-bin/hgBlat) search using the UCSC Genome Browser.
 
-##### UCSC-BLAT-Help
+##### UCSC BLAT Help
 
 ```text
 Performs a BLAT sequence search on a provided database
@@ -823,7 +824,7 @@ Options:
   -V, --version            Print version information
 ```
 
-##### UCSC-BLAT-Usage
+##### UCSC BLAT Usage
 
 ```bash
 # query UCSC genome browser for the first 121 bp of AP2S1
@@ -834,7 +835,7 @@ ggetrs ucsc blat GGGCCCTACAACTGCACCCTGAGCCGGAGCTGCCCAGTCGCCGCGGGACCGGGGCCGCTGGGG
 
 This is used to generate autocomplete information for your terminal shell.
 
-#### Autocomplete-Help
+#### Autocomplete Help
 
 ```text
 Set up autocomplete for various shells
@@ -847,7 +848,7 @@ Options:
   -V, --version        Print version information
 ```
 
-#### Autocomplete-Usage
+#### Autocomplete Usage
 
 ```bash
 # generate autocompletions for the fish shell
