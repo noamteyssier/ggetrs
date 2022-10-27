@@ -379,25 +379,28 @@ ggetrs info AP2S1 RFX3 NSD1
 
 Returns nucleotide or amino acid sequence for a provided ensembl ID or gene symbol.
 
-Currently the nucleotide sequence *requires* the ensembl ID.
-The amino acid sequence does not have this requirement.
+If gene symbols are provided instead of ensembl IDs for nucleotide sequences
+those symbols will first be matched to an ensembl ID with the same functionality
+of [`ggetrs ensembl lookup-symbol`](#ensembl-lookup-symbol).
+
+All returned sequences are guaranteed to be in the same order as provided ids/symbols.
 
 #### Seq Help
 
 ```text
-
 Queries sequences from ensembl and UniProt
 
-Usage: ggetrs seq [OPTIONS] <ENSEMBL_IDS>...
+Usage: ggetrs seq [OPTIONS] <SEARCH_TERMS>...
 
 Arguments:
-  <ENSEMBL_IDS>...  Search terms to query
+  <SEARCH_TERMS>...  Search terms to query (can be Ensembl IDs or Gene Symbols)
 
 Options:
-  -t, --transcribe
-  -o, --output <OUTPUT>  optional filepath to write output to [default=stdout]
-  -h, --help             Print help information
-  -V, --version          Print version information
+  -t, --transcribe         Return the amino acid sequence instead of nucleotide sequence
+  -s, --species <SPECIES>  Species/alias to specify [default: homo_sapiens]
+  -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
+  -h, --help               Print help information
+  -V, --version            Print version information
 ```
 
 #### Seq Usage
@@ -405,6 +408,12 @@ Options:
 ```bash
 # recover nucleotide sequence for AP2S1 (ENSG00000042753)
 ggetrs seq ENSG00000042753
+
+# recover nucleotide sequence for AP2S1
+ggetrs seq AP2S1
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753) and NSD1
+ggetrs seq ENSG00000042753 NSD1
 
 # recover amino acid sequence for AP2S1 (ENSG00000042753)
 ggetrs seq -t ENSG00000042753
