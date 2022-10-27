@@ -118,7 +118,7 @@ pub fn launch_ensembl_lookup_id(
     let results = lookup_id(ensembl_ids)?;
 
     let output_str = if names {
-        ensembl_ids 
+        ensembl_ids
             .iter()
             .filter_map(|x| results.get_symbol(x))
             .enumerate()
@@ -157,7 +157,7 @@ pub fn launch_ensembl_lookup_symbol(
     output: &Option<String>,
 ) -> anyhow::Result<()> {
     let results = lookup_symbol(symbols, species)?;
-    
+
     let output_str = if ids {
         symbols
             .iter()
