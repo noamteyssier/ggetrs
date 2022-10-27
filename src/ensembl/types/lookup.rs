@@ -55,5 +55,4 @@ impl LookupResponse {
             None
         }
     }
-
 }

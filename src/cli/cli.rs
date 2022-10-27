@@ -137,7 +137,7 @@ pub enum Commands {
         /// Species/alias to specify
         #[clap(short, long, default_value = "homo_sapiens")]
         species: Option<String>,
-        
+
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,
@@ -165,9 +165,8 @@ pub enum Commands {
 
     /// Set up autocomplete for various shells
     Autocomplete {
-
         /// Shell to generate autocompletions for
         #[clap(short, long)]
-        shell: Shell
-    }
+        shell: Shell,
+    },
 }

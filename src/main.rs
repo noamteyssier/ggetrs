@@ -1,4 +1,4 @@
-use clap::{Parser, CommandFactory};
+use clap::{CommandFactory, Parser};
 use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
     blast::cli::launch_blast,
@@ -221,10 +221,8 @@ fn main() -> Result<(), RequestError> {
                 *megablast,
                 output,
             )?;
-        },
-        Commands::Autocomplete { shell } => {
-            print_completions(*shell, &mut Cli::command())
         }
+        Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
 
     Ok(())
