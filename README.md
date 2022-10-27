@@ -147,12 +147,26 @@ ggetrs ensembl lookup-symbols --help
 
 ### Enrichr
 
-#### Enrichr Help
-
 Perform an enrichment analysis on a list of genes using [Enrichr](https://maayanlab.cloud/Enrichr).
 
 This requires at minimum a database name (listed [here](https://maayanlab.cloud/Enrichr/#libraries))
 and any number of gene symbols to perform enrichment analysis on.
+
+
+##### Enrichr Library Shorthands
+
+Some shorthands for the library are built into the program for convenience:
+
+```text
+pathway               KEGG_2021_Human
+transcription         ChEA_2016
+ontology              GO_Biological_Processes_2021
+diseases_drugs        GWAS_Catalog_2019
+celltypes             PangloaDB_Augmented_2021
+kinase_interactions   KEA_2015
+```
+
+#### Enrichr Help
 
 ```text
 Perform an enrichment analysis on a list of genes using Enrichr
@@ -163,7 +177,7 @@ Arguments:
   <GENE_LIST>...  list of gene symbols to perform enrichment analysis on
 
 Options:
-  -l, --library <LIBRARY>  any database listed at: https://maayanlab.cloud/Enrichr/#libraries
+  -l, --library <LIBRARY>  any database listed at: https://maayanlab.cloud/Enrichr/#libraries some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes, and kinase_interactions
   -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
   -h, --help               Print help information
   -V, --version            Print version information
