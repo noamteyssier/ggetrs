@@ -58,7 +58,10 @@ fn convert_to_ensembl_ids(symbols: &[String], species: &str) -> Result<Vec<Strin
     Ok(recover_ensembl_ids(symbols, &response))
 }
 
-pub fn sequence(search_terms: &Vec<String>, species: &Option<String>) -> Result<ResultSeqContainer> {
+pub fn sequence(
+    search_terms: &Vec<String>,
+    species: &Option<String>,
+) -> Result<ResultSeqContainer> {
     // case where not all search terms are ensembl ids
     if !search_terms.iter().all(|x| x.starts_with("ENS")) {
         let species_name = if let Some(s) = species {
