@@ -1,36 +1,35 @@
-use anyhow::{Result, bail};
-use clap::ValueEnum;
-use pyo3::{Python, PyResult, types::{PyModule, PyList}, wrap_pyfunction, pyfunction};
 use super::{functions::blat, types::SeqType};
+use anyhow::{bail, Result};
+use clap::ValueEnum;
+use pyo3::{
+    pyfunction,
+    types::{PyList, PyModule},
+    wrap_pyfunction, PyResult, Python,
+};
 
 #[pyfunction(name = "blat")]
-#[pyo3(
-    text_signature = "(sequence, seqtype = 'dna', db_name = 'hg38')"
-)]
+#[pyo3(text_signature = "(sequence, seqtype = 'dna', db_name = 'hg38')")]
 pub fn python_ucsc_blat<'py>(
     py: Python<'py>,
     sequence: &str,
     seqtype: Option<String>,
     db_name: Option<String>,
 ) -> Result<&'py PyList> {
-
     // match provided seqtype against known `SeqType`
     let seqtype = if let Some(st) = seqtype {
         if let Ok(s) = SeqType::from_str(&st, true) {
             s
         } else {
-            bail!(
-                format!(
-                    "Could not interpret provided seqtype: {st}. Please select from {:?}", 
-                    vec!["dna", "protein", "translated_dna", "translated_rna"]
-                )
-            )
+            bail!(format!(
+                "Could not interpret provided seqtype: {st}. Please select from {:?}",
+                vec!["dna", "protein", "translated_dna", "translated_rna"]
+            ))
         }
     } else {
         SeqType::Dna
     };
-    
-    // Unwrap `db_name` or assign hg38 default 
+
+    // Unwrap `db_name` or assign hg38 default
     let db_name = db_name.unwrap_or("hg38".to_string());
 
     // perform BLAT

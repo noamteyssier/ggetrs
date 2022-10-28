@@ -1,4 +1,4 @@
-use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot, ModEnrichr};
+use super::{ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
 use crate::{
     blast::types::{BlastDatabase, BlastProgram},
     ensembl::ENSEMBL_RELEASE_STR,

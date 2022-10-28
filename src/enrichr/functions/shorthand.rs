@@ -6,14 +6,14 @@ pub fn shorthand(library: &str) -> String {
         "diseases_drugs" => "GWAS_Catalog_2019",
         "celltypes" => "PanglaoDB_Augmented_2021",
         "kinase_interactions" => "KEA_2015",
-        x => x
-    }.to_string()
+        x => x,
+    }
+    .to_string()
 }
 
 #[cfg(test)]
 mod testing {
     use super::shorthand;
-
 
     #[test]
     fn test_shorthand_pathway() {

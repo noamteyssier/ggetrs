@@ -3,7 +3,10 @@ use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
     blast::cli::launch_blast,
     chembl::launch_chembl_activity,
-    cli::{Cli, Commands, ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot, ModEnrichr},
+    cli::{
+        Cli, Commands, ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc,
+        ModUniprot,
+    },
     enrichr::{launch_enrichr, launch_enrichr_list},
     ensembl::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
@@ -30,8 +33,13 @@ fn main() -> Result<(), RequestError> {
                 output,
             } => {
                 launch_enrichr(library, gene_list, output)?;
-            },
-            ModEnrichr::List { minimal, list_categories, category, output } => {
+            }
+            ModEnrichr::List {
+                minimal,
+                list_categories,
+                category,
+                output,
+            } => {
                 launch_enrichr_list(*minimal, *list_categories, category, output)?;
             }
         },

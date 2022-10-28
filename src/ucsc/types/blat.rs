@@ -1,4 +1,7 @@
-use pyo3::{Python, PyResult, types::{PyList, IntoPyDict, PyDict}};
+use pyo3::{
+    types::{IntoPyDict, PyDict, PyList},
+    PyResult, Python,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt;
@@ -29,7 +32,8 @@ impl BlatResults {
         Self(results)
     }
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
-        let vec_dict: Vec<&PyDict> = self.0
+        let vec_dict: Vec<&PyDict> = self
+            .0
             .iter()
             .map(|x| x.clone())
             .map(|x| x.into_py_dict(py))
