@@ -3,8 +3,8 @@ use ggetrs::{
     archs4::{launch_archs4_correlation, launch_archs4_tissue},
     blast::cli::launch_blast,
     chembl::launch_chembl_activity,
-    cli::{Cli, Commands, ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot},
-    enrichr::launch_enrich,
+    cli::{Cli, Commands, ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot, ModEnrichr},
+    enrichr::{launch_enrichr, launch_enrichr_list},
     ensembl::{
         launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
         launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
@@ -23,13 +23,18 @@ use ggetrs::{
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
-        Commands::Enrichr {
-            library,
-            gene_list,
-            output,
-        } => {
-            launch_enrich(library, gene_list, output)?;
-        }
+        Commands::Enrichr(sub) => match sub {
+            ModEnrichr::Enrichr {
+                library,
+                gene_list,
+                output,
+            } => {
+                launch_enrichr(library, gene_list, output)?;
+            },
+            ModEnrichr::List { minimal, list_categories, category, output } => {
+                launch_enrichr_list(*minimal, *list_categories, category, output)?;
+            }
+        },
         Commands::ARCHS4(sub) => match sub {
             ModArchS4::Correlate {
                 gene_name,
