@@ -214,7 +214,7 @@ fn main() -> Result<(), RequestError> {
             species,
             output,
         } => {
-            launch_seq(search_terms, &transcribe, species, output)?;
+            launch_seq(search_terms, *transcribe, species, output)?;
         }
         Commands::Blast {
             query,
