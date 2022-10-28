@@ -23,3 +23,11 @@ def test_seq_multiple():
     assert(len(result[0].keys()) == 2)
     assert(len(result[1].keys()) == 2)
     assert(len(result[2].keys()) == 2)
+
+def test_seq_nolist():
+    genes = "AP2S1"
+    try:
+        ggetrs.seq(genes)
+        assert(False)
+    except:
+        assert(True)
