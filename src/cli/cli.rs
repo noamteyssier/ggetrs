@@ -1,4 +1,4 @@
-use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
+use super::{ModArchS4, ModChembl, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot, ModEnrichr};
 use crate::{
     blast::types::{BlastDatabase, BlastProgram},
     ensembl::ENSEMBL_RELEASE_STR,
@@ -17,21 +17,8 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Commands {
     /// Perform an enrichment analysis on a list of genes using Enrichr.
-    Enrichr {
-        /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
-        /// some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes,
-        /// and kinase_interactions.
-        #[clap(short, long)]
-        library: String,
-
-        /// optional filepath to write output to [default=stdout]
-        #[clap(short, long)]
-        output: Option<String>,
-
-        /// list of gene symbols to perform enrichment analysis on.
-        #[clap(value_parser, required = true)]
-        gene_list: Vec<String>,
-    },
+    #[clap(subcommand)]
+    Enrichr(ModEnrichr),
 
     /// Queries gene-specific information using ARCHS4
     #[clap(subcommand)]
