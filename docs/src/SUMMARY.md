@@ -6,6 +6,8 @@
 
 # Functional
 - [Enrichr](./enrichr.md)
+  - [Enrichr](./enrichr/enrichr.md)
+  - [List](./enrichr/list.md)
 - [ARCHS4](./archs4.md)
   - [Correlate](./archs4/correlate.md)
   - [Tissue](./archs4/tissue.md)
