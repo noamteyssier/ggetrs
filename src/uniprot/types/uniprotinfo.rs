@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fmt};
 
+use crate::utils::{FastaRecord, FastaRecords};
+
 // A container for UniprotInfo
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UniprotInfoContainer(pub HashMap<String, UniprotInfo>);
@@ -14,7 +16,6 @@ impl fmt::Display for UniprotInfoContainer {
         )
     }
 }
-
 impl UniprotInfoContainer {
     pub fn to_fasta(&self) -> String {
         self.0
@@ -22,6 +23,14 @@ impl UniprotInfoContainer {
             .into_iter()
             .map(|x| x.to_fasta())
             .fold(String::new(), |acc, x| acc + &x)
+    }
+    pub fn fasta_records(&self) -> FastaRecords {
+        let records = self.0
+            .values()
+            .into_iter()
+            .map(|x| x.as_fasta())
+            .collect();
+        FastaRecords(records)
     }
 }
 
@@ -203,9 +212,9 @@ impl UniprotInfo {
             .to_string()
     }
 
-    pub fn to_fasta(&self) -> String {
+    pub fn fasta_header(&self) -> String {
         format!(
-            ">sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={} \n{}\n",
+            "sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={}",
             self.uniprot_id,
             self.uniprot_entry_name,
             self.protein_name,
@@ -214,7 +223,14 @@ impl UniprotInfo {
             self.primary_gene_name,
             self.protein_existence,
             self.sequence_version,
-            self.sequence
         )
+    }
+
+    pub fn to_fasta(&self) -> String {
+        format!("{}", self.as_fasta())
+    }
+
+    pub fn as_fasta(&self) -> FastaRecord {
+        FastaRecord::new(&self.fasta_header(), &self.sequence)
     }
 }
