@@ -52,5 +52,6 @@ fn ggetrs(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     ensembl::python_ensembl(py, module)?;
     ucsc::python_ucsc(py, module)?;
     module.add_function(wrap_pyfunction!(ensembl::python_ensembl_search, module)?)?;
+    module.add_function(wrap_pyfunction!(seq::python_seq, module)?)?;
     Ok(())
 }
