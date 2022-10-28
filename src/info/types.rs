@@ -1,6 +1,7 @@
 use crate::{
     ensembl::types::LookupResponse, ncbi::types::NcbiResults, uniprot::UniprotInfoContainer,
 };
+use pyo3::types::{IntoPyDict, PyDict};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
@@ -15,6 +16,17 @@ impl fmt::Display for InfoContainer {
             "{}",
             serde_json::to_string_pretty(&self).expect("cannot serialize")
         )
+    }
+}
+impl IntoPyDict for InfoContainer {
+    fn into_py_dict(self, py: pyo3::Python<'_>) -> &PyDict {
+        let map = PyDict::new(py);
+        self.0
+            .iter()
+            .for_each(|(k, v)| {
+                map.set_item(k, v.clone().into_py_dict(py)).unwrap();
+            });
+        map
     }
 }
 impl InfoContainer {
@@ -36,7 +48,7 @@ impl InfoContainer {
 }
 
 /// Container which aggregates query results from multiple databases
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Info {
     ensembl_id: String,
     uniprot_id: String,
@@ -57,6 +69,23 @@ impl fmt::Display for Info {
             serde_json::to_string_pretty(&self).expect("cannot serialize")
         )
     }
+}
+impl IntoPyDict for Info {
+    fn into_py_dict(self, py: pyo3::Python<'_>) -> &pyo3::types::PyDict {
+        let map = PyDict::new(py);
+        map.set_item("ensembl_id", &self.ensembl_id).unwrap();
+        map.set_item("uniprot_id", &self.uniprot_id).unwrap();
+        map.set_item("ncbi_id", &self.ncbi_id).unwrap();
+        map.set_item("symbol", &self.symbol).unwrap();
+        map.set_item("pdb_id", &self.pdb_id).unwrap();
+        map.set_item("ensembl_description", &self.ensembl_description).unwrap();
+        map.set_item("uniprot_description", &self.uniprot_description).unwrap();
+        map.set_item("ncbi_description", &self.ncbi_description).unwrap();
+        map.set_item("species", &self.species).unwrap();
+        map.set_item("assembly_name", &self.assembly_name).unwrap();
+        map
+    }
+
 }
 impl Info {
     #[must_use]
