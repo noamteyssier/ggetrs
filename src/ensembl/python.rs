@@ -1,4 +1,5 @@
 use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
+use anyhow::{bail, Result};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,
@@ -16,7 +17,12 @@ pub fn python_ensembl_search<'py>(
     db_type: Option<&str>,
     release: Option<usize>,
     assembly: Option<&str>,
-) -> PyResult<&'py PyDict> {
+) -> Result<&'py PyDict> {
+    if search_terms.len() == 0 {
+        bail!("Must pass in more than one search term!");
+    } else if search_terms[0].len() == 1 {
+        bail!("Must pass in search terms as a list!");
+    }
     let db_name = match database {
         Some(name) => name,
         None => {
@@ -27,7 +33,7 @@ pub fn python_ensembl_search<'py>(
             format!("{}_{}_{}_{}", species, db_type, release, assembly)
         }
     };
-    let results = search(&db_name, &search_terms).expect("Unable to query ensembl search");
+    let results = search(&db_name, &search_terms)?;
     results.as_pydict(py)
 }
 
@@ -50,24 +56,33 @@ pub fn python_ensembl_reference<'py>(
     species: Option<&str>,
     release: Option<usize>,
     datatype: Option<Vec<String>>,
-) -> Vec<&'py PyDict> {
+) -> Result<Vec<&'py PyDict>> {
     let species = species.unwrap_or("homo_sapiens");
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
-        Some(datatype) => datatype
-            .iter()
-            .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
-            .collect::<Vec<DataType>>(),
+        Some(datatype) => {
+            if datatype.len() == 0 {
+                bail!("Must pass in at least one datatype!");
+            } else if datatype[0].len() == 1 {
+                bail!("Must pass in datatypes as a list!");
+            }
+            datatype
+                .iter()
+                .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
+                .collect::<Vec<DataType>>()
+        },
         None => {
             vec![DataType::DNA]
         }
     };
 
-    reference(species, release, &datatype)
+    let results = reference(species, release, &datatype)
         .expect("Could not query FTP")
         .iter()
         .map(|x| x.as_pydict(py).expect("could not create dictionary"))
-        .collect()
+        .collect();
+
+    Ok(results)
 }
 
 #[pyfunction(name = "species")]

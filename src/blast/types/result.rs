@@ -26,8 +26,9 @@ impl IntoPyDict for BlastResult {
                 .iter()
                 .map(|x| x.clone())
                 .map(|x| x.into_py_dict(py))
-                .collect::<Vec<&PyDict>>()
-        ).unwrap();
+                .collect::<Vec<&PyDict>>(),
+        )
+        .unwrap();
         map
     }
 }

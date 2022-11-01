@@ -1,6 +1,9 @@
+use pyo3::{
+    prelude::*,
+    types::{IntoPyDict, PyDict, PyList},
+};
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
-use serde::{Serialize, Deserialize};
-use pyo3::{prelude::*, types::{PyList, IntoPyDict, PyDict}};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FastaRecords(pub Vec<FastaRecord>);
@@ -34,14 +37,12 @@ impl IntoPyDict for FastaRecord {
         map.set_item("sequence", self.sequence).unwrap();
         map
     }
-
-
 }
 impl FastaRecord {
     pub fn new(header: &str, sequence: &str) -> Self {
-        Self { 
-            header: header.to_string(), 
-            sequence: sequence.to_string() 
+        Self {
+            header: header.to_string(),
+            sequence: sequence.to_string(),
         }
     }
 }

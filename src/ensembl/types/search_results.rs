@@ -1,3 +1,4 @@
+use anyhow::Result;
 use mysql::Row;
 use pyo3::{types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
@@ -16,7 +17,7 @@ impl fmt::Display for SearchResults {
     }
 }
 impl SearchResults {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> Result<&'py PyDict> {
         let dict = PyDict::new(py);
         dict.set_item(
             "results",

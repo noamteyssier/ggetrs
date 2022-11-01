@@ -12,10 +12,7 @@ impl ResultSeqContainer {
             .fold(String::new(), |acc, x| acc + &x)
     }
     pub fn fasta_records(&self) -> FastaRecords {
-        let records = self.0
-            .iter()
-            .map(|x| x.as_fasta())
-            .collect();
+        let records = self.0.iter().map(|x| x.as_fasta()).collect();
         FastaRecords(records)
     }
 }
@@ -32,9 +29,6 @@ impl ResultSeq {
         format!("{}", self.as_fasta())
     }
     pub fn as_fasta(&self) -> FastaRecord {
-        FastaRecord::new(
-            &format!("{} {}", self.id, self.desc),
-            &self.seq
-        )
+        FastaRecord::new(&format!("{} {}", self.id, self.desc), &self.seq)
     }
 }

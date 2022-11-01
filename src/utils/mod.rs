@@ -1,6 +1,6 @@
 pub mod autocomplete;
-pub mod parsing;
 mod fasta;
+pub mod parsing;
 mod ping;
-pub use ping::ping;
 pub use fasta::{FastaRecord, FastaRecords};
+pub use ping::ping;
