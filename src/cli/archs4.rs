@@ -23,7 +23,7 @@ pub enum ModArchS4 {
         #[clap(value_parser, required = true)]
         gene_name: String,
 
-        /// number of values to recover
+        /// Species to use in query
         #[clap(short, long, default_value = "human")]
         species: Species,
 

@@ -96,11 +96,11 @@ pub enum Commands {
 
     /// Queries symbols or Ensembl IDs across multiple databases and aggregates results
     Info {
-        /// Search terms to query
+        /// Search terms to query (Gene symbols of Ensembl IDs)
         #[clap(required = true)]
         search_terms: Vec<String>,
 
-        /// Taxon ID to use: currently this MUST match the taxon_id
+        /// Species name to use: currently this MUST match the taxon_id
         #[clap(short, long, default_value = "homo_sapiens")]
         species: String,
 

@@ -5,7 +5,7 @@ use clap::Subcommand;
 pub enum ModUcsc {
     /// Performs a BLAT sequence search on a provided database
     Blat {
-        /// PDB Id to request info
+        /// Query sequence for BLAT search
         #[clap(required = true)]
         sequence: String,
 
