@@ -1,5 +1,5 @@
 use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,

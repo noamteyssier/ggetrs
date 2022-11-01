@@ -1,7 +1,10 @@
-use anyhow::{bail, Result};
-use pyo3::{types::{PyDict, IntoPyDict}, Python, pyfunction};
 use super::info;
-
+use anyhow::{bail, Result};
+use pyo3::{
+    pyfunction,
+    types::{IntoPyDict, PyDict},
+    Python,
+};
 
 #[pyfunction(name = "info")]
 #[pyo3(text_signature = "(search_terms, species = 'homo_sapiens', taxon_id = 9606)")]

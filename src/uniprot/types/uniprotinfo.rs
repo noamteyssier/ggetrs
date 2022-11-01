@@ -25,11 +25,7 @@ impl UniprotInfoContainer {
             .fold(String::new(), |acc, x| acc + &x)
     }
     pub fn fasta_records(&self) -> FastaRecords {
-        let records = self.0
-            .values()
-            .into_iter()
-            .map(|x| x.as_fasta())
-            .collect();
+        let records = self.0.values().into_iter().map(|x| x.as_fasta()).collect();
         FastaRecords(records)
     }
 }

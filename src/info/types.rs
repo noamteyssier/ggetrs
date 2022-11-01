@@ -21,11 +21,9 @@ impl fmt::Display for InfoContainer {
 impl IntoPyDict for InfoContainer {
     fn into_py_dict(self, py: pyo3::Python<'_>) -> &PyDict {
         let map = PyDict::new(py);
-        self.0
-            .iter()
-            .for_each(|(k, v)| {
-                map.set_item(k, v.clone().into_py_dict(py)).unwrap();
-            });
+        self.0.iter().for_each(|(k, v)| {
+            map.set_item(k, v.clone().into_py_dict(py)).unwrap();
+        });
         map
     }
 }
@@ -78,14 +76,16 @@ impl IntoPyDict for Info {
         map.set_item("ncbi_id", &self.ncbi_id).unwrap();
         map.set_item("symbol", &self.symbol).unwrap();
         map.set_item("pdb_id", &self.pdb_id).unwrap();
-        map.set_item("ensembl_description", &self.ensembl_description).unwrap();
-        map.set_item("uniprot_description", &self.uniprot_description).unwrap();
-        map.set_item("ncbi_description", &self.ncbi_description).unwrap();
+        map.set_item("ensembl_description", &self.ensembl_description)
+            .unwrap();
+        map.set_item("uniprot_description", &self.uniprot_description)
+            .unwrap();
+        map.set_item("ncbi_description", &self.ncbi_description)
+            .unwrap();
         map.set_item("species", &self.species).unwrap();
         map.set_item("assembly_name", &self.assembly_name).unwrap();
         map
     }
-
 }
 impl Info {
     #[must_use]

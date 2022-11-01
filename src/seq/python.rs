@@ -1,7 +1,7 @@
-use anyhow::{bail, Result};
-use pyo3::{Python, types::PyList, pyfunction};
-use crate::uniprot::query;
 use super::sequence;
+use crate::uniprot::query;
+use anyhow::{bail, Result};
+use pyo3::{pyfunction, types::PyList, Python};
 
 #[pyfunction(name = "seq")]
 #[pyo3(text_signature = "(search_terms, transcribe = False, db_name = 'homo_sapiens')")]
@@ -25,6 +25,7 @@ pub fn python_seq<'py>(
     } else {
         let results = sequence(&search_terms, &species)?;
         results.fasta_records()
-    }.as_pylist(py)?;
+    }
+    .as_pylist(py)?;
     Ok(records)
 }
