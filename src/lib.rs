@@ -54,5 +54,6 @@ fn ggetrs(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(ensembl::python_ensembl_search, module)?)?;
     module.add_function(wrap_pyfunction!(seq::python_seq, module)?)?;
     module.add_function(wrap_pyfunction!(info::python_info, module)?)?;
+    module.add_function(wrap_pyfunction!(blast::python_blast, module)?)?;
     Ok(())
 }
