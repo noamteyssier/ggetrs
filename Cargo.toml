@@ -2,6 +2,13 @@
 name = "ggetrs"
 version = "0.1.57"
 edition = "2021"
+license = "MIT"
+description = "Efficient querying of biological databases from the command line"
+homepage = "https://noamteyssier.github.io/ggetrs/"
+repository = "https://github.com/noamteyssier/ggetrs"
+documentation = "https://docs.rs/ggetrs"
+categories = ["science", "command-line-utilities"]
+keywords = ["bioinformatics", "ensembl", "ncbi", "uniprot", "enrichr"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
