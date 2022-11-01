@@ -1,4 +1,5 @@
 use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
+use anyhow::{Result, bail};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,
@@ -16,7 +17,12 @@ pub fn python_ensembl_search<'py>(
     db_type: Option<&str>,
     release: Option<usize>,
     assembly: Option<&str>,
-) -> PyResult<&'py PyDict> {
+) -> Result<&'py PyDict> {
+    if search_terms.len() == 0 {
+        bail!("Must pass in more than one search term!");
+    } else if search_terms[0].len() == 1 {
+        bail!("Must pass in search terms as a list!");
+    }
     let db_name = match database {
         Some(name) => name,
         None => {
@@ -27,7 +33,7 @@ pub fn python_ensembl_search<'py>(
             format!("{}_{}_{}_{}", species, db_type, release, assembly)
         }
     };
-    let results = search(&db_name, &search_terms).expect("Unable to query ensembl search");
+    let results = search(&db_name, &search_terms)?;
     results.as_pydict(py)
 }
 
