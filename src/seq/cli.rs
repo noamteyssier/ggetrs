@@ -5,7 +5,7 @@ use std::{fs::File, io::Write};
 
 pub fn launch_seq(
     search_terms: &Vec<String>,
-    &transcribe: &bool,
+    transcribe: bool,
     species: &Option<String>,
     output: &Option<String>,
 ) -> Result<()> {

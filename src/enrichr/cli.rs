@@ -24,7 +24,12 @@ pub fn launch_enrichr(library: &str, gene_list: &[String], output: &Option<Strin
 }
 
 /// Main entrypoint for listing all available libraries in `Enrichr`
-pub fn launch_enrichr_list(minimal: bool, list_categories: bool, category: &Option<usize>, output: &Option<String>) -> Result<()> {
+pub fn launch_enrichr_list(
+    minimal: bool,
+    list_categories: bool,
+    category: &Option<usize>,
+    output: &Option<String>,
+) -> Result<()> {
     let libraries = get_libraries()?;
 
     let output_str = if list_categories {

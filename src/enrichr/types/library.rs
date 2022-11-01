@@ -58,7 +58,6 @@ impl Libraries {
     }
 }
 
-
 /// An instance of category contained within `Enrichr`
 ///
 /// Data is stored as a json at <https://maayanlab.cloud/Enrichr/datasetStatistics>
@@ -91,7 +90,6 @@ impl fmt::Display for Categories {
     }
 }
 
-
 /// All libraries contained within `Enrichr`.
 ///
 /// The `statistics` attribute is a container of all known [Library].
@@ -109,7 +107,8 @@ impl ResponseLibraries {
         Categories(self.categories.to_owned())
     }
     pub fn filter_categories(&self, cid: usize) -> Libraries {
-        let libraries = self.statistics
+        let libraries = self
+            .statistics
             .iter()
             .filter(|x| x.category_id == cid)
             .map(|x| x.to_owned())

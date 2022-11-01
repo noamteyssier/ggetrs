@@ -2,7 +2,6 @@ use clap::Subcommand;
 
 #[derive(Subcommand)]
 pub enum ModEnrichr {
-
     Enrichr {
         /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
         /// some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes,
@@ -21,7 +20,6 @@ pub enum ModEnrichr {
 
     /// List all available libraries and their descriptions
     List {
-        
         /// Return library names in plaintext
         #[clap(short, long)]
         minimal: bool,
@@ -37,6 +35,5 @@ pub enum ModEnrichr {
         /// optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,
-    }
-
+    },
 }

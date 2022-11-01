@@ -25,6 +25,9 @@ doc:
 test:
   cargo nextest run --retries 10
 
+pytest:
+  pytest -v --reruns 10 --reruns-delay 1
+
 lint: build
   cargo clippy -- \
     -W clippy::pedantic \

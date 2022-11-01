@@ -1,3 +1,7 @@
+use pyo3::{
+    types::{IntoPyDict, PyDict, PyList},
+    PyResult, Python,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt;
@@ -27,10 +31,19 @@ impl BlatResults {
             .unwrap_or_default();
         Self(results)
     }
+    pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
+        let vec_dict: Vec<&PyDict> = self
+            .0
+            .iter()
+            .map(|x| x.clone())
+            .map(|x| x.into_py_dict(py))
+            .collect();
+        Ok(PyList::new(py, vec_dict))
+    }
 }
 
 /// Expected results from a BLAT query
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Blat {
     pub matches: usize,
     pub mismatches: usize,
@@ -61,6 +74,33 @@ impl fmt::Display for Blat {
             "{}",
             serde_json::to_string_pretty(&self).expect("cannot serialize")
         )
+    }
+}
+impl IntoPyDict for Blat {
+    fn into_py_dict(self, py: Python<'_>) -> &pyo3::types::PyDict {
+        let dict = PyDict::new(py);
+        dict.set_item("matches", &self.matches).unwrap();
+        dict.set_item("mismatches", &self.mismatches).unwrap();
+        dict.set_item("repmatches", &self.repmatches).unwrap();
+        dict.set_item("n_count", &self.n_count).unwrap();
+        dict.set_item("q_num_insert", &self.q_num_insert).unwrap();
+        dict.set_item("q_base_insert", &self.q_base_insert).unwrap();
+        dict.set_item("t_num_insert", &self.t_num_insert).unwrap();
+        dict.set_item("t_base_insert", &self.t_base_insert).unwrap();
+        dict.set_item("strand", &self.strand).unwrap();
+        dict.set_item("q_name", &self.q_name).unwrap();
+        dict.set_item("q_size", &self.q_size).unwrap();
+        dict.set_item("q_start", &self.q_start).unwrap();
+        dict.set_item("q_end", &self.q_end).unwrap();
+        dict.set_item("t_name", &self.t_name).unwrap();
+        dict.set_item("t_size", &self.t_size).unwrap();
+        dict.set_item("t_start", &self.t_start).unwrap();
+        dict.set_item("t_end", &self.t_end).unwrap();
+        dict.set_item("block_count", &self.block_count).unwrap();
+        dict.set_item("block_sizes", &self.block_sizes).unwrap();
+        dict.set_item("q_starts", &self.q_starts).unwrap();
+        dict.set_item("q_starts", &self.t_starts).unwrap();
+        dict
     }
 }
 impl Blat {
