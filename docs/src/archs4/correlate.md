@@ -1,25 +1,35 @@
 # Correlate
 
-## Help
+Performs a gene-correlation analysis using [ARCHS4](https://maayanlab.cloud/archs4).
 
-```text
-Performs a gene-correlation analysis
+## Arguments
 
-Usage: ggetrs archs4 correlate [OPTIONS] <GENE_NAME>
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Count | `-c` | `--count` | number of values to recover [default: 100] |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Arguments:
-  <GENE_NAME>  Gene name to query for correlation
-
-Options:
-  -c, --count <COUNT>    number of values to recover [default: 100]
-  -o, --output <OUTPUT>  output filepath to write to [default=stdout]
-  -h, --help             Print help information
-  -V, --version          Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
 # Perform a gene-correlation analysis with ARCHS4
+ggetrs archs4 correlate AP2S1
+
+# Perform a gene-correlation analysis with ARCHS4
+# But only return the top 10 results
 ggetrs archs4 correlate -c 10 AP2S1
+```
+
+## Python
+
+```python
+import ggetrs
+
+# Perform a gene-correlation analysis for AP2S1
+# and return the top 10 results
+ggetrs.archs4.correlate("AP2S1", 10)
+
+# Perform a gene-correlation analysis for AP2S1
+# and return the top 100 results
+ggetrs.archs4.correlate("AP2S1", 100)
 ```
