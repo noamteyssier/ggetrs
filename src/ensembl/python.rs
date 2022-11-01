@@ -56,24 +56,33 @@ pub fn python_ensembl_reference<'py>(
     species: Option<&str>,
     release: Option<usize>,
     datatype: Option<Vec<String>>,
-) -> Vec<&'py PyDict> {
+) -> Result<Vec<&'py PyDict>> {
     let species = species.unwrap_or("homo_sapiens");
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
-        Some(datatype) => datatype
-            .iter()
-            .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
-            .collect::<Vec<DataType>>(),
+        Some(datatype) => {
+            if datatype.len() == 0 {
+                bail!("Must pass in at least one datatype!");
+            } else if datatype[0].len() == 1 {
+                bail!("Must pass in datatypes as a list!");
+            }
+            datatype
+                .iter()
+                .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
+                .collect::<Vec<DataType>>()
+        },
         None => {
             vec![DataType::DNA]
         }
     };
 
-    reference(species, release, &datatype)
+    let results = reference(species, release, &datatype)
         .expect("Could not query FTP")
         .iter()
         .map(|x| x.as_pydict(py).expect("could not create dictionary"))
-        .collect()
+        .collect();
+
+    Ok(results)
 }
 
 #[pyfunction(name = "species")]
