@@ -1,25 +1,33 @@
 # Tissue
 
-## Help
+Performs a tissue-correlation analysis using [ARCHS4](https://maayanlab.cloud/archs4).
 
-```text
-Perform a tissue-enrichment analysis
+## Arguments
 
-Usage: ggetrs archs4 tissue [OPTIONS] <GENE_NAME>
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Species | `-s` | `--species` | species of organism to recover [default: human] [possible values: human, mous] |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Arguments:
-  <GENE_NAME>  Gene name to query for tissue
 
-Options:
-  -s, --species <SPECIES>  number of values to recover [default: human] [possible values: human, mouse]
-  -o, --output <OUTPUT>    output filepath to write to [default=stdout]
-  -h, --help               Print help information
-  -V, --version            Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
-# Find tissue-level expression using ARCHS4
+# Find tissue-level expression for AP2S1 in Humans
 ggetrs archs4 tissue AP2S1
+
+# Find tissue-level expression for AP2S1 in Mice
+ggetrs archs4 tissue -s mouse AP2S1
+```
+
+## Python
+
+```python
+import ggetrs
+
+# perform a tissue-correlation analysis for AP2S1 in Humans
+ggetrs.archs4.tissue("AP2S1", "human")
+
+# perform a tissue-correlation analysis for AP2S1 in Mice
+ggetrs.archs4.tissue("AP2S1", "mouse")
 ```

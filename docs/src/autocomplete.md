@@ -2,20 +2,13 @@
 
 This is used to generate autocomplete information for your terminal shell.
 
-## Help
+## Arguments
 
-```text
-Set up autocomplete for various shells
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Shell | `-s` | `--shell` | Shell to generate autocompletions for [possible values: bash, elvish, fish, powershell, zsh]|
 
-Usage: ggetrs autocomplete --shell <SHELL>
-
-Options:
-  -s, --shell <SHELL>  Shell to generate autocompletions for [possible values: bash, elvish, fish, powershell, zsh]
-  -h, --help           Print help information
-  -V, --version        Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
 # generate autocompletions for the fish shell

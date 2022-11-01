@@ -1,22 +1,14 @@
 # Lookup-Symbol
 
-## Help
-
-```text
 Lookup information for genes/transcripts providing symbols and species
 
-Usage: ggetrs ensembl lookup-symbol [OPTIONS] <SYMBOLS>...
+## Arguments
 
-Arguments:
-  <SYMBOLS>...  Gene symbols to query
-
-Options:
-  -s, --species <SPECIES>  Species/alias to specify [default: homo_sapiens]
-  -i, --ids                Return a minimal output of only the found Ensembl IDs
-  -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
-  -h, --help               Print help information
-  -V, --version            Print version information
-```
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Species | `-s` | `--species` | Species to specify [default: homo_sapiens] |
+| IDs | `-i` | `--ids` | Return a minimal output of only the found Ensembl IDs |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
 ## Usage
 

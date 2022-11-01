@@ -4,24 +4,14 @@ Query NCBI for gene symbols and with a provided taxon ID.
 You can determine taxon IDs for your organism of choice with
 [`ggetrs ncbi taxons`](./taxons.md).
 
-## Help
+## Arguments
 
-```text
-Retrieves information for a list of symbols (must provide taxon)
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Taxon ID | `-t` | `--taxon-id` | Taxon ID (human: 9606, mouse: 10090) [default: 9606] |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Usage: ggetrs ncbi query-symbols [OPTIONS] <SYMBOLS>...
-
-Arguments:
-  <SYMBOLS>...  NCBI ids to query
-
-Options:
-  -t, --taxon-id <TAXON_ID>  Taxon ID (human: 9606, mouse: 10090) [default: 9606]
-  -o, --output <OUTPUT>      optional filepath to write output to [default=stdout]
-  -h, --help                 Print help information
-  -V, --version              Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
 # query NCBI for the symbol AP2S1
