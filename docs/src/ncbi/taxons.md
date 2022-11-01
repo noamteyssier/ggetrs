@@ -2,27 +2,16 @@
 
 This retrieves possible taxons from an incomplete query string.
 
-## Help
+## Arguments
 
-```text
-Retrieves taxon information from NCBI from a query string
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Limit | `-l` | `--limit` | Number of search results to return [default: 5] |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Usage: ggetrs ncbi taxons [OPTIONS] <QUERY>
-
-Arguments:
-  <QUERY>  taxon name to query
-
-Options:
-  -l, --limit <LIMIT>    number of search results to return [default: 5]
-  -o, --output <OUTPUT>  optional filepath to write output to [default=stdout]
-  -h, --help             Print help information
-  -V, --version          Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
-
 # return all taxons that contain the substring 'sapiens'
 ggetrs ncbi taxons sapiens
 

@@ -5,35 +5,29 @@ Perform an enrichment analysis on a list of genes using [Enrichr](https://maayan
 This requires at minimum a database name (listed [here](https://maayanlab.cloud/Enrichr/#libraries))
 and any number of gene symbols to perform enrichment analysis on.
 
-## Help
+## Library Shorthands
 
-```text
-Usage: ggetrs enrichr enrichr [OPTIONS] --library <LIBRARY> <GENE_LIST>...
+Some shorthands for the library are built into the program for convenience.
+These can be used in the command line interface or in the python interface.
 
-Arguments:
-  <GENE_LIST>...  list of gene symbols to perform enrichment analysis on
+| Alias | Library |
+|-------|---------|
+| pathway               | KEGG_2021_Human | 
+| transcription         | ChEA_2016 | 
+| ontology              | GO_Biological_Processes_2021 | 
+| diseases_drugs        | GWAS_Catalog_2019 | 
+| celltypes             | PangloaDB_Augmented_2021 | 
+| kinase_interactions   | KEA_2015 | 
 
-Options:
-  -l, --library <LIBRARY>  any database listed at: https://maayanlab.cloud/Enrichr/#libraries some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes, and kinase_interactions
-  -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
-  -h, --help               Print help information
-  -V, --version            Print version information
-```
+## Arguments
 
-### Library Shorthands
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Library | `-l` | `--library` | a [library shorthand](#library-shorthands) or any [Enrichr library](https://maayanlab.cloud/Enrichr/#libraries) |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Some shorthands for the library are built into the program for convenience:
 
-```text
-pathway               KEGG_2021_Human
-transcription         ChEA_2016
-ontology              GO_Biological_Processes_2021
-diseases_drugs        GWAS_Catalog_2019
-celltypes             PangloaDB_Augmented_2021
-kinase_interactions   KEA_2015
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
 # Perform an enrichment analysis using Enrichr
@@ -45,4 +39,16 @@ ggetrs enrichr enrichr -l ontology AP2S1 NSD1 RFX3
 
 # Perform an enrichment analysis on pathway
 ggetrs enrichr enrichr -l pathway AP2S1 NSD1 RFX3
+```
+
+## Python
+
+```python
+import ggetrs
+
+# Search using the ontology shorthand
+ggetrs.enrichr("ontology", ["AP2S1", "RFX3", "NSD1"])
+
+# Search using the kinase_interactions shorthand
+ggetrs.enrichr("kinase_interactions", ["AP2S1", "RFX3", "NSD1"])
 ```

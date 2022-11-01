@@ -8,25 +8,15 @@ of [`ggetrs ensembl lookup-symbol`](./ensembl/lookup-symbol.md).
 
 All returned sequences are guaranteed to be in the same order as provided ids/symbols.
 
-## Help
+## Arguments
 
-```text
-Queries sequences from ensembl and UniProt
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Transcribe | `-t` | `--transcribe` | Return the amino acid sequence instead of nucleotide sequence |
+| Species | `-s` | `--species` | Species to specify when not using an Ensembl ID [default: homo_sapiens] |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Usage: ggetrs seq [OPTIONS] <SEARCH_TERMS>...
-
-Arguments:
-  <SEARCH_TERMS>...  Search terms to query (can be Ensembl IDs or Gene Symbols)
-
-Options:
-  -t, --transcribe         Return the amino acid sequence instead of nucleotide sequence
-  -s, --species <SPECIES>  Species/alias to specify [default: homo_sapiens]
-  -o, --output <OUTPUT>    optional filepath to write output to [default=stdout]
-  -h, --help               Print help information
-  -V, --version            Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
 # recover nucleotide sequence for AP2S1 (ENSG00000042753)
@@ -46,4 +36,28 @@ ggetrs seq -t AP2S1
 
 # recover amino acid sequences for AP2S1 and NSD1 and RFX3
 ggetrs seq -t AP2S1 NSD1 RFX3
+```
+
+## Python
+
+```python
+import ggetrs
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753)
+ggetrs.seq(["ENSG00000042753"])
+
+# recover nucleotide sequence for AP2S1
+ggetrs.seq(["AP2S1"])
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753) and NSD1
+ggetrs.seq(["ENSG00000042753", "NSD1"])
+
+# recover amino acid sequence for AP2S1 (ENSG00000042753)
+ggetrs.seq(["ENSG00000042753"], transcribe=True)
+
+# recover amino acid sequence for AP2S1
+ggetrs.seq(["AP2S1"], transcribe=True)
+
+# recover amino acid sequences for multiple transcripts
+ggetrs.seq(["AP2S1", "NSD1", "RFX3"], transcribe=True)
 ```

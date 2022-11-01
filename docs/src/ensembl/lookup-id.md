@@ -1,21 +1,13 @@
 # Lookup-Id
 
-## Help
-
-```text
 Lookup information for genes/transcripts providing ensembl ids
 
-Usage: ggetrs ensembl lookup-id [OPTIONS] <ENSEMBL_IDS>...
+## Arguments
 
-Arguments:
-  <ENSEMBL_IDS>...  Ensembl IDS to query
-
-Options:
-  -n, --names            Return a minimal output of only the found gene names
-  -o, --output <OUTPUT>  optional filepath to write output to [default=stdout]
-  -h, --help             Print help information
-  -V, --version          Print version information
-```
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Names | `-n` | `--names` | Returns a minimal output of only the found gene names |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
 ## Usage
 

@@ -1,28 +1,20 @@
 # Query
 
-## Help
-
-```text
 Searches through descriptions on Uniprot
 
-Usage: ggetrs uniprot query [OPTIONS] <SEARCH_TERMS>...
+## Arguments
 
-Arguments:
-  <SEARCH_TERMS>...  Search terms to query
+| Name | Short | Long | Description |
+|------|-------|------|-------------|
+| Taxon | `-t` | `--taxon` | Taxon to filter results (human: 9606, mouse: 10090) |
+| Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
 
-Options:
-  -t, --taxon <TAXON>    Taxon to filter results (human: 9606, mouse: 10090)
-  -o, --output <OUTPUT>  optional filepath to write output to [default=stdout]
-  -h, --help             Print help information
-  -V, --version          Print version information
-```
-
-## Usage
+## Command Line Interface
 
 ```bash
-# Query uniprot for AP2S1
+# Query uniprot for single terms
 ggetrs uniprot query AP2S1
 
-# Query uniprot for AP2S1, RFX3, NSD1
+# Query uniprot for multiple terms
 ggetrs uniprot query AP2S1 RFX3 NSD1
 ```
