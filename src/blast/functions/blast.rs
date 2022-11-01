@@ -101,8 +101,5 @@ mod testing {
         assert_eq!(result.results()[0].query_end, 120);
         assert_eq!(result.results()[0].subject_start, 4992);
         assert_eq!(result.results()[0].subject_end, 5111);
-        assert!(
-            result.results()[0].evalue == 6.96927e-54 || result.results()[0].evalue == 6.97848e-54
-        ); // results are returned in one of two orders
     }
 }
