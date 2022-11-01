@@ -1,3 +1,4 @@
+use pyo3::types::{IntoPyDict, PyDict};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -13,6 +14,21 @@ impl fmt::Display for BlastResult {
             "{}",
             serde_json::to_string_pretty(&self).expect("cannot serialize")
         )
+    }
+}
+impl IntoPyDict for BlastResult {
+    fn into_py_dict(self, py: pyo3::Python<'_>) -> &PyDict {
+        let map = PyDict::new(py);
+        map.set_item("query", self.query).unwrap();
+        map.set_item(
+            "results",
+            self.results
+                .iter()
+                .map(|x| x.clone())
+                .map(|x| x.into_py_dict(py))
+                .collect::<Vec<&PyDict>>()
+        ).unwrap();
+        map
     }
 }
 impl BlastResult {
@@ -37,7 +53,7 @@ impl BlastResult {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BlastHit {
     pub num: usize,
     pub id: String,
@@ -73,6 +89,26 @@ impl BlastHit {
             gap_opens: statistic.gap_opens,
             alignment_length: statistic.alignment_length,
         }
+    }
+}
+impl IntoPyDict for BlastHit {
+    fn into_py_dict(self, py: pyo3::Python<'_>) -> &pyo3::types::PyDict {
+        let map = PyDict::new(py);
+        map.set_item("num", self.num).unwrap();
+        map.set_item("id", self.num).unwrap();
+        map.set_item("definition", self.num).unwrap();
+        map.set_item("accession", self.num).unwrap();
+        map.set_item("length", self.num).unwrap();
+        map.set_item("bit_score", self.num).unwrap();
+        map.set_item("score", self.num).unwrap();
+        map.set_item("evalue", self.num).unwrap();
+        map.set_item("gap_opens", self.num).unwrap();
+        map.set_item("alignment_length", self.num).unwrap();
+        map.set_item("query_start", self.num).unwrap();
+        map.set_item("query_end", self.num).unwrap();
+        map.set_item("subject_start", self.num).unwrap();
+        map.set_item("subject_end", self.num).unwrap();
+        map
     }
 }
 
