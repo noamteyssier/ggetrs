@@ -26,8 +26,8 @@ ggetrs archs4 tissue -s mouse AP2S1
 import ggetrs
 
 # perform a tissue-correlation analysis for AP2S1 in Humans
-ggetrs.archs4.tissue("ap2s1", "human")
+ggetrs.archs4.tissue("AP2S1", "human")
 
 # perform a tissue-correlation analysis for AP2S1 in Mice
-ggetrs.archs4.tissue("ap2s1", "mouse")
+ggetrs.archs4.tissue("AP2S1", "mouse")
 ```
