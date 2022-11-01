@@ -16,6 +16,7 @@
 - [Info](./info.md)
 - [Seq](./seq.md)
 - [UCSC](./ucsc.md)
+  - [BLAT](./ucsc/blat.md)
 - [PDB](./pdb.md)
   - [Structure](./pdb/structure.md)
   - [Info](./pdb/info.md)
