@@ -27,3 +27,9 @@ cargo install ggetrs
 ## Module Overview
 
 Here is a [list of currently supported modules](./modules.md)
+
+## External Links
+
+- [Github Repo](https://github.com/noamteyssier/ggetrs)
+- [crates.io](https://crates.io/crates/ggetrs)
+- [docs.rs](https://docs.rs/ggetrs)
