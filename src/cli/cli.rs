@@ -69,7 +69,7 @@ pub enum Commands {
         #[clap(value_parser, required = true)]
         search_terms: Vec<String>,
 
-        /// database
+        /// Ensembl database to perform search in
         #[clap(short, long)]
         database: Option<String>,
 
