@@ -68,9 +68,11 @@ pub fn python_ensembl_reference<'py>(
             }
             datatype
                 .iter()
-                .map(|x| DataType::from_str(x, true).expect("Could not represent provided datatypes"))
+                .map(|x| {
+                    DataType::from_str(x, true).expect("Could not represent provided datatypes")
+                })
                 .collect::<Vec<DataType>>()
-        },
+        }
         None => {
             vec![DataType::DNA]
         }
