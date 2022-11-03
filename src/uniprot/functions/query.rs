@@ -1,9 +1,8 @@
 use std::collections::HashMap;
-
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
-use anyhow::bail;
+use anyhow::{bail, Result};
 use futures::future::join_all;
-use reqwest::{Client, Result};
+use reqwest::Client;
 use serde_json::Value;
 
 fn build_query_string(gene: &str, taxon: &Option<usize>) -> String {
@@ -28,14 +27,15 @@ async fn async_query_uniprot(gene: &str, taxon: &Option<usize>) -> Result<Option
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
         query
     );
-    Client::new()
+    let value = Client::new()
         .get(url)
         .header("content-type", "application/json")
         .send()
         .await?
         .json::<Value>()
-        .await
-        .map(|x| UniprotInfo::from_value(&x, gene))
+        .await?;
+    let info = UniprotInfo::from_value(&value, gene)?;
+    Ok(info)
 }
 
 /// An asynchronous function which joins all the handles from `async_query_uniprot`
