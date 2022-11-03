@@ -2,7 +2,6 @@ use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fmt};
-
 use crate::utils::{FastaRecord, FastaRecords};
 
 // A container for UniprotInfo
