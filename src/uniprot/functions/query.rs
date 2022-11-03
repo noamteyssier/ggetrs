@@ -31,7 +31,6 @@ async fn async_query_uniprot(
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
         query
     );
-    println!("{:?}", url);
     let value = Client::new()
         .get(url)
         .header("content-type", "application/json")
