@@ -5,8 +5,8 @@ use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
 
-fn build_query_string(gene: &str, taxon: &Option<usize>) -> String {
-    let gene_query = if gene.starts_with("ENS") {
+fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> String {
+    let gene_query = if gene.starts_with("ENS") || freeform {
         gene.to_string()
     } else {
         format!("(gene:{})", gene)
@@ -21,8 +21,8 @@ fn build_query_string(gene: &str, taxon: &Option<usize>) -> String {
 }
 
 /// An asynchronous function which performs a uniprot query
-async fn async_query_uniprot(gene: &str, taxon: &Option<usize>) -> Result<Option<UniprotInfo>> {
-    let query = build_query_string(gene, taxon);
+async fn async_query_uniprot(gene: &str, freeform: bool, taxon: &Option<usize>) -> Result<Option<UniprotInfo>> {
+    let query = build_query_string(gene, freeform, taxon);
     let url = format!(
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
         query
@@ -41,23 +41,23 @@ async fn async_query_uniprot(gene: &str, taxon: &Option<usize>) -> Result<Option
 /// An asynchronous function which joins all the handles from `async_query_uniprot`
 async fn async_query_uniprot_multiple(
     ensembl_ids: &[String],
+    freeform: bool,
     taxon: &Option<usize>,
 ) -> Result<Vec<Result<Option<UniprotInfo>>>> {
-    let query_handles = ensembl_ids.iter().map(|x| async_query_uniprot(x, taxon));
-
+    let query_handles = ensembl_ids.iter().map(|x| async_query_uniprot(x, freeform, taxon));
     let results = join_all(query_handles).await;
     Ok(results)
 }
 
 /// A synchronous function to perform a query for each of the terms provided.
-pub fn query(terms: &[String], taxon: &Option<usize>) -> anyhow::Result<UniprotInfoContainer> {
+pub fn query(terms: &[String], freeform: bool, taxon: &Option<usize>) -> anyhow::Result<UniprotInfoContainer> {
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()?;
 
     let results = rt
         .block_on(async move {
-            async_query_uniprot_multiple(terms, taxon)
+            async_query_uniprot_multiple(terms, freeform, taxon)
                 .await
                 .expect("could not query uniprot")
         })
@@ -81,7 +81,7 @@ mod testing {
     fn test_uniprot_query() {
         let terms = vec!["AP2S1".to_string()];
         let taxon = None;
-        let response = query(&terms, &taxon);
+        let response = query(&terms, false, &taxon);
         assert!(response.is_ok());
     }
 
@@ -89,7 +89,7 @@ mod testing {
     fn test_uniprot_nonsense_query() {
         let terms = vec!["AOSDKAPOWDNASD".to_string()];
         let taxon = None;
-        let response = query(&terms, &taxon);
+        let response = query(&terms, false, &taxon);
         assert!(response.is_err());
     }
 }

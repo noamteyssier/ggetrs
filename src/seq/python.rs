@@ -20,7 +20,7 @@ pub fn python_seq<'py>(
     let species = Some(species.unwrap_or("homo_sapiens".to_string()));
 
     let records = if transcribe {
-        let results = query(&search_terms, &None)?;
+        let results = query(&search_terms, false, &None)?;
         results.fasta_records()
     } else {
         let results = sequence(&search_terms, &species)?;
