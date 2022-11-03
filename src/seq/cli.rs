@@ -10,7 +10,7 @@ pub fn launch_seq(
     output: &Option<String>,
 ) -> Result<()> {
     if transcribe {
-        let results = query(search_terms, &None)?;
+        let results = query(search_terms, false, &None)?;
         match output {
             Some(path) => {
                 if let Ok(mut writer) = File::create(path) {

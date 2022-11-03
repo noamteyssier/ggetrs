@@ -155,10 +155,11 @@ fn main() -> Result<(), RequestError> {
         Commands::Uniprot(sub) => match sub {
             ModUniprot::Query {
                 search_terms,
+                freeform,
                 taxon,
                 output,
             } => {
-                launch_uniprot_query(search_terms, taxon, output)?;
+                launch_uniprot_query(search_terms, *freeform, taxon, output)?;
             }
         },
         Commands::Ncbi(sub) => match sub {
