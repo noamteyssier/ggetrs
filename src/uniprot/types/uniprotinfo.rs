@@ -1,3 +1,4 @@
+use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fmt};
@@ -59,25 +60,25 @@ impl fmt::Display for UniprotInfo {
 }
 impl UniprotInfo {
     #[must_use]
-    pub fn from_value(value: &Value, query: &str) -> Option<Self> {
+    pub fn from_value(value: &Value, query: &str) -> Result<Option<Self>> {
         if !Self::is_valid(value) {
-            return None;
+            return Ok(None)
         }
-        let uniprot_id = Self::get_uniprot_id(value);
-        let uniprot_entry_name = Self::get_uniprot_entry_name(value);
-        let primary_gene_name = Self::get_primary_gene_name(value);
+        let uniprot_id = Self::get_uniprot_id(value)?;
+        let uniprot_entry_name = Self::get_uniprot_entry_name(value)?;
+        let primary_gene_name = Self::get_primary_gene_name(value)?;
         let uniprot_synonyms = Self::get_uniprot_synonyms(value);
-        let protein_name = Self::get_protein_names(value);
-        let uniprot_description = Self::get_uniprot_description(value);
+        let protein_name = Self::get_protein_names(value)?;
+        let uniprot_description = Self::get_uniprot_description(value)?;
         let ncbi_id = Self::get_ncbi_id(value);
         let pdb_id = Self::get_pdb_id(value);
-        let taxon_id = Self::get_taxon_id(value);
-        let organism_name = Self::get_organism_name(value);
-        let sequence = Self::get_protein_sequence(value);
-        let sequence_version = Self::get_sequence_version(value);
-        let protein_existence = Self::get_protein_existence(value);
+        let taxon_id = Self::get_taxon_id(value)?;
+        let organism_name = Self::get_organism_name(value)?;
+        let sequence = Self::get_protein_sequence(value)?;
+        let sequence_version = Self::get_sequence_version(value)?;
+        let protein_existence = Self::get_protein_existence(value)?;
         let query = query.to_string();
-        Some(Self {
+        Ok(Some(Self {
             uniprot_id,
             uniprot_entry_name,
             primary_gene_name,
@@ -92,39 +93,43 @@ impl UniprotInfo {
             sequence_version,
             protein_existence,
             query,
-        })
+        }))
     }
 
     fn is_valid(value: &Value) -> bool {
         !value["results"][0].is_null()
     }
 
-    fn get_uniprot_id(value: &Value) -> String {
-        value["results"][0]["primaryAccession"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_uniprot_id(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["primaryAccession"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse Uniprot ID")
+        }
     }
 
-    fn get_uniprot_entry_name(value: &Value) -> String {
-        value["results"][0]["uniProtkbId"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_uniprot_entry_name(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["uniProtkbId"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse Uniprot Entry Name")
+        }
     }
 
-    fn get_primary_gene_name(value: &Value) -> String {
-        value["results"][0]["genes"][0]["geneName"]["value"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_primary_gene_name(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["genes"][0]["geneName"]["value"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse primary gene name")
+        }
     }
 
-    fn get_protein_sequence(value: &Value) -> String {
-        value["results"][0]["sequence"]["value"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_protein_sequence(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["sequence"]["value"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not protein sequence")
+        }
     }
 
     fn get_uniprot_synonyms(value: &Value) -> Vec<String> {
@@ -137,18 +142,20 @@ impl UniprotInfo {
         }
     }
 
-    fn get_protein_names(value: &Value) -> String {
-        value["results"][0]["proteinDescription"]["recommendedName"]["fullName"]["value"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_protein_names(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["proteinDescription"]["recommendedName"]["fullName"]["value"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse protein names")
+        }
     }
 
-    fn get_uniprot_description(value: &Value) -> String {
-        value["results"][0]["comments"][0]["texts"][0]["value"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_uniprot_description(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["comments"][0]["texts"][0]["value"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse uniprot description")
+        }
     }
 
     fn get_ncbi_id(value: &Value) -> Option<String> {
@@ -178,34 +185,38 @@ impl UniprotInfo {
         }
     }
 
-    fn get_taxon_id(value: &Value) -> usize {
-        value["results"][0]["organism"]["taxonId"]
-            .as_u64()
-            .expect("Missing taxon_id") as usize
+    fn get_taxon_id(value: &Value) -> Result<usize> {
+        if let Some(s) = value["results"][0]["organism"]["taxonId"].as_u64() {
+            Ok(s as usize)
+        } else {
+            bail!("Could not parse taxon id")
+        }
     }
 
-    fn get_organism_name(value: &Value) -> String {
-        value["results"][0]["organism"]["commonName"]
-            .as_str()
-            .unwrap()
-            .to_string()
+    fn get_organism_name(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["organism"]["commonName"].as_str() {
+            Ok(s.to_string())
+        } else if let Some(s) = value["results"][0]["organism"]["scientificName"].as_str() {
+            Ok(s.to_string())
+        } else {
+            bail!("Could not parse organism name")
+        }
     }
 
-    fn get_sequence_version(value: &Value) -> usize {
-        value["results"][0]["entryAudit"]["sequenceVersion"]
-            .as_u64()
-            .expect("Missing sequence_version") as usize
+    fn get_sequence_version(value: &Value) -> Result<usize> {
+        if let Some(s) = value["results"][0]["entryAudit"]["sequenceVersion"].as_u64() {
+            Ok(s as usize)
+        } else {
+            bail!("Could not parse sequence version")
+        }
     }
 
-    fn get_protein_existence(value: &Value) -> String {
-        value["results"][0]["proteinExistence"]
-            .as_str()
-            .unwrap()
-            .to_string()
-            .chars()
-            .nth(0)
-            .unwrap()
-            .to_string()
+    fn get_protein_existence(value: &Value) -> Result<String> {
+        if let Some(s) = value["results"][0]["proteinExistence"].as_str() {
+            Ok(s.to_string().chars().nth(0).unwrap().to_string())
+        } else {
+            bail!("Could not parse protein existence")
+        }
     }
 
     pub fn fasta_header(&self) -> String {
