@@ -1,8 +1,8 @@
+use crate::utils::{FastaRecord, FastaRecords};
 use anyhow::{bail, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashMap, fmt};
-use crate::utils::{FastaRecord, FastaRecords};
 
 // A container for UniprotInfo
 #[derive(Serialize, Deserialize, Debug)]
@@ -61,7 +61,7 @@ impl UniprotInfo {
     #[must_use]
     pub fn from_value(value: &Value, query: &str) -> Result<Option<Self>> {
         if !Self::is_valid(value) {
-            return Ok(None)
+            return Ok(None);
         }
         let uniprot_id = Self::get_uniprot_id(value)?;
         let uniprot_entry_name = Self::get_uniprot_entry_name(value)?;
@@ -142,7 +142,10 @@ impl UniprotInfo {
     }
 
     fn get_protein_names(value: &Value) -> Result<String> {
-        if let Some(s) = value["results"][0]["proteinDescription"]["recommendedName"]["fullName"]["value"].as_str() {
+        if let Some(s) = value["results"][0]["proteinDescription"]["recommendedName"]["fullName"]
+            ["value"]
+            .as_str()
+        {
             Ok(s.to_string())
         } else {
             bail!("Could not parse protein names")

@@ -1,9 +1,9 @@
-use std::collections::HashMap;
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use anyhow::{bail, Result};
 use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
+use std::collections::HashMap;
 
 fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> String {
     let gene_query = if gene.starts_with("ENS") || freeform {
@@ -21,7 +21,11 @@ fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> Stri
 }
 
 /// An asynchronous function which performs a uniprot query
-async fn async_query_uniprot(gene: &str, freeform: bool, taxon: &Option<usize>) -> Result<Option<UniprotInfo>> {
+async fn async_query_uniprot(
+    gene: &str,
+    freeform: bool,
+    taxon: &Option<usize>,
+) -> Result<Option<UniprotInfo>> {
     let query = build_query_string(gene, freeform, taxon);
     let url = format!(
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
@@ -44,13 +48,19 @@ async fn async_query_uniprot_multiple(
     freeform: bool,
     taxon: &Option<usize>,
 ) -> Result<Vec<Result<Option<UniprotInfo>>>> {
-    let query_handles = ensembl_ids.iter().map(|x| async_query_uniprot(x, freeform, taxon));
+    let query_handles = ensembl_ids
+        .iter()
+        .map(|x| async_query_uniprot(x, freeform, taxon));
     let results = join_all(query_handles).await;
     Ok(results)
 }
 
 /// A synchronous function to perform a query for each of the terms provided.
-pub fn query(terms: &[String], freeform: bool, taxon: &Option<usize>) -> anyhow::Result<UniprotInfoContainer> {
+pub fn query(
+    terms: &[String],
+    freeform: bool,
+    taxon: &Option<usize>,
+) -> anyhow::Result<UniprotInfoContainer> {
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()?;
