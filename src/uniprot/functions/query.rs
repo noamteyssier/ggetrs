@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> String {
     let gene_query = if gene.starts_with("ENS") || freeform {
-        gene.to_string()
+        format!("({gene})")
     } else {
         format!("(gene:{})", gene)
     };
@@ -31,6 +31,7 @@ async fn async_query_uniprot(
         "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
         query
     );
+    println!("{:?}", url);
     let value = Client::new()
         .get(url)
         .header("content-type", "application/json")
