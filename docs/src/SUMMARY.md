@@ -1,10 +1,13 @@
 # Summary
 
-- [Introduction](./introduction.md)
-- [Installation](./install.md)
-- [Modules](./modules.md)
+[Introduction](./introduction.md)
+[Installation](./install.md)
+[Modules](./modules.md)
+
+---
 
 # Functional
+
 - [Enrichr](./enrichr.md)
   - [Enrichr](./enrichr/enrichr.md)
   - [List](./enrichr/list.md)
@@ -43,3 +46,10 @@
 # Quality of Life
 
 - [Autocomplete](./autocomplete.md)
+
+---
+
+[Citations](./citations.md)
+[Contributing](./contributing.md)
+[Bug Reporting](./bug_reporting.md)
+[Disclaimer](./disclaimer.md)
