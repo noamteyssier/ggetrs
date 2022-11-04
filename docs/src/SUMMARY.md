@@ -49,6 +49,7 @@
 
 ---
 
+[FAQ](./faq.md)
 [Citations](./citations.md)
 [Contributing](./contributing.md)
 [Bug Reporting](./bug_reporting.md)

@@ -32,6 +32,8 @@ version but a description for each tool is provided here.
 
 This tool is written fully in rust - but allows for a python interface using [pyo3](https://github.com/PyO3/pyo3).
 
+If you have questions please check out the [FAQ](./faq.md)
+
 ## Installation
 
 `ggetrs` can be installed easily using `cargo`.
