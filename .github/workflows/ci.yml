@@ -1,0 +1,85 @@
+name: CI
+on: push
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+
+  ci:
+    needs: [build, test, docs, coverage, pytest]
+    name: CI
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: Done
+        run: exit 0
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+      - name: Build
+        run: cargo build --verbose
+
+  test:
+    name: Test
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+      - name: Test
+        run: cargo nextest run --retries 10
+
+  docs:
+    name: Docs
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      - run: cargo doc --verbose
+
+  coverage:
+    name: Coverage
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install nextest
+      uses: taiki-e/install-action@nextest
+    - name: Install LLVM-Coverage
+      uses: taiki-e/install-action@cargo-llvm-cov
+    - name: Measure Coverage
+      run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov nextest --retries 10
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage.lcov
+
+  pytest:
+    name: Pytest
+    runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: 3.8
+          auto-update-conda: true
+
+      - name: Install prerequisites
+        run: |
+          pip install maturin pytest requests pytest-rerunfailures
+
+      - name: Develop Rust/Python Bindings
+        run: |
+          maturin develop
+
+      - name: Test Python API
+        run: |
+          pytest -v --reruns 10 --reruns-delay 1

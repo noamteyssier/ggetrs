@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js ayu">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BLAST - ggetrs</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="install.html">Installation</a></li><li class="chapter-item expanded affix "><a href="modules.html">Modules</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Functional</li><li class="chapter-item expanded "><a href="enrichr.html"><strong aria-hidden="true">1.</strong> Enrichr</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="enrichr/enrichr.html"><strong aria-hidden="true">1.1.</strong> Enrichr</a></li><li class="chapter-item expanded "><a href="enrichr/list.html"><strong aria-hidden="true">1.2.</strong> List</a></li></ol></li><li class="chapter-item expanded "><a href="archs4.html"><strong aria-hidden="true">2.</strong> ARCHS4</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="archs4/correlate.html"><strong aria-hidden="true">2.1.</strong> Correlate</a></li><li class="chapter-item expanded "><a href="archs4/tissue.html"><strong aria-hidden="true">2.2.</strong> Tissue</a></li></ol></li><li class="chapter-item expanded "><a href="blast.html" class="active"><strong aria-hidden="true">3.</strong> BLAST</a></li><li class="chapter-item expanded "><a href="search.html"><strong aria-hidden="true">4.</strong> Search</a></li><li class="chapter-item expanded "><a href="info.html"><strong aria-hidden="true">5.</strong> Info</a></li><li class="chapter-item expanded "><a href="seq.html"><strong aria-hidden="true">6.</strong> Seq</a></li><li class="chapter-item expanded "><a href="ucsc.html"><strong aria-hidden="true">7.</strong> UCSC</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ucsc/blat.html"><strong aria-hidden="true">7.1.</strong> BLAT</a></li></ol></li><li class="chapter-item expanded "><a href="pdb.html"><strong aria-hidden="true">8.</strong> PDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pdb/structure.html"><strong aria-hidden="true">8.1.</strong> Structure</a></li><li class="chapter-item expanded "><a href="pdb/info.html"><strong aria-hidden="true">8.2.</strong> Info</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Database</li><li class="chapter-item expanded "><a href="chembl.html"><strong aria-hidden="true">9.</strong> Chembl</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chembl/activity.html"><strong aria-hidden="true">9.1.</strong> Activity</a></li></ol></li><li class="chapter-item expanded "><a href="ensembl.html"><strong aria-hidden="true">10.</strong> Ensembl</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ensembl/database.html"><strong aria-hidden="true">10.1.</strong> Database</a></li><li class="chapter-item expanded "><a href="ensembl/lookup-id.html"><strong aria-hidden="true">10.2.</strong> Lookup ID</a></li><li class="chapter-item expanded "><a href="ensembl/lookup-symbol.html"><strong aria-hidden="true">10.3.</strong> Lookup Symbol</a></li><li class="chapter-item expanded "><a href="ensembl/ref.html"><strong aria-hidden="true">10.4.</strong> Ref</a></li><li class="chapter-item expanded "><a href="ensembl/release.html"><strong aria-hidden="true">10.5.</strong> Release</a></li><li class="chapter-item expanded "><a href="ensembl/search.html"><strong aria-hidden="true">10.6.</strong> Search</a></li><li class="chapter-item expanded "><a href="ensembl/species.html"><strong aria-hidden="true">10.7.</strong> Species</a></li></ol></li><li class="chapter-item expanded "><a href="uniprot.html"><strong aria-hidden="true">11.</strong> Uniprot</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="uniprot/query.html"><strong aria-hidden="true">11.1.</strong> Query</a></li></ol></li><li class="chapter-item expanded "><a href="ncbi.html"><strong aria-hidden="true">12.</strong> NCBI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ncbi/taxons.html"><strong aria-hidden="true">12.1.</strong> Taxons</a></li><li class="chapter-item expanded "><a href="ncbi/query_ids.html"><strong aria-hidden="true">12.2.</strong> Query IDs</a></li><li class="chapter-item expanded "><a href="ncbi/query_symbols.html"><strong aria-hidden="true">12.3.</strong> Query Symbols</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Quality of Life</li><li class="chapter-item expanded "><a href="autocomplete.html"><strong aria-hidden="true">13.</strong> Autocomplete</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li><li class="chapter-item expanded affix "><a href="citations.html">Citations</a></li><li class="chapter-item expanded affix "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded affix "><a href="bug_reporting.html">Bug Reporting</a></li><li class="chapter-item expanded affix "><a href="disclaimer.html">Disclaimer</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">ggetrs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="blast"><a class="header" href="#blast">BLAST</a></h1>
+<h2 id="help"><a class="header" href="#help">Help</a></h2>
+<p>The BLAST program can be determined from the provided input (will assign
+either <code>blastn</code> or <code>blastp</code>) and the appropriate database will be used:
+<code>nt</code> and <code>nr</code> respectively.</p>
+<p>You may override these though by using their argument flags.
+Keep in mind that there is no logic built into validating your inputs.
+All non-default arguments will be passed to the BLAST API as is.</p>
+<h2 id="arguments"><a class="header" href="#arguments">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Program</td><td><code>-p</code></td><td><code>--program</code></td><td>blast program to use [possible values: blastn, blastp, blastx, tblastn, tblastx]</td></tr>
+<tr><td>Database</td><td><code>-d</code></td><td><code>--database</code></td><td>blast database to use [possible values: nt, nr, refseq-rna, refseq-protein, swissprot, pdbaa, pdbnt]</td></tr>
+<tr><td>Limit</td><td><code>-l</code></td><td><code>--limit</code></td><td>Number of hits to return [default: 50]</td></tr>
+<tr><td>Expect</td><td><code>-e</code></td><td><code>--expect</code></td><td>Minimum expected value to consider [default: 10.0]</td></tr>
+<tr><td>Low Complexity Filter</td><td><code>-f</code></td><td><code>--low-comp-filter</code></td><td>Include flag to use a complexity filter [default = false]</td></tr>
+<tr><td>MEGABLAST</td><td><code>-m</code></td><td><code>--megablast</code></td><td>Whether to use MEGABLAST (default = false)</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface"><a class="header" href="#command-line-interface">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Perform BLAST with a nucleotide sequence
+ggetrs blast ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG
+
+# Perform BLAST with an amino acid sequence
+ggetrs blast MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE
+
+# Perform BLAST with an amino acid sequence using the PDBAA database
+ggetrs blast -d pdbaa MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE
+</code></pre>
+<h2 id="python"><a class="header" href="#python">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# Perform BLAST with a nucleotide sequence
+ggetrs.blast(
+  &quot;ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG&quot;
+)
+
+# Perform BLAST with an amino acid sequence
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;
+)
+
+# Perform BLAST with an amino acid sequence using the PDBAA database
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;,
+  database = &quot;pdbaa&quot;
+)
+
+# Perform BLAST with an amino acid sequence using the PDBAA database with a low complexity filter and a limit
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;,
+  database = &quot;pdbaa&quot;,
+  limit = 10,
+  low_comp_filter=True,
+)
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="archs4/tissue.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="search.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="archs4/tissue.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="search.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
