@@ -10,7 +10,7 @@ def test_seq_dna():
 
 def test_seq_protein():
     gene = "AP2S1"
-    result = ggetrs.seq([gene], transcribe=True)
+    result = ggetrs.seq([gene], translate=True)
     assert(len(result) == 1)
     assert(len(result[0].keys()) == 2)
     assert(result[0]["header"] == "sp|P53680|AP2S1_HUMAN AP-2 complex subunit sigma OS=Human OX=9606 [GN=AP2S1 ] PE=1 SV=2")

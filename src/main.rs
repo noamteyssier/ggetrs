@@ -211,11 +211,11 @@ fn main() -> Result<(), RequestError> {
         },
         Commands::Seq {
             search_terms,
-            transcribe,
+            translate,
             species,
             output,
         } => {
-            launch_seq(search_terms, *transcribe, species, output)?;
+            launch_seq(search_terms, *translate, species, output)?;
         }
         Commands::Blast {
             query,
