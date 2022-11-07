@@ -121,7 +121,7 @@ pub enum Commands {
 
         /// Return the amino acid sequence instead of nucleotide sequence.
         #[clap(short, long, action)]
-        transcribe: bool,
+        translate: bool,
 
         /// Species/alias to specify
         #[clap(short, long, default_value = "homo_sapiens")]
