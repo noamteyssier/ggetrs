@@ -1,3 +1,6 @@
+use futures::executor::block_on;
+use crate::utils::download_multiple;
+
 use super::{
     database, functions::lookup_id, list_species, lookup_symbol, reference, release, search,
     DataType,
@@ -67,9 +70,11 @@ pub fn launch_ensembl_reference(
     species: &str,
     release: usize,
     datatype: &[DataType],
+    download: bool,
     output: &Option<String>,
 ) -> anyhow::Result<()> {
     let files = reference(species, release, datatype)?;
+
     let repr = serde_json::to_string_pretty(&files)?;
     match output {
         Some(path) => {
@@ -82,6 +87,11 @@ pub fn launch_ensembl_reference(
         None => {
             println!("{}", repr);
         }
+    }
+    if download {
+        eprintln!("Downloading {} files:", files.len());
+        let urls = files.iter().map(|f| f.url.as_str()).collect::<Vec<&str>>();
+        block_on(download_multiple(&urls))?;
     }
     Ok(())
 }

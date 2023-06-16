@@ -23,7 +23,8 @@ use ggetrs::{
     RequestError,
 };
 
-fn main() -> Result<(), RequestError> {
+#[tokio::main]
+async fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
         Commands::Enrichr(sub) => match sub {
@@ -140,9 +141,10 @@ fn main() -> Result<(), RequestError> {
                 species,
                 release,
                 datatype,
+                download,
                 output,
             } => {
-                launch_ensembl_reference(species, *release, datatype, output)?;
+                launch_ensembl_reference(species, *release, datatype, *download, output)?;
             }
             ModEnsembl::Species {
                 release,
