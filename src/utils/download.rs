@@ -7,11 +7,7 @@ use std::{fs::File, io::Write};
 /// Download a file from a URL asynchronously
 async fn download_url(url: &str, pb: ProgressBar) -> Result<()> {
     let filename = url.split('/').last().unwrap_or("");
-    let client = Client::new()
-        .get(url)
-        .send()
-        .await?
-        .error_for_status()?;
+    let client = Client::new().get(url).send().await?.error_for_status()?;
 
     let size = client.content_length().unwrap_or(0);
     pb.set_style(ProgressStyle::default_bar()
@@ -36,10 +32,7 @@ async fn download_url(url: &str, pb: ProgressBar) -> Result<()> {
 pub async fn download_multiple(urls: &[&str]) -> Result<()> {
     let mpb = MultiProgress::new();
     let bars = (0..urls.len()).map(|_| mpb.add(ProgressBar::new(0)));
-    let handles = urls
-        .iter()
-        .zip(bars)
-        .map(|(url, pb)| download_url(url, pb));
+    let handles = urls.iter().zip(bars).map(|(url, pb)| download_url(url, pb));
     join_all(handles).await;
     Ok(())
 }

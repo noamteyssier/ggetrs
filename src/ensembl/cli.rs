@@ -1,5 +1,5 @@
-use futures::executor::block_on;
 use crate::utils::download_multiple;
+use futures::executor::block_on;
 
 use super::{
     database, functions::lookup_id, list_species, lookup_symbol, reference, release, search,

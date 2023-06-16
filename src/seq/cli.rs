@@ -9,7 +9,7 @@ pub fn launch_seq(
     species: &Option<String>,
     output: &Option<String>,
 ) -> Result<()> {
-    if translate{
+    if translate {
         let results = query(search_terms, false, &None)?;
         match output {
             Some(path) => {
