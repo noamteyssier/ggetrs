@@ -10,6 +10,7 @@ Retrieves reference files from the Ensembl FTP site.
 | Release | `-r` | `--release` | Release to use - will default to latest release |
 | Data Type | `-d` | `--datatype` | Datatype to query for - provided as a comma-separated list |
 | Output | `-o` | `--output` | optional filepath to write output to [default=stdout] |
+| Download | `-D` | `--download` | Download all requested files to the current working directory |
 
 ## Command Line Interface
 
@@ -25,6 +26,9 @@ ggetrs ensembl ref -d cdna,dna
 
 # returns the url for the mouse cdna transcriptome and genome
 ggetrs ensembl ref -d cdna,dna -s mus_musculus
+
+# downloads the requested files to the current directory
+ggetrs ensembl ref -d cdna,dna,gtf -s homo_sapiens
 ```
 
 ## Python

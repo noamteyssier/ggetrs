@@ -103,6 +103,10 @@ pub enum ModEnsembl {
         )]
         datatype: Vec<DataType>,
 
+        /// Download all files to current directory
+        #[clap(short = 'D', long, value_parser)]
+        download: bool,
+
         /// Optional filepath to write output to [default=stdout]
         #[clap(short, long)]
         output: Option<String>,
