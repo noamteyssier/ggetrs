@@ -4,6 +4,7 @@ use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use reqwest::Client;
 use std::{fs::File, io::Write};
 
+/// Download a file from a URL asynchronously
 async fn download_url(url: &str, pb: ProgressBar) -> Result<()> {
     let filename = url.split('/').last().unwrap_or("");
     let client = Client::new()
@@ -31,6 +32,7 @@ async fn download_url(url: &str, pb: ProgressBar) -> Result<()> {
     Ok(())
 }
 
+/// Download multiple URLs asynchronously
 pub async fn download_multiple(urls: &[&str]) -> Result<()> {
     let mpb = MultiProgress::new();
     let bars = (0..urls.len()).map(|_| mpb.add(ProgressBar::new(0)));
