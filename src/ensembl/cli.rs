@@ -94,7 +94,9 @@ pub fn launch_ensembl_reference(
             .enable_all()
             .build()?;
         rt.block_on(async move {
-            download_multiple(&urls).await.expect("Unable to download files");
+            download_multiple(&urls)
+                .await
+                .expect("Unable to download files");
         });
     }
     Ok(())
