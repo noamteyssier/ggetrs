@@ -1,5 +1,4 @@
 use crate::utils::download_multiple;
-use futures::executor::block_on;
 
 use super::{
     database, functions::lookup_id, list_species, lookup_symbol, reference, release, search,
@@ -91,7 +90,12 @@ pub fn launch_ensembl_reference(
     if download {
         eprintln!("Downloading {} files:", files.len());
         let urls = files.iter().map(|f| f.url.as_str()).collect::<Vec<&str>>();
-        block_on(download_multiple(&urls))?;
+        let rt = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()?;
+        rt.block_on(async move {
+            download_multiple(&urls).await.expect("Unable to download files");
+        });
     }
     Ok(())
 }
