@@ -61,10 +61,16 @@ pub fn query(
     freeform: bool,
     taxon: &Option<usize>,
 ) -> anyhow::Result<UniprotInfoContainer> {
-    let async_results = block_on(
-        async_query_uniprot_multiple(terms, freeform, taxon)
-    )?;
-    let results = async_results
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()?;
+
+    let results = rt
+        .block_on(async move {
+            async_query_uniprot_multiple(terms, freeform, taxon)
+                .await
+                .expect("could not query uniprot")
+        })
         .into_iter()
         .filter_map(|x| x.expect("could not create results"))
         .map(|x| (x.query.to_string(), x))
