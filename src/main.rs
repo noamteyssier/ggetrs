@@ -23,8 +23,7 @@ use ggetrs::{
     RequestError,
 };
 
-#[tokio::main]
-async fn main() -> Result<(), RequestError> {
+fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
         Commands::Enrichr(sub) => match sub {
