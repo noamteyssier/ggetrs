@@ -1,6 +1,6 @@
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use anyhow::{bail, Result};
-use futures::{future::join_all, executor::block_on};
+use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
 use std::collections::HashMap;
