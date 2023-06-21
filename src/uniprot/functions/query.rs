@@ -1,6 +1,6 @@
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
 use anyhow::{bail, Result};
-use futures::future::join_all;
+use futures::{future::join_all, executor::block_on};
 use reqwest::Client;
 use serde_json::Value;
 use std::collections::HashMap;
@@ -61,16 +61,10 @@ pub fn query(
     freeform: bool,
     taxon: &Option<usize>,
 ) -> anyhow::Result<UniprotInfoContainer> {
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()?;
-
-    let results = rt
-        .block_on(async move {
-            async_query_uniprot_multiple(terms, freeform, taxon)
-                .await
-                .expect("could not query uniprot")
-        })
+    let async_results = block_on(
+        async_query_uniprot_multiple(terms, freeform, taxon)
+    )?;
+    let results = async_results
         .into_iter()
         .filter_map(|x| x.expect("could not create results"))
         .map(|x| (x.query.to_string(), x))
