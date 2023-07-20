@@ -29,10 +29,11 @@ fn main() -> Result<(), RequestError> {
         Commands::Enrichr(sub) => match sub {
             ModEnrichr::Enrichr {
                 library,
+                background,
                 gene_list,
                 output,
             } => {
-                launch_enrichr(library, gene_list, output)?;
+                launch_enrichr(library, background, gene_list, output)?;
             }
             ModEnrichr::List {
                 minimal,

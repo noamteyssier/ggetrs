@@ -2,12 +2,17 @@ use clap::Subcommand;
 
 #[derive(Subcommand)]
 pub enum ModEnrichr {
+    /// Perform the Enrichr gene set enrichment analysis
     Enrichr {
         /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
         /// some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes,
         /// and kinase_interactions.
         #[clap(short, long)]
         library: String,
+
+        /// Optional background gene list to perform enrichment analysis with. Comma delimited
+        #[clap(short, long, value_parser, value_delimiter = ',')]
+        background: Option<Vec<String>>,
 
         /// list of gene symbols to perform enrichment analysis on.
         #[clap(value_parser, required = true)]
