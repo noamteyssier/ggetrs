@@ -1,6 +1,6 @@
+use super::{ENRICHR_URL, SPEEDRICHR_URL};
 use crate::enrichr::types::ResponseViewList;
 use reqwest::Result;
-use super::{SPEEDRICHR_URL, ENRICHR_URL};
 
 /// Performs a `GET` call to retrieve the genes within a `userListId`.
 pub fn view_list(user_list_id: usize, speedrichr: bool) -> Result<ResponseViewList> {

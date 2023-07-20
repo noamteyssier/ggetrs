@@ -1,6 +1,6 @@
+use super::{ENRICHR_URL, SPEEDRICHR_URL};
 use crate::enrichr::types::ResponseAddList;
 use reqwest::{blocking::Client, Result};
-use super::{SPEEDRICHR_URL, ENRICHR_URL};
 
 /// Performs a function call to the `addList` API.
 pub fn add_list(gene_list: &[String], speedrichr: bool) -> Result<ResponseAddList> {

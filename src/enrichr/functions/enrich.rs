@@ -1,14 +1,14 @@
-use crate::enrichr::types::ResponseEnrich;
-use reqwest::blocking::Client;
 use super::{shorthand, ENRICHR_URL, SPEEDRICHR_URL};
+use crate::enrichr::types::ResponseEnrich;
 use anyhow::Result;
+use reqwest::blocking::Client;
 
 /// Performs an API call to the `Enrichr`'s `enrich`.
 ///
 /// This measures the significance of overlap of the provided gene list to the provided library
 /// name.
 pub fn enrich(
-    list_id: usize, 
+    list_id: usize,
     library_name: &str,
     background_id: Option<&str>,
 ) -> Result<ResponseEnrich> {
@@ -46,7 +46,7 @@ pub fn enrich(
 #[cfg(test)]
 mod testing {
     use super::enrich;
-    use crate::enrichr::functions::{add_list, add_background};
+    use crate::enrichr::functions::{add_background, add_list};
 
     fn get_list_id() -> usize {
         let gene_list = vec!["AP2S1", "NSD1", "LDB1"]

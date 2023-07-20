@@ -1,22 +1,36 @@
 use std::fs::File;
 use std::io::Write;
 
-use super::{add_list, enrich, get_libraries, functions::add_background};
+use super::{add_list, enrich, functions::add_background, get_libraries};
 use anyhow::{bail, Result};
 
 /// Main entrypoint to launching the `enrich` function for `Enrichr`
-pub fn launch_enrichr(library: &str, background: &Option<Vec<String>>, gene_list: &[String], output: &Option<String>) -> Result<()> {
-
+pub fn launch_enrichr(
+    library: &str,
+    background: &Option<Vec<String>>,
+    gene_list: &[String],
+    output: &Option<String>,
+) -> Result<()> {
     // entrypoint for enrichr with background
     let results = if let Some(background_set) = background {
         let background_id = add_background(background_set)?;
         let add_list = add_list(gene_list, true)?;
-        let missing_genes = gene_list.iter().filter(|x| !background_set.contains(x)).collect::<Vec<&String>>();
+        let missing_genes = gene_list
+            .iter()
+            .filter(|x| !background_set.contains(x))
+            .collect::<Vec<&String>>();
         if !missing_genes.is_empty() {
-            eprintln!("The following genes were not found in the background set: {:?}", missing_genes);
+            eprintln!(
+                "The following genes were not found in the background set: {:?}",
+                missing_genes
+            );
             bail!("Unable to find all genes in background set");
         }
-        enrich(add_list.user_list_id, library, Some(&background_id.backgroundid))?
+        enrich(
+            add_list.user_list_id,
+            library,
+            Some(&background_id.backgroundid),
+        )?
     // standard entrypoint for enrichr
     } else {
         let add_list = add_list(gene_list, false)?;

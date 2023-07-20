@@ -1,7 +1,6 @@
+use super::SPEEDRICHR_URL;
 use crate::enrichr::types::ResponseAddBackground;
 use reqwest::{blocking::Client, Result};
-use super::SPEEDRICHR_URL;
-
 
 /// Performs a function call to the `addList` API.
 pub fn add_background(gene_list: &[String]) -> Result<ResponseAddBackground> {
@@ -15,8 +14,7 @@ pub fn add_background(gene_list: &[String]) -> Result<ResponseAddBackground> {
     let query = gene_list.join("\n");
 
     // creates the form for the request
-    let form = reqwest::blocking::multipart::Form::new()
-        .text("background", query);
+    let form = reqwest::blocking::multipart::Form::new().text("background", query);
 
     // query the server
     client
