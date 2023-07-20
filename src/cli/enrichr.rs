@@ -9,6 +9,10 @@ pub enum ModEnrichr {
         #[clap(short, long)]
         library: String,
 
+        /// Optional background gene list to perform enrichment analysis with
+        #[clap(short, long, value_parser, value_delimiter = ',')]
+        background: Option<Vec<String>>,
+
         /// list of gene symbols to perform enrichment analysis on.
         #[clap(value_parser, required = true)]
         gene_list: Vec<String>,
