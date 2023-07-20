@@ -26,3 +26,17 @@ pub fn add_background(gene_list: &[String]) -> Result<ResponseAddBackground> {
         .json::<ResponseAddBackground>()
 }
 
+#[cfg(test)]
+mod testing {
+    use super::*;
+
+    #[test]
+    fn test_add_background() {
+        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>();
+        let response = add_background(&gene_list).unwrap();
+        assert!(response.backgroundid.len() > 1);
+    }
+}
