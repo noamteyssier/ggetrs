@@ -1,12 +1,14 @@
 use crate::enrichr::types::ResponseViewList;
 use reqwest::Result;
+use super::{SPEEDRICHR_URL, ENRICHR_URL};
 
 /// Performs a `GET` call to retrieve the genes within a `userListId`.
-pub fn view_list(user_list_id: usize) -> Result<ResponseViewList> {
-    let url = format!(
-        "https://maayanlab.cloud/Enrichr/view?userListId={}",
-        user_list_id
-    );
+pub fn view_list(user_list_id: usize, speedrichr: bool) -> Result<ResponseViewList> {
+    let url = if speedrichr {
+        format!("{}/api/view?userListId={}", SPEEDRICHR_URL, user_list_id)
+    } else {
+        format!("{}/view?userListId={}", ENRICHR_URL, user_list_id)
+    };
     reqwest::blocking::get(&url)?.json::<ResponseViewList>()
 }
 
@@ -20,14 +22,35 @@ mod testing {
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();
-        let response = add_list(&gene_list).unwrap();
+        let response = add_list(&gene_list, false).unwrap();
+        response.user_list_id
+    }
+
+    fn get_list_id_with_background() -> usize {
+        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+            .iter()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>();
+        let response = add_list(&gene_list, true).unwrap();
         response.user_list_id
     }
 
     #[test]
     fn test_view_list() {
         let user_list_id = get_list_id();
-        let response = view_list(user_list_id).unwrap();
+        let response = view_list(user_list_id, false).unwrap();
+        assert_eq!(response.genes.len(), 3);
+        assert!(response.genes.contains(&"AP2S1".to_string()));
+        assert!(response.genes.contains(&"NSD1".to_string()));
+        assert!(response.genes.contains(&"LDB1".to_string()));
+    }
+
+    #[test]
+    fn test_view_list_with_background() {
+        let user_list_id = get_list_id_with_background();
+        println!("{:?}", user_list_id);
+        let response = view_list(user_list_id, true).unwrap();
+        println!("{:#?}", response);
         assert_eq!(response.genes.len(), 3);
         assert!(response.genes.contains(&"AP2S1".to_string()));
         assert!(response.genes.contains(&"NSD1".to_string()));
