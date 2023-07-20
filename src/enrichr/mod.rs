@@ -12,4 +12,4 @@ mod python;
 
 pub use cli::{launch_enrichr, launch_enrichr_list};
 pub use functions::{add_list, enrich, get_libraries};
-pub use python::python_enrichr;
+pub use python::{python_enrichr, python_enrichr_background};
