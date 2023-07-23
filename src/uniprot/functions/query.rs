@@ -21,7 +21,7 @@ fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> Stri
 }
 
 /// An asynchronous function which performs a uniprot query
-async fn async_query_uniprot(
+pub async fn async_query_uniprot(
     gene: &str,
     freeform: bool,
     taxon: &Option<usize>,
@@ -43,7 +43,7 @@ async fn async_query_uniprot(
 }
 
 /// An asynchronous function which joins all the handles from `async_query_uniprot`
-async fn async_query_uniprot_multiple(
+pub async fn async_query_uniprot_multiple(
     ensembl_ids: &[String],
     freeform: bool,
     taxon: &Option<usize>,
