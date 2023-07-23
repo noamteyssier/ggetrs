@@ -8,7 +8,7 @@ mod search;
 pub use database::database;
 pub use list_species::list_species;
 pub use lookup_id::lookup_id;
-pub use lookup_symbol::{lookup_symbol, async_lookup_symbol};
+pub use lookup_symbol::{async_lookup_symbol, lookup_symbol};
 pub use reference::reference;
 pub use release::release;
 pub use search::search;

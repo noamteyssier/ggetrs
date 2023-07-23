@@ -19,6 +19,9 @@ pub use cli::{
     launch_ensembl_search,
 };
 pub use constants::{ENSEMBL_RELEASE, ENSEMBL_RELEASE_STR};
-pub use functions::{async_lookup_symbol, database, list_species, lookup_id, lookup_symbol, reference, release, search};
+pub use functions::{
+    async_lookup_symbol, database, list_species, lookup_id, lookup_symbol, reference, release,
+    search,
+};
 pub use python::{python_ensembl, python_ensembl_database, python_ensembl_search};
 pub use types::{DataType, FtpFile};
