@@ -21,6 +21,27 @@ pub fn lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse
     Ok(results)
 }
 
+/// Asynchronous version of `lookup_symbol`
+///
+/// Limited to 1000 symbols at once.
+///
+/// API documentation found here:
+/// <https://rest.ensembl.org/documentation/info/symbol_post>
+pub async fn async_lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse> {
+    let url = format!("https://rest.ensembl.org/lookup/symbol/{}", species);
+    let data = json!({ "symbols": symbols });
+    let results = reqwest::Client::new()
+        .post(url)
+        .header("content-type", "application/json")
+        .header("accept", "application/json")
+        .json(&data)
+        .send()
+        .await?
+        .json::<LookupResponse>()
+        .await?;
+    Ok(results)
+}
+
 #[cfg(test)]
 mod testing {
     use super::lookup_symbol;
