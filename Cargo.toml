@@ -35,15 +35,3 @@ serde = { version = "1.0.144", features = ["derive"] }
 serde-xml-rs = "0.6.0"
 serde_json = "1.0.85"
 tokio = { version = "1.21.0", features = ["full"] }
-
-# Build instructions of MacOS
-[target.aarch64-apple-darwin]
-rustflags = [
-  "-C", "link-arg=-undefined",
-  "-C", "link-arg=dynamic_lookup",
-]
-[target.x86_64-apple-darwin]
-rustflags = [
-  "-C", "link-arg=-undefined",
-  "-C", "link-arg=dynamic_lookup",
-]
