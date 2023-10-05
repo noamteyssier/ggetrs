@@ -39,7 +39,15 @@ pub fn enrich(
             "{}/enrich?userListId={}&backgroundType={}",
             ENRICHR_URL, list_id, alias
         );
-        Ok(reqwest::blocking::get(request_url)?.json::<ResponseEnrich>()?)
+        let client = Client::new();
+        // Go through intermediate `text` to replace `Infinity` with `f64::MIN_POSITIVE`.
+        let text = client
+            .get(request_url)
+            .send()?
+            .text()?
+            .replace("Infinity", format!("{:e}", f64::MIN_POSITIVE).as_str());
+        // Parse the JSON from a string.
+        Ok(serde_json::from_str::<ResponseEnrich>(&text)?)
     }
 }
 
