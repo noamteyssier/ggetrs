@@ -1,6 +1,6 @@
 [package]
 name = "ggetrs"
-version = "0.1.77"
+version = "0.1.78"
 edition = "2021"
 license = "MIT"
 description = "Efficient querying of biological databases from the command line"
