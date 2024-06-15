@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, fmt};
 
 // A container for UniprotInfo
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct UniprotInfoContainer(pub HashMap<String, UniprotInfo>);
 impl fmt::Display for UniprotInfoContainer {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
