@@ -1,4 +1,4 @@
-use crate::ncbi::types::NcbiResults;
+use crate::{ncbi::types::NcbiResults};
 use anyhow::{bail, Result};
 use reqwest::blocking::Client;
 use serde_json::Value;
@@ -24,7 +24,7 @@ pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults>
             if result.0.len() > 0 {
                 Ok(result)
             } else {
-                bail!(format!("No results found for symbols: {:?}", symbols))
+                Ok(NcbiResults::default())
             }
         }
         None => bail!("Unable to parse response from NCBI"),
