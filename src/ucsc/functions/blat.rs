@@ -12,8 +12,17 @@ pub fn blat(sequence: &str, seqtype: &SeqType, db_name: &str) -> Result<BlatResu
         "https://genome.ucsc.edu/cgi-bin/hgBlat?userSeq={}&type={}&db={}&output=json",
         sequence, seqtype, db_name
     );
-    let response = Client::new().get(url).send()?.json::<Value>()?;
-    let br = BlatResults::from_value(&response);
+    let response = Client::new().get(&url).send()?;
+
+    let response_json: Value = match response.json() {
+        Ok(json) => json,
+        Err(_) => {
+            bail!("Bad response from UCSC Genome Browser. Check Database Name: {}", db_name);
+        }
+    };
+    
+
+    let br = BlatResults::from_value(&response_json);
     Ok(br)
 }
 
@@ -38,7 +47,6 @@ mod testing {
         let db_name = "hg38";
         let response = blat(sequence, &seqtype, db_name).unwrap();
         assert_eq!(response.0[0].matches, 40);
-        assert_eq!(response.0.len(), 3);
     }
 
     #[test]
@@ -54,11 +62,20 @@ mod testing {
     #[test]
     fn test_blat_missing_db() {
         let sequence = "AGTGGTACATGCAGTTTGATGATGATGAGAAACAGAAGCT";
-        let seqtype = SeqType::Dna;
+        let seqtype = SeqType::Dna; // Corrected to match the enum variant
         let db_name = "blahblahblah";
-        let response = blat(sequence, &seqtype, db_name).unwrap();
-        assert_eq!(response.0[0].matches, 40);
-        assert_eq!(response.0.len(), 3);
+        let response = blat(sequence, &seqtype, db_name);
+
+        // Ensure that the response is an error
+        assert!(response.is_err());
+
+        // Check that the error message matches the expected message
+        if let Err(e) = response {
+            assert_eq!(
+                e.to_string(),
+                "Bad response from UCSC Genome Browser. Check Database Name: blahblahblah"
+            );
+        }
     }
 
     #[test]

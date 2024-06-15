@@ -32,14 +32,21 @@ pub async fn async_query_uniprot(
         query
     );
     let value = Client::new()
-        .get(url)
+        .get(&url) // Updated to pass the URL by reference
         .header("content-type", "application/json")
         .send()
         .await?
         .json::<Value>()
         .await?;
+    
+    // Updated to check if the struct is non-empty
     let info = UniprotInfo::from_value(&value, gene)?;
-    Ok(info)
+    if let Some(uniprot_info) = info {
+        if uniprot_info.is_non_empty() {
+            return Ok(Some(uniprot_info));
+        }
+    }
+    Ok(None) // Return None if the struct is empty
 }
 
 /// An asynchronous function which joins all the handles from `async_query_uniprot`
