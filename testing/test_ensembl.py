@@ -1,6 +1,6 @@
 import ggetrs
 import requests
-ENSEMBL_RELEASE = 110
+ENSEMBL_RELEASE = 112
 
 def ping_ensembl_ftp():
     try:
