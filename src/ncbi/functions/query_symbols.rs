@@ -48,7 +48,8 @@ mod testing {
         let symbols = vec!["BLAHBLAHBLAH".to_string()];
         let taxon_id = 9606;
         let response = query_symbols(&symbols, taxon_id);
-        assert!(response.is_err());
+        let ncbi_results = response.unwrap();
+        assert!(ncbi_results.0.is_empty());
     }
 
     #[test]

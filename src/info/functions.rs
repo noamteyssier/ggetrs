@@ -32,7 +32,8 @@ mod testing {
         let species = "homo_sapiens";
         let taxon_id = 9606;
         let response = info(&search_terms, species, taxon_id);
-        assert!(response.is_err())
+        let info_results = response.unwrap();
+        assert!(info_results.0.is_empty());
     }
 
     #[test]

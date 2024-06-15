@@ -107,6 +107,7 @@ mod testing {
         let terms = vec!["AOSDKAPOWDNASD".to_string()];
         let taxon = None;
         let response = query(&terms, false, &taxon);
-        assert!(response.is_err());
+        let uniprot_results = response.unwrap();
+        assert!(uniprot_results.0.is_empty());
     }
 }
