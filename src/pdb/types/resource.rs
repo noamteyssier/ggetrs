@@ -33,32 +33,26 @@ impl fmt::Display for PdbResource {
 }
 impl PdbResource {
     pub fn requires_entity_id(&self) -> bool {
-        match self {
-            Self::BranchedEntity | Self::NonpolymerEntity | Self::PolymerEntity | Self::Uniprot => {
-                true
-            }
-            _ => false,
-        }
+        matches!(
+            self,
+            Self::BranchedEntityInstance
+                | Self::NonpolymerEntityInstance
+                | Self::PolymerEntityInstance
+        )
     }
     pub fn requires_chain_id(&self) -> bool {
-        match self {
+        matches!(
+            self,
             Self::BranchedEntityInstance
-            | Self::NonpolymerEntityInstance
-            | Self::PolymerEntityInstance => true,
-            _ => false,
-        }
+                | Self::NonpolymerEntityInstance
+                | Self::PolymerEntityInstance
+        )
     }
     pub fn requires_assembly_id(&self) -> bool {
-        match self {
-            Self::Assembly => true,
-            _ => false,
-        }
+        matches!(self, Self::Assembly)
     }
     pub fn requires_identifier(&self) -> bool {
-        match self {
-            Self::Entry | Self::Pubmed => false,
-            _ => true,
-        }
+        matches!(self, Self::Entry | Self::Pubmed)
     }
 }
 
