@@ -15,7 +15,7 @@ async fn download_url(url: &str, pb: ProgressBar) -> Result<()> {
             "{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta}) {msg}")?
         .progress_chars("#>-"));
     pb.set_length(size);
-    pb.set_message(format!("{}", filename));
+    pb.set_message(filename.to_string());
 
     let mut file = File::create(filename)?;
     let mut stream = client.bytes_stream();

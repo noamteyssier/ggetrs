@@ -36,25 +36,16 @@ impl DataType {
     #[must_use]
     pub fn expected_substring(&self, release: usize) -> Vec<String> {
         match self {
-            Self::CDNA => vec![".cdna.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-            Self::CDS => vec![".cds.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
-            Self::DNA => vec![".dna.primary_assembly.fa", ".dna.toplevel.fa"]
+            Self::CDNA => [".cdna.all.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::CDS => [".cds.all.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::DNA => [".dna.primary_assembly.fa", ".dna.toplevel.fa"]
                 .iter()
                 .map(|x| (*x).to_string())
                 .collect(),
             Self::GFF3 => vec![format!("{}.gff3.gz", release)],
             Self::GTF => vec![format!("{}.gtf.gz", release)],
-            Self::NCRNA => vec![".ncrna.fa"].iter().map(|x| (*x).to_string()).collect(),
-            Self::PEP => vec![".pep.all.fa"]
-                .iter()
-                .map(|x| (*x).to_string())
-                .collect(),
+            Self::NCRNA => [".ncrna.fa"].iter().map(|x| (*x).to_string()).collect(),
+            Self::PEP => [".pep.all.fa"].iter().map(|x| (*x).to_string()).collect(),
         }
     }
 }

@@ -1,3 +1,4 @@
+#[must_use]
 pub fn shorthand(library: &str) -> String {
     match library {
         "pathway" => "KEGG_2021_Human",

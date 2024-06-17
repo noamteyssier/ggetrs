@@ -1,5 +1,5 @@
 use super::{add_list, enrich, functions::add_background};
-use pyo3::{pyfunction, types::PyDict, PyResult, Python};
+use pyo3::{pyfunction, types::PyDict, Bound, PyResult, Python};
 
 #[pyfunction(name = "enrichr")]
 #[allow(clippy::needless_pass_by_value)]
@@ -13,14 +13,14 @@ use pyo3::{pyfunction, types::PyDict, PyResult, Python};
 ///
 /// # Returns
 /// A dictionary of results. The keys of this `HashMap` will be the background library
-pub fn python_enrichr<'py>(
-    py: Python<'py>,
-    library_name: &str,
+pub fn python_enrichr(
+    py: Python<'_>,
+    library_name: String,
     gene_list: Vec<String>,
-) -> PyResult<&'py PyDict> {
+) -> PyResult<Bound<'_, PyDict>> {
     let add_list = add_list(&gene_list, false).expect("Unable to query `addList`");
     let results =
-        enrich(add_list.user_list_id, library_name, None).expect("Unable to perform `enrich`");
+        enrich(add_list.user_list_id, &library_name, None).expect("Unable to perform `enrich`");
     results.as_pydict(py)
 }
 
@@ -39,18 +39,18 @@ pub fn python_enrichr<'py>(
 ///
 /// # Returns
 /// A dictionary of results. The keys of this `HashMap` will be the background library
-pub fn python_enrichr_background<'py>(
-    py: Python<'py>,
-    library_name: &str,
+pub fn python_enrichr_background(
+    py: Python<'_>,
+    library_name: String,
     gene_list: Vec<String>,
     background_list: Vec<String>,
-) -> PyResult<&'py PyDict> {
+) -> PyResult<Bound<'_, PyDict>> {
     let add_list = add_list(&gene_list, true).expect("Unable to query `addList`");
     let background_list =
         add_background(&background_list).expect("Unable to query `addBackground`");
     let results = enrich(
         add_list.user_list_id,
-        library_name,
+        &library_name,
         Some(&background_list.backgroundid),
     )
     .expect("Unable to perform `enrich`");

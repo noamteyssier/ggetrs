@@ -1,7 +1,7 @@
 use clap::ValueEnum;
 use std::fmt;
 
-#[derive(ValueEnum, Debug, Clone)]
+#[derive(ValueEnum, Debug, Clone, Copy)]
 pub enum PdbResource {
     Entry,
     Pubmed,
@@ -28,37 +28,36 @@ impl fmt::Display for PdbResource {
             Self::PolymerEntityInstance => "polymer_entity_instance",
             Self::NonpolymerEntityInstance => "nonpolymer_entity_instance",
         };
-        write!(f, "{}", repr)
+        write!(f, "{repr}")
     }
 }
 impl PdbResource {
+    #[must_use]
     pub fn requires_entity_id(&self) -> bool {
-        match self {
-            Self::BranchedEntity | Self::NonpolymerEntity | Self::PolymerEntity | Self::Uniprot => {
-                true
-            }
-            _ => false,
-        }
-    }
-    pub fn requires_chain_id(&self) -> bool {
-        match self {
+        matches!(
+            self,
             Self::BranchedEntityInstance
-            | Self::NonpolymerEntityInstance
-            | Self::PolymerEntityInstance => true,
-            _ => false,
-        }
+                | Self::NonpolymerEntityInstance
+                | Self::PolymerEntityInstance
+                | Self::Uniprot
+        )
     }
+    #[must_use]
+    pub fn requires_chain_id(&self) -> bool {
+        matches!(
+            self,
+            Self::BranchedEntityInstance
+                | Self::NonpolymerEntityInstance
+                | Self::PolymerEntityInstance
+        )
+    }
+    #[must_use]
     pub fn requires_assembly_id(&self) -> bool {
-        match self {
-            Self::Assembly => true,
-            _ => false,
-        }
+        matches!(self, Self::Assembly)
     }
+    #[must_use]
     pub fn requires_identifier(&self) -> bool {
-        match self {
-            Self::Entry | Self::Pubmed => false,
-            _ => true,
-        }
+        matches!(self, Self::Assembly)
     }
 }
 
@@ -68,7 +67,7 @@ mod testing {
     use clap::ValueEnum;
 
     fn validate_enum(resource: PdbResource, _expected: PdbResource) {
-        assert!(matches!(resource, _expected))
+        assert!(matches!(resource, _expected));
     }
 
     #[test]
@@ -76,7 +75,7 @@ mod testing {
         let examples = vec!["entry", "Entry", "ENTRY", "EnTrY"];
         let expected = PdbResource::Entry;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 
@@ -85,7 +84,7 @@ mod testing {
         let examples = vec!["pubmed", "Pubmed", "PUBMED", "pUbMeD"];
         let expected = PdbResource::Pubmed;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 
@@ -94,7 +93,7 @@ mod testing {
         let examples = vec!["assembly", "Assembly", "ASSEMBLY", "aSsEmBlY"];
         let expected = PdbResource::Assembly;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 }

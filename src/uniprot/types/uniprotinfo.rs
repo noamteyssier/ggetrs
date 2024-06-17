@@ -16,15 +16,16 @@ impl fmt::Display for UniprotInfoContainer {
     }
 }
 impl UniprotInfoContainer {
+    #[must_use]
     pub fn to_fasta(&self) -> String {
         self.0
             .values()
-            .into_iter()
-            .map(|x| x.to_fasta())
+            .map(UniprotInfo::to_fasta)
             .fold(String::new(), |acc, x| acc + &x)
     }
+    #[must_use]
     pub fn fasta_records(&self) -> FastaRecords {
-        let records = self.0.values().into_iter().map(|x| x.as_fasta()).collect();
+        let records = self.0.values().map(UniprotInfo::as_fasta).collect();
         FastaRecords(records)
     }
 }
@@ -104,28 +105,28 @@ impl UniprotInfo {
     fn get_uniprot_id(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["primaryAccession"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse Uniprot ID"))
     }
 
     fn get_uniprot_entry_name(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["uniProtkbId"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse Uniprot Entry Name"))
     }
 
     fn get_primary_gene_name(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["genes"][0]["geneName"]["value"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse primary gene name"))
     }
 
     fn get_protein_sequence(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["sequence"]["value"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse protein sequence"))
     }
 
@@ -133,21 +134,24 @@ impl UniprotInfo {
         value["results"][0]["genes"][0]["synonyms"]
             .as_array()
             .map_or(Vec::new(), |values| {
-                values.iter().map(|x| x["value"].as_str().unwrap_or_default().to_string()).collect()
+                values
+                    .iter()
+                    .map(|x| x["value"].as_str().unwrap_or_default().to_string())
+                    .collect()
             })
     }
 
     fn get_protein_names(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["proteinDescription"]["recommendedName"]["fullName"]["value"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse protein names"))
     }
 
     fn get_uniprot_description(value: &serde_json::Value) -> Result<String> {
         value["results"][0]["comments"][0]["texts"][0]["value"]
             .as_str()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse uniprot description"))
     }
 
@@ -155,7 +159,10 @@ impl UniprotInfo {
         value["results"][0]["uniProtKBCrossReferences"]
             .as_array()
             .and_then(|values| {
-                values.iter().find(|x| x["database"] == "GeneID").and_then(|v| v["id"].as_str().map(|s| s.to_string()))
+                values
+                    .iter()
+                    .find(|x| x["database"] == "GeneID")
+                    .and_then(|v| v["id"].as_str().map(std::string::ToString::to_string))
             })
     }
 
@@ -163,7 +170,10 @@ impl UniprotInfo {
         value["results"][0]["uniProtKBCrossReferences"]
             .as_array()
             .and_then(|values| {
-                values.iter().find(|x| x["database"] == "PDB").and_then(|v| v["id"].as_str().map(|s| s.to_string()))
+                values
+                    .iter()
+                    .find(|x| x["database"] == "PDB")
+                    .and_then(|v| v["id"].as_str().map(std::string::ToString::to_string))
             })
     }
 
@@ -178,7 +188,7 @@ impl UniprotInfo {
         value["results"][0]["organism"]["commonName"]
             .as_str()
             .or_else(|| value["results"][0]["organism"]["scientificName"].as_str())
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .ok_or_else(|| anyhow!("Could not parse organism name"))
     }
 
@@ -197,23 +207,25 @@ impl UniprotInfo {
     }
 
     // Method to check if the struct is non-empty
+    #[must_use]
     pub fn is_non_empty(&self) -> bool {
-        !self.uniprot_id.is_empty() ||
-        !self.uniprot_entry_name.is_empty() ||
-        !self.primary_gene_name.is_empty() ||
-        !self.uniprot_synonyms.is_empty() ||
-        !self.protein_name.is_empty() ||
-        !self.uniprot_description.is_empty() ||
-        self.ncbi_id.is_some() ||
-        self.pdb_id.is_some() ||
-        self.taxon_id != 0 ||
-        !self.organism_name.is_empty() ||
-        !self.sequence.is_empty() ||
-        self.sequence_version != 0 ||
-        !self.protein_existence.is_empty() ||
-        !self.query.is_empty()
+        !self.uniprot_id.is_empty()
+            || !self.uniprot_entry_name.is_empty()
+            || !self.primary_gene_name.is_empty()
+            || !self.uniprot_synonyms.is_empty()
+            || !self.protein_name.is_empty()
+            || !self.uniprot_description.is_empty()
+            || self.ncbi_id.is_some()
+            || self.pdb_id.is_some()
+            || self.taxon_id != 0
+            || !self.organism_name.is_empty()
+            || !self.sequence.is_empty()
+            || self.sequence_version != 0
+            || !self.protein_existence.is_empty()
+            || !self.query.is_empty()
     }
 
+    #[must_use]
     pub fn fasta_header(&self) -> String {
         format!(
             "sp|{}|{} {} OS={} OX={} [GN={} ] PE={} SV={}",
@@ -228,10 +240,12 @@ impl UniprotInfo {
         )
     }
 
+    #[must_use]
     pub fn to_fasta(&self) -> String {
         format!("{}", self.as_fasta())
     }
 
+    #[must_use]
     pub fn as_fasta(&self) -> FastaRecord {
         FastaRecord::new(&self.fasta_header(), &self.sequence)
     }

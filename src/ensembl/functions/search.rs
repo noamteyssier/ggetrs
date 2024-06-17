@@ -55,10 +55,7 @@ fn build_multiple_query(search_terms: &[String]) -> String {
 /// Generates the query for an individual search term
 fn build_individual_query(search_term: &str) -> String {
     format!(
-        "gene.description LIKE '%{}%' OR xref.description LIKE '%{}%' OR xref.display_label LIKE '%{}%'",
-        search_term,
-        search_term,
-        search_term
+        "gene.description LIKE '%{search_term}%' OR xref.description LIKE '%{search_term}%' OR xref.display_label LIKE '%{search_term}%'",
     )
 }
 

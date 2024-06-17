@@ -30,9 +30,8 @@ pub fn reference(species: &str, release: usize, datatype: &[DataType]) -> Result
 /// Searches through filelists to recover an expected file format
 fn find_data(filelist: &[String], release: usize, datatype: &DataType) -> Option<String> {
     for substring in datatype.expected_substring(release) {
-        match filelist.iter().find(|x| x.contains(&substring)) {
-            Some(s) => return Some(s.clone()),
-            None => {}
+        if let Some(s) = filelist.iter().find(|x| x.contains(&substring)) {
+            return Some(s.clone());
         }
     }
     None
@@ -45,15 +44,13 @@ fn show_data(
     release: usize,
     datatype: &DataType,
 ) -> Result<Option<String>> {
-    let dirname = match datatype.subdirectory() {
-        Some(subdir) => format!(
-            "release-{}/{}/{}/{}/",
-            release,
+    let dirname = if let Some(subdir) = datatype.subdirectory() {
+        format!(
+            "release-{release}/{}/{species}/{subdir}/",
             datatype.directory(),
-            species,
-            subdir
-        ),
-        None => format!("release-{}/{}/{}/", release, datatype.directory(), species),
+        )
+    } else {
+        format!("release-{release}/{}/{species}/", datatype.directory())
     };
     let filelist = stream.nlst(Some(&dirname))?;
     let filename = find_data(&filelist, release, datatype);
@@ -76,9 +73,6 @@ mod testing {
             assert_eq!(results.len(), 1);
             assert_eq!(results[0].ensembl_release, 107);
             assert_eq!(results[0].url, "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz");
-        } else {
-            // ensembl ftp is currently down - skip check
-            assert!(true)
         }
     }
 
@@ -94,9 +88,6 @@ mod testing {
             assert_eq!(results[0].url, "http://ftp.ensembl.org/pub/release-107/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz");
             assert_eq!(results[1].ensembl_release, 107);
             assert_eq!(results[1].url, "http://ftp.ensembl.org/pub/release-107/gtf/homo_sapiens/Homo_sapiens.GRCh38.107.gtf.gz");
-        } else {
-            // ensembl ftp is currently down - skip check
-            assert!(true)
         }
     }
 }

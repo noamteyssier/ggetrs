@@ -13,7 +13,7 @@ pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
         .collect::<Vec<String>>()
         .join("%2C");
 
-    let query_url = format!("{}/{}", url, query);
+    let query_url = format!("{url}/{query}");
 
     let response = Client::new()
         .get(query_url)
@@ -24,11 +24,10 @@ pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
 
     match NcbiResults::from_value(&response) {
         Some(result) => {
-            if result.0.len() > 0 {
-                Ok(result)
-            } else {
+            if result.0.is_empty() {
                 bail!(format!("No results found for ids: {:?}", ids))
             }
+            Ok(result)
         }
         None => bail!("Unable to parse response from NCBI"),
     }

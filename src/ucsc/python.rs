@@ -3,8 +3,8 @@ use anyhow::{bail, Result};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,
-    types::{PyList, PyModule},
-    wrap_pyfunction, PyResult, Python,
+    types::{PyList, PyModule, PyModuleMethods},
+    wrap_pyfunction, Bound, PyResult, Python,
 };
 
 #[pyfunction(name = "blat")]
@@ -14,7 +14,7 @@ pub fn python_ucsc_blat<'py>(
     sequence: &str,
     seqtype: Option<String>,
     db_name: Option<String>,
-) -> Result<&'py PyList> {
+) -> Result<Bound<'py, PyList>> {
     // match provided seqtype against known `SeqType`
     let seqtype = if let Some(st) = seqtype {
         if let Ok(s) = SeqType::from_str(&st, true) {
@@ -41,9 +41,9 @@ pub fn python_ucsc_blat<'py>(
     Ok(list)
 }
 
-pub fn python_ucsc(py: Python<'_>, module: &PyModule) -> PyResult<()> {
-    let submodule = PyModule::new(py, "ucsc")?;
+pub fn python_ucsc(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
+    let submodule = PyModule::new_bound(py, "ucsc")?;
     submodule.add_function(wrap_pyfunction!(python_ucsc_blat, module)?)?;
-    module.add_submodule(submodule)?;
+    module.add_submodule(&submodule)?;
     Ok(())
 }

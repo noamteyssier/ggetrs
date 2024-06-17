@@ -44,24 +44,18 @@ impl fmt::Display for LookupResponse {
     }
 }
 impl LookupResponse {
+    #[must_use]
     pub fn get_id(&self, symbol: &str) -> Option<String> {
         if let Some(res) = self.0.get(symbol) {
-            if let Some(x) = res {
-                Some(x.id.clone())
-            } else {
-                None
-            }
+            res.as_ref().map(|x| x.id.clone())
         } else {
             None
         }
     }
+    #[must_use]
     pub fn get_symbol(&self, id: &str) -> Option<String> {
         if let Some(res) = self.0.get(id) {
-            if let Some(x) = res {
-                Some(x.display_name.clone())
-            } else {
-                None
-            }
+            res.as_ref().map(|x| x.display_name.clone())
         } else {
             None
         }

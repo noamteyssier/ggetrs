@@ -1,3 +1,5 @@
+use pyo3::types::PyDictMethods;
+use pyo3::Bound;
 use pyo3::{pyclass, types::PyDict, PyResult, Python};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -20,10 +22,10 @@ impl fmt::Display for ResponseEnrich {
     }
 }
 impl ResponseEnrich {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
-        for (key, results) in (&self.0).iter() {
-            let all_results: Vec<&'py PyDict> = results
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
+        for (key, results) in &self.0 {
+            let all_results: Vec<Bound<'py, PyDict>> = results
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create dictionary"))
                 .collect();
@@ -38,6 +40,7 @@ impl ResponseEnrich {
 /// Names were taken from <https://maayanlab.cloud/Enrichr/help#api&q=3>
 #[derive(Serialize, Deserialize, Debug)]
 #[pyclass(dict)]
+#[allow(clippy::unsafe_derive_deserialize)]
 pub struct ResultEnrichr {
     #[pyo3(get, set)]
     pub rank: usize,
@@ -68,8 +71,8 @@ impl fmt::Display for ResultEnrichr {
     }
 }
 impl ResultEnrichr {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("rank", self.rank)?;
         dict.set_item("term_name", &self.term_name)?;
         dict.set_item("pvalue", self.pvalue)?;

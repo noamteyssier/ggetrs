@@ -28,7 +28,7 @@ pub fn correlation(gene_name: &str, count: usize) -> Result<Correlations> {
 fn build_query(gene_name: &str, count: usize) -> HashMap<String, String> {
     let mut map = HashMap::new();
     map.insert(String::from("id"), gene_name.to_string());
-    map.insert(String::from("count"), format!("{}", count));
+    map.insert(String::from("count"), format!("{count}"));
     map
 }
 

@@ -23,6 +23,7 @@ use ggetrs::{
     RequestError,
 };
 
+#[allow(clippy::too_many_lines)]
 fn main() -> Result<(), RequestError> {
     let cli = Cli::parse();
     match &cli.command {
@@ -230,9 +231,9 @@ fn main() -> Result<(), RequestError> {
             output,
         } => {
             launch_blast(
-                &query,
-                &program,
-                &database,
+                query,
+                program,
+                database,
                 *limit,
                 *expect,
                 *low_comp_filter,

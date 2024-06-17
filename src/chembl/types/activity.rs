@@ -18,6 +18,7 @@ impl fmt::Display for ActivityResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[allow(clippy::struct_field_names)]
 pub struct Activity {
     pub activity_id: usize,
     pub activity_comment: Option<String>,

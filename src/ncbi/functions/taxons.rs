@@ -5,10 +5,7 @@ use serde_json::Value;
 
 /// Finds taxon information from a string query
 pub fn taxons(query: &str, limit: usize) -> Result<TaxonContainer> {
-    let url = format!(
-        "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/taxon_suggest/{}",
-        query
-    );
+    let url = format!("https://api.ncbi.nlm.nih.gov/datasets/v1/gene/taxon_suggest/{query}",);
 
     let response = Client::new()
         .get(url)
@@ -25,13 +22,12 @@ pub fn taxons(query: &str, limit: usize) -> Result<TaxonContainer> {
                 .map(|x| serde_json::from_value::<Taxon>(x.clone()).expect("Could not parse taxon"))
                 .collect::<Vec<Taxon>>()
         })
-        .unwrap_or(Vec::new());
+        .unwrap_or_default();
 
-    if results.len() == 0 {
+    if results.is_empty() {
         bail!(format!("No results found for query: {}", query))
-    } else {
-        Ok(TaxonContainer(results))
     }
+    Ok(TaxonContainer(results))
 }
 
 #[cfg(test)]

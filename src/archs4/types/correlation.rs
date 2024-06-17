@@ -1,4 +1,7 @@
-use pyo3::{types::PyDict, PyResult, Python};
+use pyo3::{
+    types::{PyDict, PyDictMethods},
+    Bound, PyResult, Python,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -48,14 +51,14 @@ impl fmt::Display for Correlations {
     }
 }
 impl Correlations {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item(
             "correlations",
             self.correlations
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create pydict"))
-                .collect::<Vec<&PyDict>>(),
+                .collect::<Vec<Bound<'py, PyDict>>>(),
         )?;
         Ok(dict)
     }
@@ -86,8 +89,8 @@ impl fmt::Display for Correlation {
     }
 }
 impl Correlation {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("gene_symbol", &self.gene_symbol)?;
         dict.set_item("pearson_correlation", self.pearson_correlation)?;
         Ok(dict)

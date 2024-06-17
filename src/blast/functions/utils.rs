@@ -51,7 +51,7 @@ mod testing {
 
     use super::{parse_rid, parse_rtoe, parse_status};
 
-    const EXAMPLE_STATUS_READY: &'static str = r##"
+    const EXAMPLE_STATUS_READY: &str = r##"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -438,7 +438,7 @@ mod testing {
 </body>
 
 </html>"##;
-    const EXAMPLE_STATUS_WAITING: &'static str = r##"
+    const EXAMPLE_STATUS_WAITING: &str = r##"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -826,7 +826,7 @@ mod testing {
 
 </html>"##;
 
-    const EXAMPLE_STATUS_UNKNOWN: &'static str = r##"
+    const EXAMPLE_STATUS_UNKNOWN: &str = r##"
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -1214,7 +1214,7 @@ mod testing {
 
 </html>"##;
 
-    const EXAMPLE_QUERY: &'static str = r##"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    const EXAMPLE_QUERY: &str = r##"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -2014,13 +2014,13 @@ QBlastInfoEnd
     #[test]
     fn test_parse_rid() {
         let rid = parse_rid(EXAMPLE_QUERY).unwrap();
-        assert_eq!(rid, "NJWFSE65016".to_string())
+        assert_eq!(rid, "NJWFSE65016".to_string());
     }
 
     #[test]
     fn test_parse_rid_missing() {
         let rid = parse_rid("no rid here");
-        assert!(rid.is_err())
+        assert!(rid.is_err());
     }
 
     #[test]

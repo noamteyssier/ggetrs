@@ -53,7 +53,7 @@ impl NcbiTranscript {
     fn parse_genomic_range(value: &Value, id: &str) -> String {
         value["genomic_range"]["range"][0][id]
             .as_str()
-            .unwrap_or_else(|| panic!("Missing: genomic_range/range/[0]/{}", id))
+            .unwrap_or_else(|| panic!("Missing: genomic_range/range/[0]/{id}"))
             .to_string()
     }
 }

@@ -1,7 +1,10 @@
 use crate::constants::convert_mem_label;
 use anyhow::Result;
 use ftp::FtpStream;
-use pyo3::{types::PyDict, PyResult, Python};
+use pyo3::{
+    types::{PyDict, PyDictMethods},
+    Bound, PyResult, Python,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -27,7 +30,7 @@ impl FtpFile {
     pub fn new(stream: &mut FtpStream, path: &str, release: usize) -> Result<Self> {
         let size = stream.size(path)?.unwrap();
         let modtime = stream.mdtm(path)?.unwrap();
-        let url = format!("http://ftp.ensembl.org/pub/{}", path);
+        let url = format!("http://ftp.ensembl.org/pub/{path}");
         Ok(Self {
             url,
             ensembl_release: release,
@@ -37,8 +40,8 @@ impl FtpFile {
         })
     }
 
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("url", &self.url)?;
         dict.set_item("ensembl_release", self.ensembl_release)?;
         dict.set_item("release_date", &self.release_date)?;

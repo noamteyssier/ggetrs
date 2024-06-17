@@ -3,8 +3,8 @@ use anyhow::{bail, Result};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,
-    types::{PyDict, PyModule},
-    wrap_pyfunction, PyResult, Python,
+    types::{PyDict, PyModule, PyModuleMethods},
+    wrap_pyfunction, Bound, PyResult, Python,
 };
 
 #[pyfunction(name = "search")]
@@ -17,21 +17,20 @@ pub fn python_ensembl_search<'py>(
     db_type: Option<&str>,
     release: Option<usize>,
     assembly: Option<&str>,
-) -> Result<&'py PyDict> {
-    if search_terms.len() == 0 {
+) -> Result<Bound<'py, PyDict>> {
+    if search_terms.is_empty() {
         bail!("Must pass in more than one search term!");
     } else if search_terms[0].len() == 1 {
         bail!("Must pass in search terms as a list!");
     }
-    let db_name = match database {
-        Some(name) => name,
-        None => {
-            let species = species.unwrap_or("homo_sapiens");
-            let db_type = db_type.unwrap_or("core");
-            let release = release.unwrap_or(107);
-            let assembly = assembly.unwrap_or("38");
-            format!("{}_{}_{}_{}", species, db_type, release, assembly)
-        }
+    let db_name = if let Some(name) = database {
+        name
+    } else {
+        let species = species.unwrap_or("homo_sapiens");
+        let db_type = db_type.unwrap_or("core");
+        let release = release.unwrap_or(107);
+        let assembly = assembly.unwrap_or("38");
+        format!("{species}_{db_type}_{release}_{assembly}")
     };
     let results = search(&db_name, &search_terms)?;
     results.as_pydict(py)
@@ -56,12 +55,12 @@ pub fn python_ensembl_reference<'py>(
     species: Option<&str>,
     release: Option<usize>,
     datatype: Option<Vec<String>>,
-) -> Result<Vec<&'py PyDict>> {
+) -> Result<Vec<Bound<'py, PyDict>>> {
     let species = species.unwrap_or("homo_sapiens");
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
         Some(datatype) => {
-            if datatype.len() == 0 {
+            if datatype.is_empty() {
                 bail!("Must pass in at least one datatype!");
             } else if datatype[0].len() == 1 {
                 bail!("Must pass in datatypes as a list!");
@@ -103,13 +102,13 @@ pub fn python_ensembl_species(
     list_species(release, &datatype).expect("Could not query species FTP")
 }
 
-pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {
-    let submodule = PyModule::new(py, "ensembl")?;
+pub fn python_ensembl(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
+    let submodule = PyModule::new_bound(py, "ensembl")?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_search, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_database, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_release, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_reference, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_species, module)?)?;
-    module.add_submodule(submodule)?;
+    module.add_submodule(&submodule)?;
     Ok(())
 }

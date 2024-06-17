@@ -1,5 +1,5 @@
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
-use anyhow::{Result};
+use anyhow::Result;
 use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
@@ -9,15 +9,15 @@ fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> Stri
     let gene_query = if gene.starts_with("ENS") || freeform {
         format!("({gene})")
     } else {
-        format!("(gene:{})", gene)
+        format!("(gene:{gene})")
     };
     let taxon_query = match taxon {
         Some(t) => {
-            format!("AND(taxonomy_id:{})", t)
+            format!("AND(taxonomy_id:{t})")
         }
         None => String::new(),
     };
-    format!("{}{}", gene_query, taxon_query)
+    format!("{gene_query}{taxon_query}")
 }
 
 /// An asynchronous function which performs a uniprot query
@@ -27,10 +27,7 @@ pub async fn async_query_uniprot(
     taxon: &Option<usize>,
 ) -> Result<Option<UniprotInfo>> {
     let query = build_query_string(gene, freeform, taxon);
-    let url = format!(
-        "https://rest.uniprot.org/uniprotkb/search?query={}+AND+reviewed:true",
-        query
-    );
+    let url = format!("https://rest.uniprot.org/uniprotkb/search?query={query}+AND+reviewed:true",);
     let value = Client::new()
         .get(&url) // Updated to pass the URL by reference
         .header("content-type", "application/json")
@@ -38,7 +35,7 @@ pub async fn async_query_uniprot(
         .await?
         .json::<Value>()
         .await?;
-    
+
     // Updated to check if the struct is non-empty
     let info = UniprotInfo::from_value(&value, gene)?;
     if let Some(uniprot_info) = info {

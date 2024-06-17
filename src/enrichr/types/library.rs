@@ -24,6 +24,7 @@ impl fmt::Display for Library {
     }
 }
 impl Library {
+    #[must_use]
     pub fn minimal(&self) -> &str {
         &self.library_name
     }
@@ -44,11 +45,11 @@ impl Libraries {
     pub fn minimal(&self) -> String {
         self.0
             .iter()
-            .map(|x| x.minimal())
+            .map(Library::minimal)
             .enumerate()
             .fold(String::new(), |mut s, (idx, x)| {
                 let substring = if idx == 0 {
-                    format!("{x}")
+                    x.to_string()
                 } else {
                     format!("\n{x}")
                 };
@@ -103,20 +104,23 @@ impl ResponseLibraries {
     pub fn iter(&self) -> impl Iterator<Item = &Library> {
         self.statistics.iter()
     }
+    #[must_use]
     pub fn categories(&self) -> Categories {
-        Categories(self.categories.to_owned())
+        Categories(self.categories.clone())
     }
+    #[must_use]
     pub fn filter_categories(&self, cid: usize) -> Libraries {
         let libraries = self
             .statistics
             .iter()
             .filter(|x| x.category_id == cid)
-            .map(|x| x.to_owned())
+            .cloned()
             .collect();
         Libraries(libraries)
     }
+    #[must_use]
     pub fn libraries(&self) -> Libraries {
-        Libraries(self.statistics.to_owned())
+        Libraries(self.statistics.clone())
     }
 }
 impl fmt::Display for ResponseLibraries {

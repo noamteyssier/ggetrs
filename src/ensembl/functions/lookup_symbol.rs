@@ -9,7 +9,7 @@ use serde_json::json;
 /// API documentation found here:
 /// <https://rest.ensembl.org/documentation/info/symbol_post>
 pub fn lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse> {
-    let url = format!("https://rest.ensembl.org/lookup/symbol/{}", species);
+    let url = format!("https://rest.ensembl.org/lookup/symbol/{species}");
     let data = json!({ "symbols": symbols });
     let results = Client::new()
         .post(url)
@@ -28,7 +28,7 @@ pub fn lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse
 /// API documentation found here:
 /// <https://rest.ensembl.org/documentation/info/symbol_post>
 pub async fn async_lookup_symbol(symbols: &[String], species: &str) -> Result<LookupResponse> {
-    let url = format!("https://rest.ensembl.org/lookup/symbol/{}", species);
+    let url = format!("https://rest.ensembl.org/lookup/symbol/{species}");
     let data = json!({ "symbols": symbols });
     let results = reqwest::Client::new()
         .post(url)
@@ -52,7 +52,7 @@ mod testing {
         let species = "homo_sapiens";
         let response = lookup_symbol(&ensembl_symbols, species).unwrap();
         assert_eq!(response.0.len(), 1);
-        assert!(response.0.get("AP2S1").unwrap().is_some())
+        assert!(response.0.get("AP2S1").unwrap().is_some());
     }
 
     #[test]

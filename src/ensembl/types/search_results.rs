@@ -1,6 +1,9 @@
 use anyhow::Result;
 use mysql::Row;
-use pyo3::{types::PyDict, PyResult, Python};
+use pyo3::{
+    types::{PyDict, PyDictMethods},
+    Bound, PyResult, Python,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -17,14 +20,14 @@ impl fmt::Display for SearchResults {
     }
 }
 impl SearchResults {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> Result<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> Result<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item(
             "results",
             self.0
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create pydict"))
-                .collect::<Vec<&PyDict>>(),
+                .collect::<Vec<Bound<'py, PyDict>>>(),
         )?;
         Ok(dict)
     }
@@ -78,8 +81,8 @@ impl SearchResult {
         })
     }
 
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("stable_id", &self.stable_id)?;
         dict.set_item("display_label", &self.display_label)?;
         dict.set_item("ensembl_description", &self.ensembl_description)?;

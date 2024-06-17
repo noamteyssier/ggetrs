@@ -37,7 +37,7 @@ pub fn resource_info(
             (identifier.clone()).expect("Resource Identifier Required")
         )
     } else {
-        format!("{}/{}/{}", base_url, resource, pdb_id)
+        format!("{base_url}/{resource}/{pdb_id}")
     };
     let response = Client::new().get(rest_url).send()?.json::<Value>()?;
     match response["status"].as_u64() {

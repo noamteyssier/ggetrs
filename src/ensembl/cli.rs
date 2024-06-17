@@ -18,19 +18,19 @@ pub fn launch_ensembl_search(
 ) -> anyhow::Result<()> {
     let db_name = match database {
         Some(name) => name.clone(),
-        None => format!("{}_{}_{}_{}", species, db_type, release, assembly),
+        None => format!("{species}_{db_type}_{release}_{assembly}"),
     };
     let results = search(&db_name, search_terms)?;
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{results}").expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{results}");
             }
         }
         None => {
-            println!("{}", results);
+            println!("{results}");
         }
     }
     Ok(())
@@ -45,13 +45,13 @@ pub fn launch_ensembl_database(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{results}").expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{results}");
             }
         }
         None => {
-            println!("{}", results);
+            println!("{results}");
         }
     }
     Ok(())
@@ -60,7 +60,7 @@ pub fn launch_ensembl_database(
 /// Main entrypoint for `Ensembl` release version
 pub fn launch_ensembl_release() -> anyhow::Result<()> {
     let result = release()?;
-    println!("release: {}", result);
+    println!("release: {result}");
     Ok(())
 }
 
@@ -78,13 +78,13 @@ pub fn launch_ensembl_reference(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", repr).expect("Unable to write to file");
+                writeln!(writer, "{repr}").expect("Unable to write to file");
             } else {
-                println!("{}", repr);
+                println!("{repr}");
             }
         }
         None => {
-            println!("{}", repr);
+            println!("{repr}");
         }
     }
     if download {
@@ -113,13 +113,13 @@ pub fn launch_ensembl_list_species(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", repr).expect("Unable to write to file");
+                writeln!(writer, "{repr}").expect("Unable to write to file");
             } else {
-                println!("{}", repr);
+                println!("{repr}");
             }
         }
         None => {
-            println!("{}", repr);
+            println!("{repr}");
         }
     }
     Ok(())
@@ -140,26 +140,26 @@ pub fn launch_ensembl_lookup_id(
             .enumerate()
             .fold(String::new(), |mut s, (idx, i)| {
                 if idx == 0 {
-                    s.push_str(&format!("{i}"))
+                    s.push_str(&i.to_string());
                 } else {
-                    s.push_str(&format!(" {i}"))
+                    s.push_str(&format!(" {i}"));
                 }
                 s
             })
     } else {
-        format!("{}", results)
+        format!("{results}")
     };
 
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", output_str).expect("Unable to write to file");
+                writeln!(writer, "{output_str}").expect("Unable to write to file");
             } else {
-                println!("{}", output_str);
+                println!("{output_str}");
             }
         }
         None => {
-            println!("{}", output_str);
+            println!("{output_str}");
         }
     }
     Ok(())
@@ -181,26 +181,26 @@ pub fn launch_ensembl_lookup_symbol(
             .enumerate()
             .fold(String::new(), |mut s, (idx, i)| {
                 if idx == 0 {
-                    s.push_str(&format!("{i}"))
+                    s.push_str(&i.to_string());
                 } else {
-                    s.push_str(&format!(" {i}"))
+                    s.push_str(&format!(" {i}"));
                 }
                 s
             })
     } else {
-        format!("{}", results)
+        format!("{results}")
     };
 
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", output_str).expect("Unable to write to file");
+                writeln!(writer, "{output_str}").expect("Unable to write to file");
             } else {
-                println!("{}", output_str);
+                println!("{output_str}");
             }
         }
         None => {
-            println!("{}", output_str);
+            println!("{output_str}");
         }
     }
     Ok(())

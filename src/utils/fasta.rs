@@ -8,14 +8,14 @@ use std::fmt::Display;
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FastaRecords(pub Vec<FastaRecord>);
 impl FastaRecords {
-    pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
-        let vec_dict: Vec<&PyDict> = self
+    pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
+        let vec_dict: Vec<Bound<'py, PyDict>> = self
             .0
             .iter()
-            .map(|x| x.clone())
-            .map(|x| x.into_py_dict(py))
+            .cloned()
+            .map(|x| x.into_py_dict_bound(py))
             .collect();
-        Ok(PyList::new(py, vec_dict))
+        Ok(PyList::new_bound(py, vec_dict))
     }
 }
 
@@ -31,14 +31,15 @@ impl Display for FastaRecord {
     }
 }
 impl IntoPyDict for FastaRecord {
-    fn into_py_dict(self, py: Python<'_>) -> &pyo3::types::PyDict {
-        let map = PyDict::new(py);
+    fn into_py_dict_bound(self, py: Python<'_>) -> Bound<'_, PyDict> {
+        let map = PyDict::new_bound(py);
         map.set_item("header", self.header).unwrap();
         map.set_item("sequence", self.sequence).unwrap();
         map
     }
 }
 impl FastaRecord {
+    #[must_use]
     pub fn new(header: &str, sequence: &str) -> Self {
         Self {
             header: header.to_string(),

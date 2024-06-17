@@ -7,13 +7,14 @@ use clap::ValueEnum;
 use pyo3::{
     pyfunction,
     types::{IntoPyDict, PyDict},
-    Python,
+    Bound, Python,
 };
 
 #[pyfunction(name = "blast")]
 #[pyo3(
     text_signature = "(query, program = None, database = None, limit = 50, expect = 10.0, low_comp_filter = False, megablast = True)"
 )]
+#[allow(clippy::too_many_arguments)]
 pub fn python_blast<'py>(
     py: Python<'py>,
     query: &str,
@@ -23,7 +24,7 @@ pub fn python_blast<'py>(
     expect: Option<f64>,
     low_comp_filter: Option<bool>,
     megablast: Option<bool>,
-) -> Result<&'py PyDict> {
+) -> Result<Bound<'py, PyDict>> {
     let program = match program {
         Some(program_str) => {
             if let Ok(s) = BlastProgram::from_str(&program_str, true) {
@@ -59,5 +60,5 @@ pub fn python_blast<'py>(
         low_comp_filter,
         megablast,
     )?;
-    Ok(response.into_py_dict(py))
+    Ok(response.into_py_dict_bound(py))
 }

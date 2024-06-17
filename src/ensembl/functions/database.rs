@@ -8,14 +8,13 @@ pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
     let mut conn = Conn::new(opts)?;
     let query = build_search_query(filter);
     let results: Vec<Database> = conn.query_map(query, Database)?;
-    if results.len() > 0 {
-        Ok(ResponseDatabases(results))
-    } else {
+    if results.is_empty() {
         match filter {
             Some(f) => bail!(format!("No databases found with filter: {}", f)),
             None => bail!("No databases found"),
         }
     }
+    Ok(ResponseDatabases(results))
 }
 
 /// Generates mysql options
@@ -31,7 +30,7 @@ fn get_mysql_options() -> OptsBuilder {
 /// Searches through databases for a related token
 fn build_search_query(search_term: &Option<String>) -> String {
     if let Some(token) = search_term {
-        format!("SHOW databases LIKE '%{}%'", token)
+        format!("SHOW databases LIKE '%{token}%'")
     } else {
         String::from("SHOW databases")
     }
@@ -45,20 +44,20 @@ mod testing {
     fn test_ensembl_database_full() {
         let filter = None;
         let response = database(&filter);
-        assert!(response.is_ok())
+        assert!(response.is_ok());
     }
 
     #[test]
     fn test_ensembl_database_specific() {
         let filter = Some("homo_sapiens_core_107_38".to_string());
         let response = database(&filter);
-        assert!(response.is_ok())
+        assert!(response.is_ok());
     }
 
     #[test]
     fn test_ensembl_database_nonsense() {
         let filter = Some("AIWJDIOANDNIWND".to_string());
         let response = database(&filter);
-        assert!(response.is_err())
+        assert!(response.is_err());
     }
 }

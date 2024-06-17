@@ -5,6 +5,7 @@ pub const TB_LIMIT: usize = 1_099_511_627_776;
 
 /// Converts a bits size to a string representation
 #[must_use]
+#[allow(clippy::cast_precision_loss, clippy::cast_sign_loss)]
 pub fn convert_mem_label(size: usize) -> String {
     let (dividend, units) = if size < KB_LIMIT {
         (1.0, "B")
@@ -18,5 +19,5 @@ pub fn convert_mem_label(size: usize) -> String {
         (TB_LIMIT as f64, "T")
     };
     let repr = (size as f64 / dividend).round() as usize;
-    format!("{}{}", repr, units)
+    format!("{repr}{units}")
 }

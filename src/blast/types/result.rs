@@ -1,4 +1,7 @@
-use pyo3::types::{IntoPyDict, PyDict};
+use pyo3::{
+    types::{IntoPyDict, PyDict, PyDictMethods},
+    Bound,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -17,16 +20,16 @@ impl fmt::Display for BlastResult {
     }
 }
 impl IntoPyDict for BlastResult {
-    fn into_py_dict(self, py: pyo3::Python<'_>) -> &PyDict {
-        let map = PyDict::new(py);
+    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
+        let map = PyDict::new_bound(py);
         map.set_item("query", self.query).unwrap();
         map.set_item(
             "results",
             self.results
                 .iter()
-                .map(|x| x.clone())
-                .map(|x| x.into_py_dict(py))
-                .collect::<Vec<&PyDict>>(),
+                .cloned()
+                .map(|x| x.into_py_dict_bound(py))
+                .collect::<Vec<Bound<'_, PyDict>>>(),
         )
         .unwrap();
         map
@@ -38,17 +41,19 @@ impl BlastResult {
             results: output
                 .blast_output_iterations
                 .iterations
-                .iteration_hits
+                .hits
                 .hits
                 .iter()
-                .map(|x| BlastHit::from_hit(x))
+                .map(BlastHit::from_hit)
                 .collect(),
             query: query.to_string(),
         }
     }
+    #[must_use]
     pub fn query(&self) -> &str {
         &self.query
     }
+    #[must_use]
     pub fn results(&self) -> &Vec<BlastHit> {
         &self.results
     }
@@ -93,8 +98,8 @@ impl BlastHit {
     }
 }
 impl IntoPyDict for BlastHit {
-    fn into_py_dict(self, py: pyo3::Python<'_>) -> &pyo3::types::PyDict {
-        let map = PyDict::new(py);
+    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
+        let map = PyDict::new_bound(py);
         map.set_item("num", self.num).unwrap();
         map.set_item("id", self.num).unwrap();
         map.set_item("definition", self.num).unwrap();
@@ -128,11 +133,11 @@ struct BlastOutputIterations {
 #[derive(Debug, Serialize, Deserialize)]
 struct Iteration {
     #[serde(rename = "Iteration_iter-num")]
-    iteration_iter_num: usize,
+    iter_num: usize,
     #[serde(rename = "Iteration_query-ID")]
-    iteration_query_id: String,
+    query_id: String,
     #[serde(rename = "Iteration_hits")]
-    iteration_hits: IterationHits,
+    hits: IterationHits,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

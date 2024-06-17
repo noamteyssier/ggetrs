@@ -4,6 +4,7 @@ use std::time::Duration;
 /// Pings a provided url to see if it is accessible.
 ///
 /// Useful for FTP clients which cannot provide a timeout
+#[must_use]
 pub fn ping(url: &str, timeout: usize) -> bool {
     let response = Client::new()
         .get(url)
