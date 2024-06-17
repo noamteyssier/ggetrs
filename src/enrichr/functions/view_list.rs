@@ -9,7 +9,7 @@ pub fn view_list(user_list_id: usize, speedrichr: bool) -> Result<ResponseViewLi
     } else {
         format!("{}/view?userListId={}", ENRICHR_URL, user_list_id)
     };
-    reqwest::blocking::get(&url)?.json::<ResponseViewList>()
+    reqwest::blocking::get(url)?.json::<ResponseViewList>()
 }
 
 #[cfg(test)]
@@ -18,7 +18,7 @@ mod testing {
     use crate::enrichr::add_list;
 
     fn get_list_id() -> usize {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();
@@ -27,7 +27,7 @@ mod testing {
     }
 
     fn get_list_id_with_background() -> usize {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();

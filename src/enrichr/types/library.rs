@@ -48,7 +48,7 @@ impl Libraries {
             .enumerate()
             .fold(String::new(), |mut s, (idx, x)| {
                 let substring = if idx == 0 {
-                    format!("{x}")
+                    x.to_string()
                 } else {
                     format!("\n{x}")
                 };

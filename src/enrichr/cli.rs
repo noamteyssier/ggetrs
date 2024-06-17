@@ -70,7 +70,7 @@ pub fn launch_enrichr_list(
             libraries.libraries()
         };
         if minimal {
-            format!("{}", libs.minimal())
+            libs.minimal().to_string()
         } else {
             format!("{}", libs)
         }

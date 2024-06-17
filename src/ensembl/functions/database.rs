@@ -8,7 +8,7 @@ pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
     let mut conn = Conn::new(opts)?;
     let query = build_search_query(filter);
     let results: Vec<Database> = conn.query_map(query, Database)?;
-    if results.len() > 0 {
+    if !results.is_empty() {
         Ok(ResponseDatabases(results))
     } else {
         match filter {

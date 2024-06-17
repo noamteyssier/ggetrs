@@ -24,7 +24,7 @@ pub fn query_ids(ids: &[usize]) -> Result<NcbiResults> {
 
     match NcbiResults::from_value(&response) {
         Some(result) => {
-            if result.0.len() > 0 {
+            if !result.0.is_empty() {
                 Ok(result)
             } else {
                 bail!(format!("No results found for ids: {:?}", ids))

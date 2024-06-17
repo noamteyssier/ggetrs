@@ -53,7 +53,7 @@ pub fn parse_secondary_vec_string(value: &Value, primary: &str, secondary: &str)
         .and_then(|v| v.get(secondary))
         .and_then(|v| v.as_array())
         .map_or_else(
-            || Vec::new(),
+            Vec::new,
             |array| {
                 array
                     .iter()

@@ -110,7 +110,7 @@ mod testing {
     #[test]
     fn test_blast_query() {
         let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
-        let program = BlastProgram::from_sequence(&sequence).unwrap();
+        let program = BlastProgram::from_sequence(sequence).unwrap();
         let database = BlastDatabase::from_program(&program);
         let query = BlastQuery::new(program, database, sequence, 1, 10.0, false, true).unwrap();
         assert!(!query.rid.is_empty());
@@ -120,7 +120,7 @@ mod testing {
     #[test]
     fn test_blast_status() {
         let sequence = "ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG";
-        let program = BlastProgram::from_sequence(&sequence).unwrap();
+        let program = BlastProgram::from_sequence(sequence).unwrap();
         let database = BlastDatabase::from_program(&program);
         let query = BlastQuery::new(program, database, sequence, 1, 10.0, false, true).unwrap();
         query.status().unwrap();

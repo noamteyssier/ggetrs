@@ -29,7 +29,7 @@ fn strip_symbols(symbols: &[String]) -> Vec<String> {
 /// Validates all non ensembl ids are found in lookup response
 fn validate_full_recovery(non_ensembl_ids: &[String], response: &LookupResponse) -> Result<()> {
     for n in non_ensembl_ids {
-        if response.get_id(&n).is_none() {
+        if response.get_id(n).is_none() {
             bail!(format!("Unable to find ensembl id for symbol {n}"));
         }
     }
@@ -69,7 +69,7 @@ pub fn sequence(
         } else {
             bail!("Not all provided symbols are Ensembl IDs - so a species must be provided to identify them");
         };
-        let ensembl_ids = convert_to_ensembl_ids(search_terms, &species_name)?;
+        let ensembl_ids = convert_to_ensembl_ids(search_terms, species_name)?;
         retrieve_sequence(&ensembl_ids)
     } else {
         retrieve_sequence(search_terms)

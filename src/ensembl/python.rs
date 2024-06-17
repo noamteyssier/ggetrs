@@ -18,7 +18,7 @@ pub fn python_ensembl_search<'py>(
     release: Option<usize>,
     assembly: Option<&str>,
 ) -> Result<&'py PyDict> {
-    if search_terms.len() == 0 {
+    if search_terms.is_empty() {
         bail!("Must pass in more than one search term!");
     } else if search_terms[0].len() == 1 {
         bail!("Must pass in search terms as a list!");
@@ -61,7 +61,7 @@ pub fn python_ensembl_reference<'py>(
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
         Some(datatype) => {
-            if datatype.len() == 0 {
+            if datatype.is_empty() {
                 bail!("Must pass in at least one datatype!");
             } else if datatype[0].len() == 1 {
                 bail!("Must pass in datatypes as a list!");

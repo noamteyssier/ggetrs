@@ -11,8 +11,7 @@ impl FastaRecords {
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
         let vec_dict: Vec<&PyDict> = self
             .0
-            .iter()
-            .map(|x| x.clone())
+            .iter().cloned()
             .map(|x| x.into_py_dict(py))
             .collect();
         Ok(PyList::new(py, vec_dict))

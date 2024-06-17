@@ -39,7 +39,7 @@ mod testing {
 
     #[test]
     fn test_add_list() {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();
@@ -50,7 +50,7 @@ mod testing {
 
     #[test]
     fn test_add_list_with_background() {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();

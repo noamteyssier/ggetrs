@@ -57,7 +57,7 @@ mod testing {
     use crate::enrichr::functions::{add_background, add_list};
 
     fn get_list_id() -> usize {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();
@@ -66,7 +66,7 @@ mod testing {
     }
 
     fn get_list_id_with_background() -> usize {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();
@@ -75,7 +75,7 @@ mod testing {
     }
 
     fn get_background_id() -> String {
-        let gene_list = vec!["AP2S1", "NSD1", "LDB1", "RFX3"]
+        let gene_list = ["AP2S1", "NSD1", "LDB1", "RFX3"]
             .iter()
             .map(|x| x.to_string())
             .collect::<Vec<String>>();

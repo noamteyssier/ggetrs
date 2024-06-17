@@ -8,13 +8,13 @@ use pyo3::{
 
 #[pyfunction(name = "info")]
 #[pyo3(text_signature = "(search_terms, species = 'homo_sapiens', taxon_id = 9606)")]
-pub fn python_info<'py>(
-    py: Python<'py>,
+pub fn python_info(
+    py: Python<'_>,
     search_terms: Vec<String>,
     species: Option<String>,
     taxon_id: Option<usize>,
-) -> Result<&'py PyDict> {
-    if search_terms.len() == 0 {
+) -> Result<&PyDict> {
+    if search_terms.is_empty() {
         bail!("Must pass in more than one search term!");
     } else if search_terms[0].len() == 1 {
         bail!("Must pass in search terms as a list!");

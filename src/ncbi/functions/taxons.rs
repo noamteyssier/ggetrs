@@ -27,7 +27,7 @@ pub fn taxons(query: &str, limit: usize) -> Result<TaxonContainer> {
         })
         .unwrap_or(Vec::new());
 
-    if results.len() == 0 {
+    if results.is_empty() {
         bail!(format!("No results found for query: {}", query))
     } else {
         Ok(TaxonContainer(results))

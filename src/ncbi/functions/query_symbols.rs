@@ -21,7 +21,7 @@ pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults>
 
     match NcbiResults::from_value(&response) {
         Some(result) => {
-            if result.0.len() > 0 {
+            if !result.0.is_empty() {
                 Ok(result)
             } else {
                 Ok(NcbiResults::default())

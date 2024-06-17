@@ -23,8 +23,7 @@ impl IntoPyDict for BlastResult {
         map.set_item(
             "results",
             self.results
-                .iter()
-                .map(|x| x.clone())
+                .iter().cloned()
                 .map(|x| x.into_py_dict(py))
                 .collect::<Vec<&PyDict>>(),
         )
@@ -41,7 +40,7 @@ impl BlastResult {
                 .iteration_hits
                 .hits
                 .iter()
-                .map(|x| BlastHit::from_hit(x))
+                .map(BlastHit::from_hit)
                 .collect(),
             query: query.to_string(),
         }

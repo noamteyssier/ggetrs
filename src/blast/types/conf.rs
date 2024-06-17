@@ -23,14 +23,14 @@ impl BlastProgram {
     }
     pub fn from_sequence(sequence: &str) -> Result<Self> {
         let sequence = sequence.to_uppercase();
-        let mut known_characters = sequence.chars().map(|c| match c {
+        let known_characters = sequence.chars().map(|c| match c {
             'A' | 'C' | 'G' | 'T' | 'R' | 'N' | 'D' | 'Q' | 'E' | 'H' | 'I' | 'L' | 'K' | 'M'
             | 'F' | 'P' | 'S' | 'W' | 'Y' | 'V' | 'B' | 'Z' => Ok(c),
             _ => bail!("Unexpected character: {c}"),
         });
 
         let mut is_nucl = true;
-        while let Some(potential_c) = known_characters.next() {
+        for potential_c in known_characters {
             match potential_c {
                 Ok(c) => match c {
                     'A' | 'C' | 'G' | 'T' => continue,

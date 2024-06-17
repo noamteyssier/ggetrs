@@ -140,7 +140,7 @@ pub fn launch_ensembl_lookup_id(
             .enumerate()
             .fold(String::new(), |mut s, (idx, i)| {
                 if idx == 0 {
-                    s.push_str(&format!("{i}"))
+                    s.push_str(&i.to_string())
                 } else {
                     s.push_str(&format!(" {i}"))
                 }
@@ -181,7 +181,7 @@ pub fn launch_ensembl_lookup_symbol(
             .enumerate()
             .fold(String::new(), |mut s, (idx, i)| {
                 if idx == 0 {
-                    s.push_str(&format!("{i}"))
+                    s.push_str(&i.to_string())
                 } else {
                     s.push_str(&format!(" {i}"))
                 }

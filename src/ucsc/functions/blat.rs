@@ -12,7 +12,7 @@ pub fn blat(sequence: &str, seqtype: &SeqType, db_name: &str) -> Result<BlatResu
         "https://genome.ucsc.edu/cgi-bin/hgBlat?userSeq={}&type={}&db={}&output=json",
         sequence, seqtype, db_name
     );
-    let response = Client::new().get(&url).send()?;
+    let response = Client::new().get(url).send()?;
 
     let response_json: Value = match response.json() {
         Ok(json) => json,
