@@ -12,13 +12,13 @@ pub fn launch_uniprot_query(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{results}").expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{results}");
             }
         }
         None => {
-            println!("{}", results);
+            println!("{results}");
         }
     }
     Ok(())

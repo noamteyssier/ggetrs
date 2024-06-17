@@ -16,12 +16,14 @@ impl fmt::Display for UniprotInfoContainer {
     }
 }
 impl UniprotInfoContainer {
+    #[must_use]
     pub fn to_fasta(&self) -> String {
         self.0
             .values()
             .map(|x| x.to_fasta())
             .fold(String::new(), |acc, x| acc + &x)
     }
+    #[must_use]
     pub fn fasta_records(&self) -> FastaRecords {
         let records = self.0.values().map(|x| x.as_fasta()).collect();
         FastaRecords(records)

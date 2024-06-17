@@ -9,11 +9,7 @@ use std::fmt::Display;
 pub struct FastaRecords(pub Vec<FastaRecord>);
 impl FastaRecords {
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
-        let vec_dict: Vec<&PyDict> = self
-            .0
-            .iter().cloned()
-            .map(|x| x.into_py_dict(py))
-            .collect();
+        let vec_dict: Vec<&PyDict> = self.0.iter().cloned().map(|x| x.into_py_dict(py)).collect();
         Ok(PyList::new(py, vec_dict))
     }
 }
@@ -38,6 +34,7 @@ impl IntoPyDict for FastaRecord {
     }
 }
 impl FastaRecord {
+    #[must_use]
     pub fn new(header: &str, sequence: &str) -> Self {
         Self {
             header: header.to_string(),

@@ -28,18 +28,21 @@ impl fmt::Display for PdbResource {
             Self::PolymerEntityInstance => "polymer_entity_instance",
             Self::NonpolymerEntityInstance => "nonpolymer_entity_instance",
         };
-        write!(f, "{}", repr)
+        write!(f, "{repr}")
     }
 }
 impl PdbResource {
+    #[must_use]
     pub fn requires_entity_id(&self) -> bool {
         matches!(
             self,
             Self::BranchedEntityInstance
                 | Self::NonpolymerEntityInstance
                 | Self::PolymerEntityInstance
+                | Self::Uniprot
         )
     }
+    #[must_use]
     pub fn requires_chain_id(&self) -> bool {
         matches!(
             self,
@@ -48,11 +51,13 @@ impl PdbResource {
                 | Self::PolymerEntityInstance
         )
     }
+    #[must_use]
     pub fn requires_assembly_id(&self) -> bool {
         matches!(self, Self::Assembly)
     }
+    #[must_use]
     pub fn requires_identifier(&self) -> bool {
-        matches!(self, Self::Entry | Self::Pubmed)
+        matches!(self, Self::Assembly)
     }
 }
 
