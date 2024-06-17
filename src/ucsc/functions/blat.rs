@@ -17,10 +17,12 @@ pub fn blat(sequence: &str, seqtype: &SeqType, db_name: &str) -> Result<BlatResu
     let response_json: Value = match response.json() {
         Ok(json) => json,
         Err(_) => {
-            bail!("Bad response from UCSC Genome Browser. Check Database Name: {}", db_name);
+            bail!(
+                "Bad response from UCSC Genome Browser. Check Database Name: {}",
+                db_name
+            );
         }
     };
-    
 
     let br = BlatResults::from_value(&response_json);
     Ok(br)

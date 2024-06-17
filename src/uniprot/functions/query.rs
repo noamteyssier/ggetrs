@@ -1,5 +1,5 @@
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
-use anyhow::{Result};
+use anyhow::Result;
 use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
@@ -38,7 +38,7 @@ pub async fn async_query_uniprot(
         .await?
         .json::<Value>()
         .await?;
-    
+
     // Updated to check if the struct is non-empty
     let info = UniprotInfo::from_value(&value, gene)?;
     if let Some(uniprot_info) = info {

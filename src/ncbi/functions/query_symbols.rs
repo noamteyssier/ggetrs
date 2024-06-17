@@ -1,4 +1,4 @@
-use crate::{ncbi::types::NcbiResults};
+use crate::ncbi::types::NcbiResults;
 use anyhow::{bail, Result};
 use reqwest::blocking::Client;
 use serde_json::Value;

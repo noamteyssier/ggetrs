@@ -133,7 +133,10 @@ impl UniprotInfo {
         value["results"][0]["genes"][0]["synonyms"]
             .as_array()
             .map_or(Vec::new(), |values| {
-                values.iter().map(|x| x["value"].as_str().unwrap_or_default().to_string()).collect()
+                values
+                    .iter()
+                    .map(|x| x["value"].as_str().unwrap_or_default().to_string())
+                    .collect()
             })
     }
 
@@ -155,7 +158,10 @@ impl UniprotInfo {
         value["results"][0]["uniProtKBCrossReferences"]
             .as_array()
             .and_then(|values| {
-                values.iter().find(|x| x["database"] == "GeneID").and_then(|v| v["id"].as_str().map(|s| s.to_string()))
+                values
+                    .iter()
+                    .find(|x| x["database"] == "GeneID")
+                    .and_then(|v| v["id"].as_str().map(|s| s.to_string()))
             })
     }
 
@@ -163,7 +169,10 @@ impl UniprotInfo {
         value["results"][0]["uniProtKBCrossReferences"]
             .as_array()
             .and_then(|values| {
-                values.iter().find(|x| x["database"] == "PDB").and_then(|v| v["id"].as_str().map(|s| s.to_string()))
+                values
+                    .iter()
+                    .find(|x| x["database"] == "PDB")
+                    .and_then(|v| v["id"].as_str().map(|s| s.to_string()))
             })
     }
 
@@ -198,20 +207,20 @@ impl UniprotInfo {
 
     // Method to check if the struct is non-empty
     pub fn is_non_empty(&self) -> bool {
-        !self.uniprot_id.is_empty() ||
-        !self.uniprot_entry_name.is_empty() ||
-        !self.primary_gene_name.is_empty() ||
-        !self.uniprot_synonyms.is_empty() ||
-        !self.protein_name.is_empty() ||
-        !self.uniprot_description.is_empty() ||
-        self.ncbi_id.is_some() ||
-        self.pdb_id.is_some() ||
-        self.taxon_id != 0 ||
-        !self.organism_name.is_empty() ||
-        !self.sequence.is_empty() ||
-        self.sequence_version != 0 ||
-        !self.protein_existence.is_empty() ||
-        !self.query.is_empty()
+        !self.uniprot_id.is_empty()
+            || !self.uniprot_entry_name.is_empty()
+            || !self.primary_gene_name.is_empty()
+            || !self.uniprot_synonyms.is_empty()
+            || !self.protein_name.is_empty()
+            || !self.uniprot_description.is_empty()
+            || self.ncbi_id.is_some()
+            || self.pdb_id.is_some()
+            || self.taxon_id != 0
+            || !self.organism_name.is_empty()
+            || !self.sequence.is_empty()
+            || self.sequence_version != 0
+            || !self.protein_existence.is_empty()
+            || !self.query.is_empty()
     }
 
     pub fn fasta_header(&self) -> String {
