@@ -42,12 +42,11 @@ serde_json = "1.0.85"
 tokio = { version = "1.21.0", features = ["full"] }
 
 [lints.clippy]
-pedantic = "warn"
+pedantic = { level = "warn", priority = -1 }
 module_inception = "allow"
 module_name_repetitions = "allow"
 missing_panics_doc = "allow"
 missing_errors_doc = "allow"
 cast_possible_truncation = "allow"
 should_implement_trait = "allow"
-used_underscore_binding = "allow"
 float_cmp = "allow"
