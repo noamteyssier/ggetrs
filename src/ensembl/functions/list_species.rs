@@ -38,9 +38,6 @@ mod testing {
             let datatype = DataType::DNA;
             let response = list_species(release, &datatype).unwrap();
             assert!(response.len() > 1);
-        } else {
-            // ensembl ftp is currently down - skip check
-            assert!(true)
         }
     }
 }
