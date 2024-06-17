@@ -96,11 +96,8 @@ impl Info {
         key: &str,
     ) -> Option<Self> {
         let ensembl_result = match ensembl.0.get(key) {
-            Some(opt_result) => match opt_result {
-                Some(result) => result,
-                None => return None,
-            },
-            None => return None,
+            Some(Some(opt_result)) => opt_result,
+            _ => return None,
         };
         let uniprot_result = match uniprot.0.get(key) {
             Some(result) => result,
