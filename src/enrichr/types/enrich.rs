@@ -40,6 +40,7 @@ impl ResponseEnrich {
 /// Names were taken from <https://maayanlab.cloud/Enrichr/help#api&q=3>
 #[derive(Serialize, Deserialize, Debug)]
 #[pyclass(dict)]
+#[allow(clippy::unsafe_derive_deserialize)]
 pub struct ResultEnrichr {
     #[pyo3(get, set)]
     pub rank: usize,
