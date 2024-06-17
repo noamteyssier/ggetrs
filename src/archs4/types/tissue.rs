@@ -1,5 +1,8 @@
 use clap::clap_derive::ValueEnum;
-use pyo3::{types::PyDict, PyResult, Python};
+use pyo3::{
+    types::{PyDict, PyDictMethods},
+    Bound, PyResult, Python,
+};
 use serde::Serialize;
 use std::fmt;
 
@@ -49,14 +52,14 @@ impl ResponseTissue {
             .filter_map(ResultTissue::from_line)
             .collect()
     }
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item(
             "tissues",
             self.results
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create pydict"))
-                .collect::<Vec<&PyDict>>(),
+                .collect::<Vec<Bound<'py, PyDict>>>(),
         )?;
         Ok(dict)
     }
@@ -120,8 +123,8 @@ impl ResultTissue {
         })
     }
 
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
-        let dict = PyDict::new(py);
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("id", &self.id)?;
         dict.set_item("min", self.min)?;
         dict.set_item("q1", self.q1)?;

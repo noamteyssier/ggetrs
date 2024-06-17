@@ -1,4 +1,4 @@
-use pyo3::{pymodule, types::PyModule, wrap_pyfunction, PyResult, Python};
+use pyo3::{pymodule, types::PyModule, wrap_pyfunction, Bound, PyResult, Python};
 
 /// `Enrichr` submodule
 pub mod enrichr;
@@ -46,18 +46,18 @@ pub mod seq;
 pub type RequestError = Box<dyn std::error::Error + Send + Sync>;
 
 #[pymodule]
-fn ggetrs(py: Python<'_>, module: &PyModule) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(enrichr::python_enrichr, module)?)?;
+fn ggetrs(py: Python<'_>, module: Bound<'_, PyModule>) -> PyResult<()> {
+    module.add_function(wrap_pyfunction!(enrichr::python_enrichr, &module)?)?;
     module.add_function(wrap_pyfunction!(
         enrichr::python_enrichr_background,
-        module
+        &module
     )?)?;
-    archs4::python_archs4(py, module)?;
-    ensembl::python_ensembl(py, module)?;
-    ucsc::python_ucsc(py, module)?;
-    module.add_function(wrap_pyfunction!(ensembl::python_ensembl_search, module)?)?;
-    module.add_function(wrap_pyfunction!(seq::python_seq, module)?)?;
-    module.add_function(wrap_pyfunction!(info::python_info, module)?)?;
-    module.add_function(wrap_pyfunction!(blast::python_blast, module)?)?;
+    archs4::python_archs4(py, &module)?;
+    ensembl::python_ensembl(py, &module)?;
+    ucsc::python_ucsc(py, &module)?;
+    module.add_function(wrap_pyfunction!(ensembl::python_ensembl_search, &module)?)?;
+    module.add_function(wrap_pyfunction!(seq::python_seq, &module)?)?;
+    module.add_function(wrap_pyfunction!(info::python_info, &module)?)?;
+    module.add_function(wrap_pyfunction!(blast::python_blast, &module)?)?;
     Ok(())
 }

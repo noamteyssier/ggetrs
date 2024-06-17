@@ -3,8 +3,8 @@ use anyhow::{bail, Result};
 use clap::ValueEnum;
 use pyo3::{
     pyfunction,
-    types::{PyDict, PyModule},
-    wrap_pyfunction, PyResult, Python,
+    types::{PyDict, PyModule, PyModuleMethods},
+    wrap_pyfunction, Bound, PyResult, Python,
 };
 
 #[pyfunction(name = "search")]
@@ -17,7 +17,7 @@ pub fn python_ensembl_search<'py>(
     db_type: Option<&str>,
     release: Option<usize>,
     assembly: Option<&str>,
-) -> Result<&'py PyDict> {
+) -> Result<Bound<'py, PyDict>> {
     if search_terms.is_empty() {
         bail!("Must pass in more than one search term!");
     } else if search_terms[0].len() == 1 {
@@ -55,7 +55,7 @@ pub fn python_ensembl_reference<'py>(
     species: Option<&str>,
     release: Option<usize>,
     datatype: Option<Vec<String>>,
-) -> Result<Vec<&'py PyDict>> {
+) -> Result<Vec<Bound<'py, PyDict>>> {
     let species = species.unwrap_or("homo_sapiens");
     let release = release.unwrap_or(ENSEMBL_RELEASE);
     let datatype = match datatype {
@@ -102,13 +102,13 @@ pub fn python_ensembl_species(
     list_species(release, &datatype).expect("Could not query species FTP")
 }
 
-pub fn python_ensembl(py: Python<'_>, module: &PyModule) -> PyResult<()> {
-    let submodule = PyModule::new(py, "ensembl")?;
+pub fn python_ensembl(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
+    let submodule = PyModule::new_bound(py, "ensembl")?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_search, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_database, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_release, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_reference, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_species, module)?)?;
-    module.add_submodule(submodule)?;
+    module.add_submodule(&submodule)?;
     Ok(())
 }

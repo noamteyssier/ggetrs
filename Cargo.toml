@@ -28,7 +28,7 @@ ftp = "3.0.1"
 futures = "0.3.24"
 indicatif = "0.17.5"
 mysql = "25.0.1"
-pyo3 = { version = "0.16.5", features = ["extension-module", "anyhow"] }
+pyo3 = { version = "0.21.2", features = ["extension-module", "anyhow"] }
 regex = "1.6.0"
 reqwest = { version = "0.12.5", features = [
   "json",

@@ -3,7 +3,7 @@ use anyhow::{bail, Result};
 use pyo3::{
     pyfunction,
     types::{IntoPyDict, PyDict},
-    Python,
+    Bound, Python,
 };
 
 #[pyfunction(name = "info")]
@@ -14,7 +14,7 @@ pub fn python_info(
     search_terms: Vec<String>,
     species: Option<String>,
     taxon_id: Option<usize>,
-) -> Result<&PyDict> {
+) -> Result<Bound<'_, PyDict>> {
     if search_terms.is_empty() {
         bail!("Must pass in more than one search term!");
     } else if search_terms[0].len() == 1 {
@@ -23,5 +23,5 @@ pub fn python_info(
     let species = species.unwrap_or("homo_sapiens".to_string());
     let taxon_id = taxon_id.unwrap_or(9606);
     let results = info(&search_terms, &species, taxon_id)?;
-    Ok(results.into_py_dict(py))
+    Ok(results.into_py_dict_bound(py))
 }

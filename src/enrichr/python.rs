@@ -1,5 +1,5 @@
 use super::{add_list, enrich, functions::add_background};
-use pyo3::{pyfunction, types::PyDict, PyResult, Python};
+use pyo3::{pyfunction, types::PyDict, Bound, PyResult, Python};
 
 #[pyfunction(name = "enrichr")]
 #[allow(clippy::needless_pass_by_value)]
@@ -17,7 +17,7 @@ pub fn python_enrichr(
     py: Python<'_>,
     library_name: String,
     gene_list: Vec<String>,
-) -> PyResult<&PyDict> {
+) -> PyResult<Bound<'_, PyDict>> {
     let add_list = add_list(&gene_list, false).expect("Unable to query `addList`");
     let results =
         enrich(add_list.user_list_id, &library_name, None).expect("Unable to perform `enrich`");
@@ -44,7 +44,7 @@ pub fn python_enrichr_background(
     library_name: String,
     gene_list: Vec<String>,
     background_list: Vec<String>,
-) -> PyResult<&PyDict> {
+) -> PyResult<Bound<'_, PyDict>> {
     let add_list = add_list(&gene_list, true).expect("Unable to query `addList`");
     let background_list =
         add_background(&background_list).expect("Unable to query `addBackground`");

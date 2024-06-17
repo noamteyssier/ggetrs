@@ -1,4 +1,7 @@
-use pyo3::types::{IntoPyDict, PyDict};
+use pyo3::{
+    types::{IntoPyDict, PyDict, PyDictMethods},
+    Bound,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -17,16 +20,16 @@ impl fmt::Display for BlastResult {
     }
 }
 impl IntoPyDict for BlastResult {
-    fn into_py_dict(self, py: pyo3::Python<'_>) -> &PyDict {
-        let map = PyDict::new(py);
+    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
+        let map = PyDict::new_bound(py);
         map.set_item("query", self.query).unwrap();
         map.set_item(
             "results",
             self.results
                 .iter()
                 .cloned()
-                .map(|x| x.into_py_dict(py))
-                .collect::<Vec<&PyDict>>(),
+                .map(|x| x.into_py_dict_bound(py))
+                .collect::<Vec<Bound<'_, PyDict>>>(),
         )
         .unwrap();
         map
@@ -95,8 +98,8 @@ impl BlastHit {
     }
 }
 impl IntoPyDict for BlastHit {
-    fn into_py_dict(self, py: pyo3::Python<'_>) -> &pyo3::types::PyDict {
-        let map = PyDict::new(py);
+    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
+        let map = PyDict::new_bound(py);
         map.set_item("num", self.num).unwrap();
         map.set_item("id", self.num).unwrap();
         map.set_item("definition", self.num).unwrap();

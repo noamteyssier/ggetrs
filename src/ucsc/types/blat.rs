@@ -1,6 +1,6 @@
 use pyo3::{
-    types::{IntoPyDict, PyDict, PyList},
-    PyResult, Python,
+    types::{IntoPyDict, PyDict, PyDictMethods, PyList},
+    Bound, PyResult, Python,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -27,9 +27,14 @@ impl BlatResults {
             .unwrap_or_default();
         Self(results)
     }
-    pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
-        let vec_dict: Vec<&PyDict> = self.0.iter().cloned().map(|x| x.into_py_dict(py)).collect();
-        Ok(PyList::new(py, vec_dict))
+    pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
+        let vec_dict: Vec<Bound<'py, PyDict>> = self
+            .0
+            .iter()
+            .cloned()
+            .map(|x| x.into_py_dict_bound(py))
+            .collect();
+        Ok(PyList::new_bound(py, vec_dict))
     }
 }
 
@@ -68,8 +73,8 @@ impl fmt::Display for Blat {
     }
 }
 impl IntoPyDict for Blat {
-    fn into_py_dict(self, py: Python<'_>) -> &pyo3::types::PyDict {
-        let dict = PyDict::new(py);
+    fn into_py_dict_bound(self, py: Python<'_>) -> Bound<'_, PyDict> {
+        let dict = PyDict::new_bound(py);
         dict.set_item("matches", self.matches).unwrap();
         dict.set_item("mismatches", self.mismatches).unwrap();
         dict.set_item("repmatches", self.repmatches).unwrap();
