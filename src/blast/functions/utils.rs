@@ -2014,13 +2014,13 @@ QBlastInfoEnd
     #[test]
     fn test_parse_rid() {
         let rid = parse_rid(EXAMPLE_QUERY).unwrap();
-        assert_eq!(rid, "NJWFSE65016".to_string())
+        assert_eq!(rid, "NJWFSE65016".to_string());
     }
 
     #[test]
     fn test_parse_rid_missing() {
         let rid = parse_rid("no rid here");
-        assert!(rid.is_err())
+        assert!(rid.is_err());
     }
 
     #[test]

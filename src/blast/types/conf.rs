@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use anyhow::{bail, Result};
 use clap::clap_derive::ValueEnum;
 
@@ -10,17 +12,22 @@ pub enum BlastProgram {
     Tblastn,
     Tblastx,
 }
-impl BlastProgram {
-    pub fn to_string(&self) -> String {
-        match &self {
-            Self::Blastn => "blastn",
-            Self::Blastp => "blastp",
-            Self::Blastx => "blastx",
-            Self::Tblastn => "tblastn",
-            Self::Tblastx => "tblastx",
-        }
-        .to_string()
+impl Display for BlastProgram {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match &self {
+                Self::Blastn => "blastn",
+                Self::Blastp => "blastp",
+                Self::Blastx => "blastx",
+                Self::Tblastn => "tblastn",
+                Self::Tblastx => "tblastx",
+            }
+        )
     }
+}
+impl BlastProgram {
     pub fn from_sequence(sequence: &str) -> Result<Self> {
         let sequence = sequence.to_uppercase();
         let known_characters = sequence.chars().map(|c| match c {
@@ -61,22 +68,27 @@ pub enum BlastDatabase {
     Pdbaa,
     Pdbnt,
 }
-impl BlastDatabase {
-    pub fn to_string(&self) -> String {
-        match &self {
-            Self::Nt => "nt",
-            Self::Nr => "nr",
-            Self::RefseqRna => "refseq_rna",
-            Self::RefseqProtein => "refseq_protein",
-            Self::Swissprot => "swissprot",
-            Self::Pdbaa => "pdbaa",
-            Self::Pdbnt => "pdbnt",
-        }
-        .to_string()
+impl Display for BlastDatabase {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match &self {
+                Self::Nt => "nt",
+                Self::Nr => "nr",
+                Self::RefseqRna => "refseq_rna",
+                Self::RefseqProtein => "refseq_protein",
+                Self::Swissprot => "swissprot",
+                Self::Pdbaa => "pdbaa",
+                Self::Pdbnt => "pdbnt",
+            }
+        )
     }
+}
+impl BlastDatabase {
+    #[must_use]
     pub fn from_program(program: &BlastProgram) -> Self {
         match program {
-            BlastProgram::Blastn => Self::Nt,
             BlastProgram::Blastp => Self::Nr,
             _ => Self::Nt,
         }

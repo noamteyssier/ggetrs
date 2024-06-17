@@ -23,7 +23,8 @@ impl IntoPyDict for BlastResult {
         map.set_item(
             "results",
             self.results
-                .iter().cloned()
+                .iter()
+                .cloned()
                 .map(|x| x.into_py_dict(py))
                 .collect::<Vec<&PyDict>>(),
         )
@@ -37,7 +38,7 @@ impl BlastResult {
             results: output
                 .blast_output_iterations
                 .iterations
-                .iteration_hits
+                .hits
                 .hits
                 .iter()
                 .map(BlastHit::from_hit)
@@ -45,9 +46,11 @@ impl BlastResult {
             query: query.to_string(),
         }
     }
+    #[must_use]
     pub fn query(&self) -> &str {
         &self.query
     }
+    #[must_use]
     pub fn results(&self) -> &Vec<BlastHit> {
         &self.results
     }
@@ -127,11 +130,11 @@ struct BlastOutputIterations {
 #[derive(Debug, Serialize, Deserialize)]
 struct Iteration {
     #[serde(rename = "Iteration_iter-num")]
-    iteration_iter_num: usize,
+    iter_num: usize,
     #[serde(rename = "Iteration_query-ID")]
-    iteration_query_id: String,
+    query_id: String,
     #[serde(rename = "Iteration_hits")]
-    iteration_hits: IterationHits,
+    hits: IterationHits,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

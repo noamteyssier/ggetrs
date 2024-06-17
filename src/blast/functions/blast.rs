@@ -28,7 +28,7 @@ pub fn blast(
         low_comp_filter,
         megablast,
     )?;
-    eprintln!("{:#?}", query);
+    eprintln!("{query:#?}");
 
     let mut idx = 0;
     eprintln!(
@@ -85,7 +85,7 @@ mod testing {
             true,
         )
         .unwrap();
-        println!("{:#?}", result);
+        println!("{result:#?}");
         assert_eq!(result.query(), sequence);
         assert_eq!(result.results().len(), 1);
         assert_eq!(result.results()[0].num, 1);

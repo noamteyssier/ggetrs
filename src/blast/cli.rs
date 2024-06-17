@@ -5,6 +5,7 @@ use super::{
 use anyhow::Result;
 use std::{fs::File, io::Write};
 
+#[allow(clippy::too_many_arguments)]
 pub fn launch_blast(
     query: &str,
     program: &Option<BlastProgram>,
@@ -27,13 +28,13 @@ pub fn launch_blast(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results)?;
+                writeln!(writer, "{results}")?;
             } else {
-                println!("{}", results);
+                println!("{results}");
             }
         }
         None => {
-            println!("{}", results);
+            println!("{results}");
         }
     }
     Ok(())

@@ -14,6 +14,7 @@ use pyo3::{
 #[pyo3(
     text_signature = "(query, program = None, database = None, limit = 50, expect = 10.0, low_comp_filter = False, megablast = True)"
 )]
+#[allow(clippy::too_many_arguments)]
 pub fn python_blast<'py>(
     py: Python<'py>,
     query: &str,

@@ -45,10 +45,12 @@ impl BlastQuery {
         Ok(query)
     }
     #[allow(unused)]
+    #[must_use]
     pub fn rid(&self) -> &str {
         &self.rid
     }
     #[allow(unused)]
+    #[must_use]
     pub fn rtoe(&self) -> usize {
         self.rtoe
     }
@@ -56,8 +58,8 @@ impl BlastQuery {
         let url = "https://blast.ncbi.nlm.nih.gov/blast/Blast.cgi";
         let put_url = format!(
             "{url}?CMD=Put&PROGRAM={}&DATABASE={}&FILTER={}&EXPECT={}&MEGABLAST={}&LIMIT={}&HITLIST_SIZE={}&QUERY={}",
-            self.program.to_string(),
-            self.database.to_string(),
+            self.program,
+            self.database,
             if self.low_comp_filter {"T"} else {"F"},
             self.expect,
             if self.megablast {"on"} else {"off"},

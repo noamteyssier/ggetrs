@@ -100,26 +100,11 @@ impl ResultTissue {
             Some(value) => value.to_string(),
             None => return None,
         };
-        let min = match Self::parse_float(records.next()) {
-            Some(value) => value,
-            None => return None,
-        };
-        let q1 = match Self::parse_float(records.next()) {
-            Some(value) => value,
-            None => return None,
-        };
-        let median = match Self::parse_float(records.next()) {
-            Some(value) => value,
-            None => return None,
-        };
-        let q3 = match Self::parse_float(records.next()) {
-            Some(value) => value,
-            None => return None,
-        };
-        let max = match Self::parse_float(records.next()) {
-            Some(value) => value,
-            None => return None,
-        };
+        let min = Self::parse_float(records.next())?;
+        let q1 = Self::parse_float(records.next())?;
+        let median = Self::parse_float(records.next())?;
+        let q3 = Self::parse_float(records.next())?;
+        let max = Self::parse_float(records.next())?;
         let color = match records.next() {
             Some(value) => value.to_string(),
             None => return None,

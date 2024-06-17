@@ -4,12 +4,10 @@ use reqwest::{blocking::Client, Result};
 /// Returns the tissue-specific expression of a provided `gene_name`
 pub fn tissue(gene_name: &str, species: &Species) -> Result<ResponseTissue> {
     let client = Client::new();
-    let query_string = format!("search={}&species={}&type=tissue", gene_name, species);
+    let query_string = format!("search={gene_name}&species={species}&type=tissue");
 
-    let url = format!(
-        "https://maayanlab.cloud/archs4/search/loadExpressionTissue.php?{}",
-        query_string
-    );
+    let url =
+        format!("https://maayanlab.cloud/archs4/search/loadExpressionTissue.php?{query_string}",);
 
     let raw_response = client
         .post(url)
