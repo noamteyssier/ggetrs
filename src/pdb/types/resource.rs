@@ -67,7 +67,7 @@ mod testing {
     use clap::ValueEnum;
 
     fn validate_enum(resource: PdbResource, _expected: PdbResource) {
-        assert!(matches!(resource, _expected))
+        assert!(matches!(resource, _expected));
     }
 
     #[test]
