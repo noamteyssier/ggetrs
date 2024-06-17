@@ -230,9 +230,9 @@ fn main() -> Result<(), RequestError> {
             output,
         } => {
             launch_blast(
-                &query,
-                &program,
-                &database,
+                query,
+                program,
+                database,
                 *limit,
                 *expect,
                 *low_comp_filter,
