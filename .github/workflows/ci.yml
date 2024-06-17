@@ -27,7 +27,7 @@ jobs:
 
   fmt:
     name: Format
-    runs-on: "ubuntu_latest"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
       - name: Format
@@ -35,7 +35,7 @@ jobs:
 
   clippy:
     name: Linting
-    runs-on: "ubuntu_latest"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
       - name: Lint
