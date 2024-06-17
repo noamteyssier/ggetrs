@@ -5,7 +5,7 @@ env:
 jobs:
 
   ci:
-    needs: [build, test, docs, coverage, pytest]
+    needs: [build, test, docs, coverage, pytest, fmt, clippy]
     name: CI
     runs-on: 'ubuntu-latest'
     steps:
@@ -24,6 +24,22 @@ jobs:
         uses: taiki-e/install-action@nextest
       - name: Build
         run: cargo build --verbose
+
+  fmt:
+    name: Format
+    runs-on: "ubuntu_latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Format
+        run: cargo fmt --check
+
+  clippy:
+    name: Linting
+    runs-on: "ubuntu_latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lint
+        run: cargo clippy
 
   test:
     name: Test
