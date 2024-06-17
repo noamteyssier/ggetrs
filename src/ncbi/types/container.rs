@@ -4,7 +4,7 @@ use super::NcbiInfo;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Default)]
 pub struct NcbiResults(pub HashMap<String, NcbiInfo>);
 
 impl NcbiResults {

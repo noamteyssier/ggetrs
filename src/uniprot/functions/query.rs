@@ -1,5 +1,5 @@
 use crate::uniprot::types::{UniprotInfo, UniprotInfoContainer};
-use anyhow::{bail, Result};
+use anyhow::{Result};
 use futures::future::join_all;
 use reqwest::Client;
 use serde_json::Value;
@@ -83,11 +83,11 @@ pub fn query(
         .map(|x| (x.query.to_string(), x))
         .collect::<HashMap<String, UniprotInfo>>();
 
-    if results.len() > 0 {
-        Ok(UniprotInfoContainer(results))
+    Ok(if results.is_empty() {
+        UniprotInfoContainer::default()
     } else {
-        bail!(format!("Found no results for terms: {:?}", terms))
-    }
+        UniprotInfoContainer(results)
+    })
 }
 
 #[cfg(test)]
@@ -107,6 +107,7 @@ mod testing {
         let terms = vec!["AOSDKAPOWDNASD".to_string()];
         let taxon = None;
         let response = query(&terms, false, &taxon);
-        assert!(response.is_err());
+        let uniprot_results = response.unwrap();
+        assert!(uniprot_results.0.is_empty());
     }
 }
