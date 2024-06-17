@@ -9,8 +9,7 @@ pub fn blat(sequence: &str, seqtype: &SeqType, db_name: &str) -> Result<BlatResu
         bail!("Input sequence must be greater than 20 nucleotides/residues")
     }
     let url = format!(
-        "https://genome.ucsc.edu/cgi-bin/hgBlat?userSeq={}&type={}&db={}&output=json",
-        sequence, seqtype, db_name
+        "https://genome.ucsc.edu/cgi-bin/hgBlat?userSeq={sequence}&type={seqtype}&db={db_name}&output=json",
     );
     let response = Client::new().get(url).send()?;
 
@@ -86,6 +85,6 @@ mod testing {
         let seqtype = SeqType::Dna;
         let db_name = "hg38";
         let response = blat(sequence, &seqtype, db_name);
-        assert!(response.is_err())
+        assert!(response.is_err());
     }
 }

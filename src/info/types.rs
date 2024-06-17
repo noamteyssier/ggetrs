@@ -95,18 +95,9 @@ impl Info {
         ncbi: &NcbiResults,
         key: &str,
     ) -> Option<Self> {
-        let ensembl_result = match ensembl.0.get(key) {
-            Some(Some(opt_result)) => opt_result,
-            _ => return None,
-        };
-        let uniprot_result = match uniprot.0.get(key) {
-            Some(result) => result,
-            None => return None,
-        };
-        let ncbi_result = match ncbi.0.get(key) {
-            Some(result) => result,
-            None => return None,
-        };
+        let ensembl_result = ensembl.0.get(key)?.as_ref()?;
+        let uniprot_result = uniprot.0.get(key)?;
+        let ncbi_result = ncbi.0.get(key)?;
         let ensembl_id = ensembl_result.id.clone();
         let uniprot_id = uniprot_result.uniprot_id.clone();
         let ncbi_id = ncbi_result.gene_id.clone();
@@ -122,8 +113,8 @@ impl Info {
             ensembl_id,
             uniprot_id,
             ncbi_id,
-            symbol,
             pdb_id,
+            symbol,
             ensembl_description,
             uniprot_description,
             ncbi_description,

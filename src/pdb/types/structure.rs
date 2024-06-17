@@ -1,7 +1,7 @@
 use clap::ValueEnum;
 use std::fmt;
 
-#[derive(ValueEnum, Debug, Clone)]
+#[derive(ValueEnum, Debug, Clone, Copy)]
 pub enum PdbFormat {
     Pdb,
     Cif,
@@ -12,7 +12,7 @@ impl fmt::Display for PdbFormat {
             Self::Pdb => "pdb",
             Self::Cif => "cif",
         };
-        write!(f, "{}", repr)
+        write!(f, "{repr}")
     }
 }
 
@@ -22,7 +22,7 @@ mod testing {
     use clap::ValueEnum;
 
     fn validate_enum(resource: PdbFormat, _expected: PdbFormat) {
-        assert!(matches!(resource, _expected))
+        assert!(matches!(resource, _expected));
     }
 
     #[test]
@@ -36,7 +36,7 @@ mod testing {
         let examples = vec!["pdb", "PDB", "pDb"];
         let expected = PdbFormat::Pdb;
         for s in examples {
-            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected);
         }
     }
 
@@ -45,7 +45,7 @@ mod testing {
         let examples = vec!["cif", "CIF", "cIf"];
         let expected = PdbFormat::Cif;
         for s in examples {
-            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected);
         }
     }
 }

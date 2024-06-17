@@ -1,7 +1,7 @@
 use clap::ValueEnum;
 use std::fmt;
 
-#[derive(ValueEnum, Debug, Clone)]
+#[derive(ValueEnum, Debug, Clone, Copy)]
 pub enum PdbResource {
     Entry,
     Pubmed,
@@ -75,7 +75,7 @@ mod testing {
         let examples = vec!["entry", "Entry", "ENTRY", "EnTrY"];
         let expected = PdbResource::Entry;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 
@@ -84,7 +84,7 @@ mod testing {
         let examples = vec!["pubmed", "Pubmed", "PUBMED", "pUbMeD"];
         let expected = PdbResource::Pubmed;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 
@@ -93,7 +93,7 @@ mod testing {
         let examples = vec!["assembly", "Assembly", "ASSEMBLY", "aSsEmBlY"];
         let expected = PdbResource::Assembly;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected.clone());
+            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
         }
     }
 }

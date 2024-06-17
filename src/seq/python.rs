@@ -5,6 +5,7 @@ use pyo3::{pyfunction, types::PyList, Python};
 
 #[pyfunction(name = "seq")]
 #[pyo3(text_signature = "(search_terms, translate = False, db_name = 'homo_sapiens')")]
+#[allow(clippy::needless_pass_by_value)]
 pub fn python_seq(
     py: Python<'_>,
     search_terms: Vec<String>,

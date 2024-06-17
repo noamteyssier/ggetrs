@@ -22,7 +22,7 @@ impl fmt::Display for ResponseEnrich {
 impl ResponseEnrich {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<&'py PyDict> {
         let dict = PyDict::new(py);
-        for (key, results) in self.0.iter() {
+        for (key, results) in &self.0 {
             let all_results: Vec<&'py PyDict> = results
                 .iter()
                 .map(|x| x.as_pydict(py).expect("could not create dictionary"))

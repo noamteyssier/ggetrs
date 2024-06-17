@@ -13,13 +13,13 @@ pub fn launch_ucsc_blat(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                write!(writer, "{}", results)?;
+                write!(writer, "{results}")?;
             } else {
-                print!("{}", results)
+                print!("{results}");
             }
         }
         None => {
-            print!("{}", results)
+            print!("{results}");
         }
     }
     Ok(())

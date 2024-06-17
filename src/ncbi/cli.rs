@@ -7,13 +7,13 @@ pub fn launch_ncbi_taxons(query: &str, limit: usize, output: &Option<String>) ->
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", results).expect("Unable to write to file");
+                writeln!(writer, "{results}").expect("Unable to write to file");
             } else {
-                println!("{}", results);
+                println!("{results}");
             }
         }
         None => {
-            println!("{}", results);
+            println!("{results}");
         }
     }
     Ok(())
@@ -25,13 +25,13 @@ pub fn launch_ncbi_query_ids(ids: &[usize], output: &Option<String>) -> Result<(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", repr).expect("Unable to write to file");
+                writeln!(writer, "{repr}").expect("Unable to write to file");
             } else {
-                println!("{}", repr);
+                println!("{repr}");
             }
         }
         None => {
-            println!("{}", repr);
+            println!("{repr}");
         }
     }
     Ok(())
@@ -47,13 +47,13 @@ pub fn launch_ncbi_query_symbols(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                writeln!(writer, "{}", repr).expect("Unable to write to file");
+                writeln!(writer, "{repr}").expect("Unable to write to file");
             } else {
-                println!("{}", repr);
+                println!("{repr}");
             }
         }
         None => {
-            println!("{}", repr);
+            println!("{repr}");
         }
     }
     Ok(())

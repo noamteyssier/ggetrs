@@ -8,6 +8,7 @@ use pyo3::{
 
 #[pyfunction(name = "info")]
 #[pyo3(text_signature = "(search_terms, species = 'homo_sapiens', taxon_id = 9606)")]
+#[allow(clippy::needless_pass_by_value)]
 pub fn python_info(
     py: Python<'_>,
     search_terms: Vec<String>,

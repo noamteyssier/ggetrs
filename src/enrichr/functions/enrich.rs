@@ -14,9 +14,9 @@ pub fn enrich(
 ) -> Result<ResponseEnrich> {
     let alias = shorthand(library_name);
     let url = if background_id.is_some() {
-        format!("{}/api/backgroundenrich", SPEEDRICHR_URL)
+        format!("{SPEEDRICHR_URL}/api/backgroundenrich")
     } else {
-        format!("{}/enrich", ENRICHR_URL)
+        format!("{ENRICHR_URL}/enrich")
     };
 
     if let Some(background_id) = background_id {
@@ -35,10 +35,8 @@ pub fn enrich(
         // Parse the JSON from a string.
         Ok(serde_json::from_str::<ResponseEnrich>(&text)?)
     } else {
-        let request_url = format!(
-            "{}/enrich?userListId={}&backgroundType={}",
-            ENRICHR_URL, list_id, alias
-        );
+        let request_url =
+            format!("{ENRICHR_URL}/enrich?userListId={list_id}&backgroundType={alias}");
         let client = Client::new();
         // Go through intermediate `text` to replace `Infinity` with `f64::MIN_POSITIVE`.
         let text = client
@@ -59,7 +57,7 @@ mod testing {
     fn get_list_id() -> usize {
         let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_list(&gene_list, false).unwrap();
         response.user_list_id
@@ -68,7 +66,7 @@ mod testing {
     fn get_list_id_with_background() -> usize {
         let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_list(&gene_list, true).unwrap();
         response.user_list_id
@@ -77,7 +75,7 @@ mod testing {
     fn get_background_id() -> String {
         let gene_list = ["AP2S1", "NSD1", "LDB1", "RFX3"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_background(&gene_list).unwrap();
         response.backgroundid

@@ -10,7 +10,7 @@ pub fn structure(pdb_id: &str, header_only: bool, format: &PdbFormat) -> Result<
     } else {
         "https://files.rcsb.org/view"
     };
-    let url = format!("{}/{}.{}", base_url, pdb_id, format);
+    let url = format!("{base_url}/{pdb_id}.{format}");
     let response = Client::new().get(url).send()?;
     if response.status().is_success() {
         Ok(Some(response.text()?))

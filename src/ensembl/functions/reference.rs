@@ -44,15 +44,13 @@ fn show_data(
     release: usize,
     datatype: &DataType,
 ) -> Result<Option<String>> {
-    let dirname = match datatype.subdirectory() {
-        Some(subdir) => format!(
-            "release-{}/{}/{}/{}/",
-            release,
+    let dirname = if let Some(subdir) = datatype.subdirectory() {
+        format!(
+            "release-{release}/{}/{species}/{subdir}/",
             datatype.directory(),
-            species,
-            subdir
-        ),
-        None => format!("release-{}/{}/{}/", release, datatype.directory(), species),
+        )
+    } else {
+        format!("release-{release}/{}/{species}/", datatype.directory())
     };
     let filelist = stream.nlst(Some(&dirname))?;
     let filename = find_data(&filelist, release, datatype);

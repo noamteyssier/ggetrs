@@ -22,7 +22,7 @@ fn strip_symbols(symbols: &[String]) -> Vec<String> {
     symbols
         .iter()
         .filter(|x| !x.starts_with("ENS"))
-        .map(|x| x.to_string())
+        .map(std::string::ToString::to_string)
         .collect()
 }
 
@@ -41,10 +41,10 @@ fn recover_ensembl_ids(symbols: &[String], response: &LookupResponse) -> Vec<Str
     symbols
         .iter()
         .map(|x| {
-            if !x.starts_with("ENS") {
-                response.get_id(x).unwrap() // unwrap okay because I validate before calling this
-            } else {
+            if x.starts_with("ENS") {
                 x.to_owned()
+            } else {
+                response.get_id(x).unwrap() // unwrap okay because I validate before calling this
             }
         })
         .collect()
@@ -63,16 +63,14 @@ pub fn sequence(
     species: &Option<String>,
 ) -> Result<ResultSeqContainer> {
     // case where not all search terms are ensembl ids
-    if !search_terms.iter().all(|x| x.starts_with("ENS")) {
-        let species_name = if let Some(s) = species {
-            s
-        } else {
+    if search_terms.iter().all(|x| x.starts_with("ENS")) {
+        retrieve_sequence(search_terms)
+    } else {
+        let Some(species_name) = species else {
             bail!("Not all provided symbols are Ensembl IDs - so a species must be provided to identify them");
         };
         let ensembl_ids = convert_to_ensembl_ids(search_terms, species_name)?;
         retrieve_sequence(&ensembl_ids)
-    } else {
-        retrieve_sequence(search_terms)
     }
 }
 

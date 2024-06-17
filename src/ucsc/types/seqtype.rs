@@ -17,6 +17,6 @@ impl fmt::Display for SeqType {
             Self::TranslatedDna => "translated%20dna",
             Self::TranslatedRna => "translated%20rna",
         };
-        write!(f, "{}", repr)
+        write!(f, "{repr}")
     }
 }

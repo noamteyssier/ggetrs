@@ -17,17 +17,17 @@ pub fn launch_pdb_structure(
         match output {
             Some(path) => {
                 if let Ok(mut writer) = File::create(path) {
-                    write!(writer, "{}", pdb_text).expect("Unable to write to file");
+                    write!(writer, "{pdb_text}").expect("Unable to write to file");
                 } else {
-                    print!("{}", pdb_text);
+                    print!("{pdb_text}");
                 }
             }
             None => {
-                print!("{}", pdb_text);
+                print!("{pdb_text}");
             }
         }
     } else {
-        eprintln!("No PDB record found: {}", pdb_id);
+        eprintln!("No PDB record found: {pdb_id}");
     }
     Ok(())
 }
@@ -44,13 +44,13 @@ pub fn launch_pdb_resource(
     match output {
         Some(path) => {
             if let Ok(mut writer) = File::create(path) {
-                write!(writer, "{}", repr)?;
+                write!(writer, "{repr}")?;
             } else {
-                print!("{}", repr)
+                print!("{repr}");
             }
         }
         None => {
-            print!("{}", repr)
+            print!("{repr}");
         }
     }
     Ok(())

@@ -4,10 +4,8 @@ use reqwest::blocking::Client;
 
 /// Queries information from Chembl given a single query
 pub fn activity(query: &str, limit: usize) -> Result<ActivityResponse> {
-    let url = format!(
-        "https://www.ebi.ac.uk/chembl/api/data/activity/search?q={}&limit={}",
-        query, limit
-    );
+    let url =
+        format!("https://www.ebi.ac.uk/chembl/api/data/activity/search?q={query}&limit={limit}",);
     let response = Client::new()
         .get(url)
         .header("accept", "application/json")
@@ -26,7 +24,7 @@ mod testing {
         let limit = 1;
         let response = activity(query, limit).unwrap();
         assert_eq!(response.activities.len(), 1);
-        assert_eq!(response.activities[0].activity_id, 18905243);
+        assert_eq!(response.activities[0].activity_id, 18_905_243);
     }
 
     #[test]

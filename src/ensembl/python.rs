@@ -23,15 +23,14 @@ pub fn python_ensembl_search<'py>(
     } else if search_terms[0].len() == 1 {
         bail!("Must pass in search terms as a list!");
     }
-    let db_name = match database {
-        Some(name) => name,
-        None => {
-            let species = species.unwrap_or("homo_sapiens");
-            let db_type = db_type.unwrap_or("core");
-            let release = release.unwrap_or(107);
-            let assembly = assembly.unwrap_or("38");
-            format!("{}_{}_{}_{}", species, db_type, release, assembly)
-        }
+    let db_name = if let Some(name) = database {
+        name
+    } else {
+        let species = species.unwrap_or("homo_sapiens");
+        let db_type = db_type.unwrap_or("core");
+        let release = release.unwrap_or(107);
+        let assembly = assembly.unwrap_or("38");
+        format!("{species}_{db_type}_{release}_{assembly}")
     };
     let results = search(&db_name, &search_terms)?;
     results.as_pydict(py)

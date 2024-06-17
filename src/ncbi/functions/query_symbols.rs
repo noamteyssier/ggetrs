@@ -7,10 +7,8 @@ use serde_json::Value;
 pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults> {
     let query = symbols.join("%2C");
 
-    let query_url = format!(
-        "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/symbol/{}/taxon/{}?",
-        query, taxon_id
-    );
+    let query_url =
+        format!("https://api.ncbi.nlm.nih.gov/datasets/v1/gene/symbol/{query}/taxon/{taxon_id}?");
 
     let response = Client::new()
         .get(query_url)
@@ -21,10 +19,10 @@ pub fn query_symbols(symbols: &[String], taxon_id: usize) -> Result<NcbiResults>
 
     match NcbiResults::from_value(&response) {
         Some(result) => {
-            if !result.0.is_empty() {
-                Ok(result)
-            } else {
+            if result.0.is_empty() {
                 Ok(NcbiResults::default())
+            } else {
+                Ok(result)
             }
         }
         None => bail!("Unable to parse response from NCBI"),

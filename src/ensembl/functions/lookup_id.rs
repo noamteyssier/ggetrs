@@ -30,7 +30,7 @@ mod testing {
         let ensembl_ids = vec!["ENSG00000042753".to_string()]; // AP2S1
         let response = lookup_id(&ensembl_ids).unwrap();
         assert_eq!(response.0.len(), 1);
-        assert!(response.0.get("ENSG00000042753").unwrap().is_some())
+        assert!(response.0.get("ENSG00000042753").unwrap().is_some());
     }
 
     #[test]
@@ -38,6 +38,6 @@ mod testing {
         let ensembl_ids = vec!["AWDIAJWIDJIAWD".to_string()];
         let response = lookup_id(&ensembl_ids).unwrap();
         assert_eq!(response.0.len(), 1);
-        assert!(response.0.get("AWDIAJWIDJIAWD").unwrap().is_none())
+        assert!(response.0.get("AWDIAJWIDJIAWD").unwrap().is_none());
     }
 }

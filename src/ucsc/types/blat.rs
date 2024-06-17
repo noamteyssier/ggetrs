@@ -19,24 +19,16 @@ impl fmt::Display for BlatResults {
     }
 }
 impl BlatResults {
+    #[must_use]
     pub fn from_value(value: &Value) -> Self {
         let results = value["blat"]
             .as_array()
-            .map(|array| {
-                array
-                    .iter()
-                    .map(Blat::from_value)
-                    .collect::<Vec<Blat>>()
-            })
+            .map(|array| array.iter().map(Blat::from_value).collect::<Vec<Blat>>())
             .unwrap_or_default();
         Self(results)
     }
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<&'py PyList> {
-        let vec_dict: Vec<&PyDict> = self
-            .0
-            .iter().cloned()
-            .map(|x| x.into_py_dict(py))
-            .collect();
+        let vec_dict: Vec<&PyDict> = self.0.iter().cloned().map(|x| x.into_py_dict(py)).collect();
         Ok(PyList::new(py, vec_dict))
     }
 }
@@ -103,6 +95,7 @@ impl IntoPyDict for Blat {
     }
 }
 impl Blat {
+    #[must_use]
     pub fn from_value(value: &Value) -> Self {
         let arr = value.as_array().expect("Empty Array Found");
         let matches = arr[0].as_u64().unwrap_or_default() as usize;

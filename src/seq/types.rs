@@ -5,14 +5,16 @@ use crate::utils::{FastaRecord, FastaRecords};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ResultSeqContainer(pub Vec<ResultSeq>);
 impl ResultSeqContainer {
+    #[must_use]
     pub fn to_fasta(&self) -> String {
         self.0
             .iter()
-            .map(|x| x.to_fasta())
+            .map(ResultSeq::to_fasta)
             .fold(String::new(), |acc, x| acc + &x)
     }
+    #[must_use]
     pub fn fasta_records(&self) -> FastaRecords {
-        let records = self.0.iter().map(|x| x.as_fasta()).collect();
+        let records = self.0.iter().map(ResultSeq::as_fasta).collect();
         FastaRecords(records)
     }
 }
@@ -25,9 +27,11 @@ pub struct ResultSeq {
 }
 
 impl ResultSeq {
+    #[must_use]
     pub fn to_fasta(&self) -> String {
         format!("{}", self.as_fasta())
     }
+    #[must_use]
     pub fn as_fasta(&self) -> FastaRecord {
         FastaRecord::new(&format!("{} {}", self.id, self.desc), &self.seq)
     }

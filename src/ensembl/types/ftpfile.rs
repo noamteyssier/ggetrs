@@ -27,7 +27,7 @@ impl FtpFile {
     pub fn new(stream: &mut FtpStream, path: &str, release: usize) -> Result<Self> {
         let size = stream.size(path)?.unwrap();
         let modtime = stream.mdtm(path)?.unwrap();
-        let url = format!("http://ftp.ensembl.org/pub/{}", path);
+        let url = format!("http://ftp.ensembl.org/pub/{path}");
         Ok(Self {
             url,
             ensembl_release: release,

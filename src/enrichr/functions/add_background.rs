@@ -8,7 +8,7 @@ pub fn add_background(gene_list: &[String]) -> Result<ResponseAddBackground> {
     let client = Client::new();
 
     // defines the url (aka the API)
-    let url = format!("{}/api/addbackground", SPEEDRICHR_URL);
+    let url = format!("{SPEEDRICHR_URL}/api/addbackground");
 
     // join the gene-list with a newline
     let query = gene_list.join("\n");
@@ -32,7 +32,7 @@ mod testing {
     fn test_add_background() {
         let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_background(&gene_list).unwrap();
         assert!(response.backgroundid.len() > 1);

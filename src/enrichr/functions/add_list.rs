@@ -9,9 +9,9 @@ pub fn add_list(gene_list: &[String], speedrichr: bool) -> Result<ResponseAddLis
 
     // defines the url (aka the API)
     let url = if speedrichr {
-        format!("{}/api/addList", SPEEDRICHR_URL)
+        format!("{SPEEDRICHR_URL}/api/addList")
     } else {
-        format!("{}/addList", ENRICHR_URL)
+        format!("{ENRICHR_URL}/addList")
     };
 
     // join the gene-list with a newline
@@ -41,7 +41,7 @@ mod testing {
     fn test_add_list() {
         let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_list(&gene_list, false).unwrap();
         assert!(response.user_list_id > 1);
@@ -52,7 +52,7 @@ mod testing {
     fn test_add_list_with_background() {
         let gene_list = ["AP2S1", "NSD1", "LDB1"]
             .iter()
-            .map(|x| x.to_string())
+            .map(std::string::ToString::to_string)
             .collect::<Vec<String>>();
         let response = add_list(&gene_list, true).unwrap();
         assert!(response.user_list_id > 1);
