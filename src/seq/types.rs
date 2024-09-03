@@ -10,7 +10,10 @@ impl ResultSeqContainer {
         self.0
             .iter()
             .map(ResultSeq::to_fasta)
-            .fold(String::new(), |acc, x| acc + &x)
+            .fold(String::new(), |mut acc, x| {
+                acc.push_str(&x);
+                acc
+            })
     }
     #[must_use]
     pub fn fasta_records(&self) -> FastaRecords {
