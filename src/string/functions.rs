@@ -1,4 +1,6 @@
-use crate::cli::{StringHomologyArgs, StringMappingArgs, StringNetworkArgs};
+use crate::cli::{
+    StringHomologyArgs, StringInteractionsArgs, StringMappingArgs, StringNetworkArgs,
+};
 use anyhow::Result;
 use polars::prelude::*;
 use reqwest::blocking::Client;
@@ -26,4 +28,9 @@ pub fn string_homology(args: &StringHomologyArgs) -> Result<DataFrame> {
 pub fn string_mapping(args: &StringMappingArgs) -> Result<DataFrame> {
     let data = args.build_post();
     string_api("get_string_ids", &data)
+}
+
+pub fn string_interactions(args: &StringInteractionsArgs) -> Result<DataFrame> {
+    let data = args.build_post();
+    string_api("interaction_partners", &data)
 }

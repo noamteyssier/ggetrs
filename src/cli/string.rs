@@ -34,6 +34,15 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
+
+    /// Gets all the STRING interaction partners of your proteins
+    Interactions {
+        #[clap(flatten)]
+        args: StringInteractionsArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
 }
 
 #[derive(Debug, Clone, Parser)]
@@ -168,6 +177,53 @@ impl StringMappingArgs {
         });
         if let Some(limit) = self.limit {
             data["limit"] = json!(limit);
+        }
+        data
+    }
+}
+
+/// Gets all the STRING interaction partners of your proteins
+#[derive(Debug, Clone, Parser)]
+pub struct StringInteractionsArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    pub species: usize,
+
+    /// limits the number of interaction partners retrieved per protein (most confident interactions come first)
+    /// default set by the server (usually 10)
+    #[clap(short, long)]
+    pub limit: Option<usize>,
+
+    /// threshold of significance to include a interaction, a number between 0 and 1000 (default depends on the network)
+    #[clap(short, long)]
+    pub required_score: Option<f64>,
+
+    /// The type of network to retrieve
+    #[clap(short, long, default_value = "functional")]
+    pub network_type: StringNetworkType,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    pub caller_identity: String,
+}
+impl StringInteractionsArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        let mut data = json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "species": self.species,
+            "network_type": self.network_type.to_string(),
+            "caller_identity": self.caller_identity,
+        });
+        if let Some(limit) = self.limit {
+            data["limit"] = json!(limit);
+        }
+        if let Some(score) = self.required_score {
+            data["required_score"] = json!(score);
         }
         data
     }

@@ -246,6 +246,7 @@ fn main() -> Result<(), RequestError> {
             ModString::Network { args, output } => launch_string_network(args, output)?,
             ModString::Homology { args, output } => launch_string_homology(args, output)?,
             ModString::MapIds { args, output } => launch_string_mapping(args, output)?,
+            ModString::Interactions { args, output } => launch_string_interactions(args, output)?,
         },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
