@@ -1,8 +1,11 @@
-use super::{string_homology, string_interactions, string_mapping, string_network};
+use super::{
+    string_functional_enrichment, string_homology, string_interactions, string_mapping,
+    string_network,
+};
 use crate::{
     cli::{
-        OutputArgs, StringHomologyArgs, StringInteractionsArgs, StringMappingArgs,
-        StringNetworkArgs,
+        OutputArgs, StringFunctionalEnrichmentArgs, StringHomologyArgs, StringInteractionsArgs,
+        StringMappingArgs, StringNetworkArgs,
     },
     utils::write_dataframe,
 };
@@ -34,6 +37,16 @@ pub fn launch_string_interactions(
     output: &OutputArgs,
 ) -> Result<()> {
     let mut dataframe = string_interactions(args)?;
+    let output_handle = output.get_writer()?;
+    write_dataframe(output_handle, &mut dataframe, output.format.into())?;
+    Ok(())
+}
+
+pub fn launch_string_functional_enrichment(
+    args: &StringFunctionalEnrichmentArgs,
+    output: &OutputArgs,
+) -> Result<()> {
+    let mut dataframe = string_functional_enrichment(args)?;
     let output_handle = output.get_writer()?;
     write_dataframe(output_handle, &mut dataframe, output.format.into())?;
     Ok(())

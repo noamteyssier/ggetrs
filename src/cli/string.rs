@@ -43,6 +43,15 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
+
+    /// Retrieves functional enrichments for a list of genes
+    FunctionalEnrichment {
+        #[clap(flatten)]
+        args: StringFunctionalEnrichmentArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
 }
 
 #[derive(Debug, Clone, Parser)]
@@ -224,6 +233,41 @@ impl StringInteractionsArgs {
         }
         if let Some(score) = self.required_score {
             data["required_score"] = json!(score);
+        }
+        data
+    }
+}
+
+/// Performs the enrichment analysis of your set of proteins for the Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam, InterPro and SMART domains.
+#[derive(Debug, Clone, Parser)]
+pub struct StringFunctionalEnrichmentArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// Background list of genes to compare against (Only STRING identifiers are accepted)
+    /// If not provided, the whole genome of the species is used
+    #[clap(short, long)]
+    pub background: Option<Vec<String>>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    pub species: usize,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    pub caller_identity: String,
+}
+impl StringFunctionalEnrichmentArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        let mut data = json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "species": self.species,
+            "caller_identity": self.caller_identity,
+        });
+        if let Some(background) = &self.background {
+            data["background"] = json!(background.join("%0d"));
         }
         data
     }
