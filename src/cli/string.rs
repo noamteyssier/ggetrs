@@ -45,9 +45,17 @@ pub enum ModString {
     },
 
     /// Retrieves functional enrichments for a list of genes
-    FunctionalEnrichment {
+    Enrichment {
         #[clap(flatten)]
         args: StringFunctionalEnrichmentArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
+
+    Annotations {
+        #[clap(flatten)]
+        args: StringFunctionalAnnotationArgs,
 
         #[clap(flatten)]
         output: OutputArgs,
@@ -270,5 +278,41 @@ impl StringFunctionalEnrichmentArgs {
             data["background"] = json!(background.join("%0d"));
         }
         data
+    }
+}
+
+/// Gets the functional annotation (Gene Ontology, UniProt Keywords, PFAM, INTERPRO and SMART domains) of your list of proteins.
+#[derive(Debug, Clone, Parser)]
+pub struct StringFunctionalAnnotationArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    pub species: usize,
+
+    /// Return PubMed annotations in addition to other categories
+    #[clap(short = 'p', long)]
+    pub allow_pubmed: bool,
+
+    /// Only return PubMed annotations
+    #[clap(short = 'P', long)]
+    pub only_pubmed: bool,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    pub caller_identity: String,
+}
+impl StringFunctionalAnnotationArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "species": self.species,
+            "caller_identity": self.caller_identity,
+            "allow_pubmed": self.allow_pubmed,
+            "only_pubmed": self.only_pubmed,
+        })
     }
 }

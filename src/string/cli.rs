@@ -1,11 +1,11 @@
 use super::{
-    string_functional_enrichment, string_homology, string_interactions, string_mapping,
+    string_annotations, string_enrichment, string_homology, string_interactions, string_mapping,
     string_network,
 };
 use crate::{
     cli::{
-        OutputArgs, StringFunctionalEnrichmentArgs, StringHomologyArgs, StringInteractionsArgs,
-        StringMappingArgs, StringNetworkArgs,
+        OutputArgs, StringFunctionalAnnotationArgs, StringFunctionalEnrichmentArgs,
+        StringHomologyArgs, StringInteractionsArgs, StringMappingArgs, StringNetworkArgs,
     },
     utils::write_dataframe,
 };
@@ -42,11 +42,21 @@ pub fn launch_string_interactions(
     Ok(())
 }
 
-pub fn launch_string_functional_enrichment(
+pub fn launch_string_enrichment(
     args: &StringFunctionalEnrichmentArgs,
     output: &OutputArgs,
 ) -> Result<()> {
-    let mut dataframe = string_functional_enrichment(args)?;
+    let mut dataframe = string_enrichment(args)?;
+    let output_handle = output.get_writer()?;
+    write_dataframe(output_handle, &mut dataframe, output.format.into())?;
+    Ok(())
+}
+
+pub fn launch_string_annotations(
+    args: &StringFunctionalAnnotationArgs,
+    output: &OutputArgs,
+) -> Result<()> {
+    let mut dataframe = string_annotations(args)?;
     let output_handle = output.get_writer()?;
     write_dataframe(output_handle, &mut dataframe, output.format.into())?;
     Ok(())

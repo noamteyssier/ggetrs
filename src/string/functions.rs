@@ -1,6 +1,6 @@
 use crate::cli::{
-    StringFunctionalEnrichmentArgs, StringHomologyArgs, StringInteractionsArgs, StringMappingArgs,
-    StringNetworkArgs,
+    StringFunctionalAnnotationArgs, StringFunctionalEnrichmentArgs, StringHomologyArgs,
+    StringInteractionsArgs, StringMappingArgs, StringNetworkArgs,
 };
 use anyhow::Result;
 use polars::prelude::*;
@@ -48,7 +48,12 @@ pub fn string_interactions(args: &StringInteractionsArgs) -> Result<DataFrame> {
     string_api("interaction_partners", &data)
 }
 
-pub fn string_functional_enrichment(args: &StringFunctionalEnrichmentArgs) -> Result<DataFrame> {
+pub fn string_enrichment(args: &StringFunctionalEnrichmentArgs) -> Result<DataFrame> {
     let data = args.build_post();
     string_api_tsv("enrichment", &data)
+}
+
+pub fn string_annotations(args: &StringFunctionalAnnotationArgs) -> Result<DataFrame> {
+    let data = args.build_post();
+    string_api_tsv("functional_annotation", &data)
 }

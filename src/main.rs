@@ -247,9 +247,8 @@ fn main() -> Result<(), RequestError> {
             ModString::Homology { args, output } => launch_string_homology(args, output)?,
             ModString::MapIds { args, output } => launch_string_mapping(args, output)?,
             ModString::Interactions { args, output } => launch_string_interactions(args, output)?,
-            ModString::FunctionalEnrichment { args, output } => {
-                launch_string_functional_enrichment(args, output)?;
-            }
+            ModString::Enrichment { args, output } => launch_string_enrichment(args, output)?,
+            ModString::Annotations { args, output } => launch_string_annotations(args, output)?,
         },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
