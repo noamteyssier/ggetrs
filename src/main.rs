@@ -4,8 +4,8 @@ use ggetrs::{
     blast::cli::launch_blast,
     chembl::launch_chembl_activity,
     cli::{
-        Cli, Commands, ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc,
-        ModUniprot,
+        Cli, Commands, ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModString,
+        ModUcsc, ModUniprot,
     },
     enrichr::{launch_enrichr, launch_enrichr_list},
     ensembl::{
@@ -17,6 +17,7 @@ use ggetrs::{
     ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
     pdb::{launch_pdb_resource, launch_pdb_structure},
     seq::launch_seq,
+    string::launch_string_network,
     ucsc::launch_ucsc_blat,
     uniprot::launch_uniprot_query,
     utils::autocomplete::print_completions,
@@ -241,6 +242,27 @@ fn main() -> Result<(), RequestError> {
                 output,
             )?;
         }
+        Commands::String(sub) => match sub {
+            ModString::Network {
+                genes,
+                output,
+                species,
+                threshold,
+                network_type,
+                add_nodes,
+                keep_input_name,
+                format,
+            } => launch_string_network(
+                genes,
+                *species,
+                *threshold,
+                *network_type,
+                *add_nodes,
+                *keep_input_name,
+                output.clone(),
+                *format,
+            )?,
+        },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
 

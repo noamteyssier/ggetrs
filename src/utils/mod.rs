@@ -1,8 +1,10 @@
 pub mod autocomplete;
 mod download;
 mod fasta;
+mod io;
 pub mod parsing;
 mod ping;
 pub use download::download_multiple;
 pub use fasta::{FastaRecord, FastaRecords};
+pub use io::{match_output, write_dataframe, OutputFormat};
 pub use ping::ping;

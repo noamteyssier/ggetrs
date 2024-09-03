@@ -27,6 +27,9 @@ pub mod ncbi;
 /// `RCSB PDB` submodule
 pub mod pdb;
 
+/// `STRING` submodule
+pub mod string;
+
 /// `UCSC` Genome Browser submodule
 pub mod ucsc;
 
