@@ -16,6 +16,15 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
+
+    /// Retrieve the protein similarity scores between the input proteins
+    Homology {
+        #[clap(flatten)]
+        args: StringHomologyArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
 }
 
 #[derive(Debug, Clone, Parser)]
@@ -87,5 +96,31 @@ impl StringNetworkArgs {
             data["add_nodes"] = json!(nodes);
         }
         data
+    }
+}
+
+#[derive(Debug, Clone, Parser)]
+#[clap(next_help_heading = "STRING Homology Arguments")]
+pub struct StringHomologyArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    pub species: usize,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    pub caller_identity: String,
+}
+impl StringHomologyArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "species": self.species,
+            "caller_identity": self.caller_identity,
+        })
     }
 }
