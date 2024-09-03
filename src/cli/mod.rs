@@ -15,6 +15,6 @@ pub use enrichr::ModEnrichr;
 pub use ensembl::ModEnsembl;
 pub use ncbi::ModNcbi;
 pub use pdb::ModPdb;
-pub use string::ModString;
+pub use string::*;
 pub use ucsc::ModUcsc;
 pub use uniprot::ModUniprot;

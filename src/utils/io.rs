@@ -22,7 +22,7 @@ pub enum WriteConfig {
     JSON { format: JsonFormat },
 }
 
-#[derive(Clone, Copy, ValueEnum)]
+#[derive(Clone, Copy, ValueEnum, Debug)]
 pub enum OutputFormat {
     Csv,
     Tsv,

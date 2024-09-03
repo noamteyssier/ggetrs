@@ -243,25 +243,7 @@ fn main() -> Result<(), RequestError> {
             )?;
         }
         Commands::String(sub) => match sub {
-            ModString::Network {
-                genes,
-                output,
-                species,
-                threshold,
-                network_type,
-                add_nodes,
-                keep_input_name,
-                format,
-            } => launch_string_network(
-                genes,
-                *species,
-                *threshold,
-                *network_type,
-                *add_nodes,
-                *keep_input_name,
-                output.clone(),
-                *format,
-            )?,
+            ModString::Network { args, output } => launch_string_network(args, output)?,
         },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
