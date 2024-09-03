@@ -25,6 +25,15 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
+
+    /// Maps common protein names, synonyms and UniProt identifiers into STRING identifiers
+    MapIds {
+        #[clap(flatten)]
+        args: StringMappingArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
 }
 
 #[derive(Debug, Clone, Parser)]
@@ -122,5 +131,44 @@ impl StringHomologyArgs {
             "species": self.species,
             "caller_identity": self.caller_identity,
         })
+    }
+}
+
+#[derive(Debug, Clone, Parser)]
+#[clap(next_help_heading = "STRING Mapping Identifiers Arguments")]
+pub struct StringMappingArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// insert column with your input identifier
+    #[clap(short, long)]
+    pub echo_query: bool,
+
+    /// limits the number of matches per query identifier (best matches come first)
+    #[clap(short, long)]
+    pub limit: Option<usize>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    pub species: usize,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    pub caller_identity: String,
+}
+impl StringMappingArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        let mut data = json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "echo_query": self.echo_query,
+            "species": self.species,
+            "caller_identity": self.caller_identity,
+        });
+        if let Some(limit) = self.limit {
+            data["limit"] = json!(limit);
+        }
+        data
     }
 }

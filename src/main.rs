@@ -245,6 +245,7 @@ fn main() -> Result<(), RequestError> {
         Commands::String(sub) => match sub {
             ModString::Network { args, output } => launch_string_network(args, output)?,
             ModString::Homology { args, output } => launch_string_homology(args, output)?,
+            ModString::MapIds { args, output } => launch_string_mapping(args, output)?,
         },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
