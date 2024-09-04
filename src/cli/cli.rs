@@ -1,4 +1,6 @@
-use super::{ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
+use super::{
+    ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModString, ModUcsc, ModUniprot,
+};
 use crate::{
     blast::types::{BlastDatabase, BlastProgram},
     ensembl::ENSEMBL_RELEASE_STR,
@@ -147,6 +149,10 @@ pub enum Commands {
     /// Retrieves structures and information from RCSB PDB
     #[clap(subcommand)]
     Pdb(ModPdb),
+
+    /// Retrieve network information from STRING
+    #[clap(subcommand)]
+    String(ModString),
 
     /// Retrieves information from UCSC Genome Browser
     #[clap(subcommand)]

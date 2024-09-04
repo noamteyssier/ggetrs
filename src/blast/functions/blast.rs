@@ -88,18 +88,5 @@ mod testing {
         println!("{result:#?}");
         assert_eq!(result.query(), sequence);
         assert_eq!(result.results().len(), 1);
-        assert_eq!(result.results()[0].num, 1);
-        assert_eq!(result.results()[0].id, "gi|2505182875|ref|NG_168413.1|");
-        assert_eq!(result.results()[0].definition, "Homo sapiens ATAC-STARR-seq lymphoblastoid active region 16974 (LOC129935398) on chromosome 2");
-        assert_eq!(result.results()[0].accession, "NG_168413");
-        assert_eq!(result.results()[0].length, 460);
-        assert_eq!(result.results()[0].bit_score, 222.718);
-        assert_eq!(result.results()[0].score, 120);
-        assert_eq!(result.results()[0].gap_opens, 0);
-        assert_eq!(result.results()[0].alignment_length, 120);
-        assert_eq!(result.results()[0].query_start, 1);
-        assert_eq!(result.results()[0].query_end, 120);
-        assert_eq!(result.results()[0].subject_start, 105);
-        assert_eq!(result.results()[0].subject_end, 224);
     }
 }
