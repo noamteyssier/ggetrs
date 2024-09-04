@@ -1,10 +1,12 @@
-use std::io::Write;
-
-use crate::utils::OutputFormat;
-use crate::{string::StringNetworkType, utils::match_output};
+use crate::{
+    string::StringNetworkType,
+    utils::{match_output, OutputFormat},
+};
 use anyhow::Result;
+use bon::builder;
 use clap::{Parser, Subcommand};
 use serde_json::{json, Value};
+use std::io::Write;
 
 #[derive(Subcommand)]
 pub enum ModString {
@@ -80,7 +82,9 @@ impl OutputArgs {
 }
 
 #[derive(Debug, Clone, Parser)]
+#[builder]
 #[clap(next_help_heading = "STRING Network Arguments")]
+/// Retrieves the network interactions for your input protein(s) in various text based formats
 pub struct StringNetworkArgs {
     /// List of genes to retrieve network for
     #[clap(required = true)]
@@ -88,6 +92,7 @@ pub struct StringNetworkArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// threshold of significance to include a interaction, a number between 0 and 1000 (default depends on the network)
@@ -96,6 +101,7 @@ pub struct StringNetworkArgs {
 
     /// The type of network to retrieve
     #[clap(short, long, default_value = "functional")]
+    #[builder(default = StringNetworkType::Functional)]
     pub network_type: StringNetworkType,
 
     /// adds a number of proteins with to the network based on their confidence score
@@ -104,10 +110,12 @@ pub struct StringNetworkArgs {
 
     /// when available use submitted names in the preferredName column when true
     #[clap(short = 'q', long)]
+    #[builder(default = false)]
     pub show_query_node_labels: bool,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringNetworkArgs {
@@ -135,6 +143,7 @@ impl StringNetworkArgs {
 }
 
 #[derive(Debug, Clone, Parser)]
+#[builder]
 #[clap(next_help_heading = "STRING Homology Arguments")]
 pub struct StringHomologyArgs {
     /// List of genes to retrieve network for
@@ -143,10 +152,12 @@ pub struct StringHomologyArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringHomologyArgs {
@@ -161,6 +172,7 @@ impl StringHomologyArgs {
 }
 
 #[derive(Debug, Clone, Parser)]
+#[builder]
 #[clap(next_help_heading = "STRING Mapping Identifiers Arguments")]
 pub struct StringMappingArgs {
     /// List of genes to retrieve network for
@@ -169,6 +181,7 @@ pub struct StringMappingArgs {
 
     /// insert column with your input identifier
     #[clap(short, long)]
+    #[builder(default = false)]
     pub echo_query: bool,
 
     /// limits the number of matches per query identifier (best matches come first)
@@ -177,10 +190,12 @@ pub struct StringMappingArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringMappingArgs {
@@ -201,6 +216,8 @@ impl StringMappingArgs {
 
 /// Gets all the STRING interaction partners of your proteins
 #[derive(Debug, Clone, Parser)]
+#[builder]
+#[clap(next_help_heading = "STRING Interactions Arguments")]
 pub struct StringInteractionsArgs {
     /// List of genes to retrieve network for
     #[clap(required = true)]
@@ -208,6 +225,7 @@ pub struct StringInteractionsArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// limits the number of interaction partners retrieved per protein (most confident interactions come first)
@@ -221,10 +239,12 @@ pub struct StringInteractionsArgs {
 
     /// The type of network to retrieve
     #[clap(short, long, default_value = "functional")]
+    #[builder(default = StringNetworkType::Functional)]
     pub network_type: StringNetworkType,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringInteractionsArgs {
@@ -248,6 +268,8 @@ impl StringInteractionsArgs {
 
 /// Performs the enrichment analysis of your set of proteins for the Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam, InterPro and SMART domains.
 #[derive(Debug, Clone, Parser)]
+#[builder]
+#[clap(next_help_heading = "STRING Functional Enrichment Arguments")]
 pub struct StringFunctionalEnrichmentArgs {
     /// List of genes to retrieve network for
     #[clap(required = true)]
@@ -260,10 +282,12 @@ pub struct StringFunctionalEnrichmentArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringFunctionalEnrichmentArgs {
@@ -283,6 +307,8 @@ impl StringFunctionalEnrichmentArgs {
 
 /// Gets the functional annotation (Gene Ontology, UniProt Keywords, PFAM, INTERPRO and SMART domains) of your list of proteins.
 #[derive(Debug, Clone, Parser)]
+#[builder]
+#[clap(next_help_heading = "STRING Functional Annotations Arguments")]
 pub struct StringFunctionalAnnotationArgs {
     /// List of genes to retrieve network for
     #[clap(required = true)]
@@ -290,18 +316,22 @@ pub struct StringFunctionalAnnotationArgs {
 
     /// Species to retrieve network for (NCBI taxonomy ID)
     #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
     pub species: usize,
 
     /// Return PubMed annotations in addition to other categories
     #[clap(short = 'p', long)]
+    #[builder(default = false)]
     pub allow_pubmed: bool,
 
     /// Only return PubMed annotations
     #[clap(short = 'P', long)]
+    #[builder(default = false)]
     pub only_pubmed: bool,
 
     /// identifier of the caller to provide to the server
     #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
     pub caller_identity: String,
 }
 impl StringFunctionalAnnotationArgs {

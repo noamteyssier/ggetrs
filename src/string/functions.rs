@@ -57,3 +57,140 @@ pub fn string_annotations(args: &StringFunctionalAnnotationArgs) -> Result<DataF
     let data = args.build_post();
     string_api_tsv("functional_annotation", &data)
 }
+
+#[cfg(test)]
+mod testing {
+    use super::*;
+
+    fn identifiers() -> Vec<String> {
+        vec!["RFX3".to_string(), "RFX2".to_string()]
+    }
+
+    #[test]
+    fn test_string_network() -> Result<()> {
+        let args = StringNetworkArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let network = string_network(&args)?;
+        let expected_column_names = vec![
+            "stringId_A",
+            "stringId_B",
+            "preferredName_A",
+            "preferredName_B",
+            "ncbiTaxonId",
+            "score",
+            "nscore",
+            "fscore",
+            "pscore",
+            "ascore",
+            "escore",
+            "dscore",
+            "tscore",
+        ];
+        assert_eq!(network.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_homology() -> Result<()> {
+        let args = StringHomologyArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let homology = string_homology(&args)?;
+        let expected_column_names = vec![
+            "ncbiTaxonId_A",
+            "stringId_A",
+            "ncbiTaxonId_B",
+            "stringId_B",
+            "bitscore",
+        ];
+        assert_eq!(homology.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_map_ids() -> Result<()> {
+        let args = StringMappingArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let mapping = string_mapping(&args)?;
+        let expected_column_names = vec![
+            "queryIndex",
+            "queryItem",
+            "stringId",
+            "ncbiTaxonId",
+            "taxonName",
+            "preferredName",
+            "annotation",
+        ];
+        assert_eq!(mapping.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_interactions() -> Result<()> {
+        let args = StringInteractionsArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let interactions = string_interactions(&args)?;
+        let expected_column_names = vec![
+            "stringId_A",
+            "stringId_B",
+            "preferredName_A",
+            "preferredName_B",
+            "ncbiTaxonId",
+            "score",
+            "nscore",
+            "fscore",
+            "pscore",
+            "ascore",
+            "escore",
+            "dscore",
+            "tscore",
+        ];
+        assert_eq!(interactions.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_enrichment() -> Result<()> {
+        let args = StringFunctionalEnrichmentArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let enrichment = string_enrichment(&args)?;
+        let expected_column_names = vec![
+            "category",
+            "term",
+            "number_of_genes",
+            "number_of_genes_in_background",
+            "ncbiTaxonId",
+            "inputGenes",
+            "preferredNames",
+            "p_value",
+            "fdr",
+            "description",
+        ];
+        assert_eq!(enrichment.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_annotations() -> Result<()> {
+        let args = StringFunctionalAnnotationArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let annotations = string_annotations(&args)?;
+        let expected_column_names = vec![
+            "category",
+            "term",
+            "number_of_genes",
+            "ratio_in_set",
+            "ncbiTaxonId",
+            "inputGenes",
+            "preferredNames",
+            "description",
+        ];
+        assert_eq!(annotations.get_column_names(), expected_column_names);
+        Ok(())
+    }
+}
