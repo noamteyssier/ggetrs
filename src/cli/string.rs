@@ -10,24 +10,6 @@ use std::io::Write;
 
 #[derive(Subcommand)]
 pub enum ModString {
-    /// Retrieves string network for a collection of genes
-    Network {
-        #[clap(flatten)]
-        args: StringNetworkArgs,
-
-        #[clap(flatten)]
-        output: OutputArgs,
-    },
-
-    /// Retrieve the protein similarity scores between the input proteins
-    Homology {
-        #[clap(flatten)]
-        args: StringHomologyArgs,
-
-        #[clap(flatten)]
-        output: OutputArgs,
-    },
-
     /// Maps common protein names, synonyms and UniProt identifiers into STRING identifiers
     MapIds {
         #[clap(flatten)]
@@ -36,7 +18,22 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
+    /// Retrieves the network interactions for your input protein(s) in various text based formats
+    Network {
+        #[clap(flatten)]
+        args: StringNetworkArgs,
 
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
+    /// Retrieve the protein similarity scores between the input proteins
+    Homology {
+        #[clap(flatten)]
+        args: StringHomologyArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
     /// Gets all the STRING interaction partners of your proteins
     Interactions {
         #[clap(flatten)]
@@ -45,8 +42,7 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
-
-    /// Retrieves functional enrichments for a list of genes
+    /// Performs the enrichment analysis of your set of proteins for the Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam, InterPro and SMART domains.
     Enrichment {
         #[clap(flatten)]
         args: StringFunctionalEnrichmentArgs,
@@ -54,10 +50,18 @@ pub enum ModString {
         #[clap(flatten)]
         output: OutputArgs,
     },
-
+    /// Gets the functional annotation (Gene Ontology, UniProt Keywords, PFAM, INTERPRO and SMART domains) of your list of proteins.
     Annotations {
         #[clap(flatten)]
         args: StringFunctionalAnnotationArgs,
+
+        #[clap(flatten)]
+        output: OutputArgs,
+    },
+    /// Tests if your network has more interactions than expected
+    PpiEnrichment {
+        #[clap(flatten)]
+        args: StringPpiEnrichmentArgs,
 
         #[clap(flatten)]
         output: OutputArgs,
@@ -344,5 +348,50 @@ impl StringFunctionalAnnotationArgs {
             "allow_pubmed": self.allow_pubmed,
             "only_pubmed": self.only_pubmed,
         })
+    }
+}
+
+/// Tests if your network has more interactions than expected
+#[derive(Debug, Clone, Parser)]
+#[builder]
+#[clap(next_help_heading = "STRING PPI Enrichment Arguments")]
+pub struct StringPpiEnrichmentArgs {
+    /// List of genes to retrieve network for
+    #[clap(required = true)]
+    pub identifiers: Vec<String>,
+
+    /// Species to retrieve network for (NCBI taxonomy ID)
+    #[clap(short, long, default_value = "9606")]
+    #[builder(default = 9606)]
+    pub species: usize,
+
+    /// threshold of significance to include a interaction, a number between 0 and 1000 (default depends on the network)
+    #[clap(short, long)]
+    pub required_score: Option<f64>,
+
+    /// using this parameter you can specify the background proteome of your experiment. Only STRING identifiers will be recognised (each must be seperated by "%0d") e.g. '7227.FBpp0077451%0d7227.FBpp0074373'. You can map STRING identifiers using mapping identifiers method.
+    #[clap(short, long)]
+    pub background: Option<Vec<String>>,
+
+    /// identifier of the caller to provide to the server
+    #[clap(short, long, default_value = "ggetrs")]
+    #[builder(default = "ggetrs".to_string())]
+    pub caller_identity: String,
+}
+impl StringPpiEnrichmentArgs {
+    #[must_use]
+    pub fn build_post(&self) -> Value {
+        let mut data = json!({
+            "identifiers": self.identifiers.join("%0d"),
+            "species": self.species,
+            "caller_identity": self.caller_identity,
+        });
+        if let Some(score) = self.required_score {
+            data["required_score"] = json!(score);
+        }
+        if let Some(background) = &self.background {
+            data["background"] = json!(background.join("%0d"));
+        }
+        data
     }
 }

@@ -1,6 +1,6 @@
 use crate::cli::{
     StringFunctionalAnnotationArgs, StringFunctionalEnrichmentArgs, StringHomologyArgs,
-    StringInteractionsArgs, StringMappingArgs, StringNetworkArgs,
+    StringInteractionsArgs, StringMappingArgs, StringNetworkArgs, StringPpiEnrichmentArgs,
 };
 use anyhow::Result;
 use polars::prelude::*;
@@ -56,6 +56,11 @@ pub fn string_enrichment(args: &StringFunctionalEnrichmentArgs) -> Result<DataFr
 pub fn string_annotations(args: &StringFunctionalAnnotationArgs) -> Result<DataFrame> {
     let data = args.build_post();
     string_api_tsv("functional_annotation", &data)
+}
+
+pub fn string_ppi_enrichment(args: &StringPpiEnrichmentArgs) -> Result<DataFrame> {
+    let data = args.build_post();
+    string_api("ppi_enrichment", &data)
 }
 
 #[cfg(test)]
@@ -191,6 +196,24 @@ mod testing {
             "description",
         ];
         assert_eq!(annotations.get_column_names(), expected_column_names);
+        Ok(())
+    }
+
+    #[test]
+    fn test_string_ppi_enrichment() -> Result<()> {
+        let args = StringPpiEnrichmentArgs::builder()
+            .identifiers(identifiers())
+            .build();
+        let enrichment = string_ppi_enrichment(&args)?;
+        let expected_column_names = vec![
+            "number_of_nodes",
+            "number_of_edges",
+            "average_node_degree",
+            "local_clustering_coefficient",
+            "expected_number_of_edges",
+            "p_value",
+        ];
+        assert_eq!(enrichment.get_column_names(), expected_column_names);
         Ok(())
     }
 }

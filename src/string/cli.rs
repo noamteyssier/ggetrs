@@ -1,11 +1,12 @@
 use super::{
     string_annotations, string_enrichment, string_homology, string_interactions, string_mapping,
-    string_network,
+    string_network, string_ppi_enrichment,
 };
 use crate::{
     cli::{
         OutputArgs, StringFunctionalAnnotationArgs, StringFunctionalEnrichmentArgs,
         StringHomologyArgs, StringInteractionsArgs, StringMappingArgs, StringNetworkArgs,
+        StringPpiEnrichmentArgs,
     },
     utils::write_dataframe,
 };
@@ -57,6 +58,16 @@ pub fn launch_string_annotations(
     output: &OutputArgs,
 ) -> Result<()> {
     let mut dataframe = string_annotations(args)?;
+    let output_handle = output.get_writer()?;
+    write_dataframe(output_handle, &mut dataframe, output.format.into())?;
+    Ok(())
+}
+
+pub fn launch_string_ppi_enrichment(
+    args: &StringPpiEnrichmentArgs,
+    output: &OutputArgs,
+) -> Result<()> {
+    let mut dataframe = string_ppi_enrichment(args)?;
     let output_handle = output.get_writer()?;
     write_dataframe(output_handle, &mut dataframe, output.format.into())?;
     Ok(())

@@ -249,6 +249,9 @@ fn main() -> Result<(), RequestError> {
             ModString::Interactions { args, output } => launch_string_interactions(args, output)?,
             ModString::Enrichment { args, output } => launch_string_enrichment(args, output)?,
             ModString::Annotations { args, output } => launch_string_annotations(args, output)?,
+            ModString::PpiEnrichment { args, output } => {
+                launch_string_ppi_enrichment(args, output)?
+            }
         },
         Commands::Autocomplete { shell } => print_completions(*shell, &mut Cli::command()),
     };
