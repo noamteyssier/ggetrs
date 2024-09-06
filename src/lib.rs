@@ -1,4 +1,8 @@
-use pyo3::{pymodule, types::{PyModule, PyModuleMethods}, wrap_pyfunction, Bound, PyResult, Python};
+use pyo3::{
+    pymodule,
+    types::{PyModule, PyModuleMethods},
+    wrap_pyfunction, Bound, PyResult, Python,
+};
 
 /// `Enrichr` submodule
 pub mod enrichr;

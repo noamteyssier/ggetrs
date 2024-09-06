@@ -12,9 +12,10 @@ use pyo3::{
 
 #[pyfunction(name = "blast")]
 #[pyo3(
-    text_signature = "(query, program = None, database = None, limit = 50, expect = 10.0, low_comp_filter = False, megablast = True)"
+    signature = (query, program = None, database = None, limit = None, expect = None, low_comp_filter = None, megablast = None)
 )]
 #[allow(clippy::too_many_arguments)]
+
 pub fn python_blast<'py>(
     py: Python<'py>,
     query: &str,

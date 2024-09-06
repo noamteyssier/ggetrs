@@ -8,7 +8,7 @@ use pyo3::{
 };
 
 #[pyfunction(name = "blat")]
-#[pyo3(text_signature = "(sequence, seqtype = 'dna', db_name = 'hg38')")]
+#[pyo3(signature = (sequence, seqtype = None,  db_name = None))]
 pub fn python_ucsc_blat<'py>(
     py: Python<'py>,
     sequence: &str,
