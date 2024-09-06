@@ -9,6 +9,7 @@ use pyo3::{
 
 #[pyfunction(name = "search")]
 #[allow(clippy::needless_pass_by_value)]
+#[pyo3(signature = (search_terms, database = None, species = None, db_type = None, release = None, assembly = None))]
 pub fn python_ensembl_search<'py>(
     py: Python<'py>,
     search_terms: Vec<String>,
@@ -39,6 +40,7 @@ pub fn python_ensembl_search<'py>(
 #[pyfunction(name = "database")]
 #[must_use]
 #[allow(clippy::needless_pass_by_value)]
+#[pyo3(signature = (filter = None))]
 pub fn python_ensembl_database(_py: Python, filter: Option<String>) -> Vec<String> {
     let results = database(&filter).expect("Could not query ensembl SQL");
     results.as_vec()
@@ -50,6 +52,7 @@ pub fn python_ensembl_release(_py: Python) -> usize {
 }
 
 #[pyfunction(name = "reference")]
+#[pyo3(signature = (species = None, release = None, datatype = None))]
 pub fn python_ensembl_reference<'py>(
     py: Python<'py>,
     species: Option<&str>,
@@ -87,6 +90,7 @@ pub fn python_ensembl_reference<'py>(
 }
 
 #[pyfunction(name = "species")]
+#[pyo3(signature = (release = None, datatype = None))]
 pub fn python_ensembl_species(
     _py: Python,
     release: Option<usize>,

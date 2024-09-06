@@ -4,7 +4,7 @@ use anyhow::{bail, Result};
 use pyo3::{pyfunction, types::PyList, Bound, Python};
 
 #[pyfunction(name = "seq")]
-#[pyo3(text_signature = "(search_terms, translate = False, db_name = 'homo_sapiens')")]
+#[pyo3(signature = (search_terms, translate = None, species = None))]
 #[allow(clippy::needless_pass_by_value)]
 pub fn python_seq(
     py: Python<'_>,

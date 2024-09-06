@@ -7,7 +7,7 @@ use pyo3::{
 };
 
 #[pyfunction(name = "info")]
-#[pyo3(text_signature = "(search_terms, species = 'homo_sapiens', taxon_id = 9606)")]
+#[pyo3(signature = (search_terms, species = None, taxon_id = None))]
 #[allow(clippy::needless_pass_by_value)]
 pub fn python_info(
     py: Python<'_>,
