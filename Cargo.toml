@@ -29,7 +29,7 @@ ftp = "3.0.1"
 futures = "0.3.24"
 indicatif = "0.17.5"
 mysql = "25.0.1"
-polars = { version = "0.42.0", default-features = false, features = ["json"] }
+polars = { version = "0.43.1", default-features = false, features = ["json"] }
 pyo3 = { version = "0.22.2", features = ["extension-module", "anyhow"] }
 regex = "1.6.0"
 reqwest = { version = "0.12.5", features = [
