@@ -5,10 +5,24 @@ use crate::{
     blast::types::{BlastDatabase, BlastProgram},
     ensembl::ENSEMBL_RELEASE_STR,
 };
-use clap::{Parser, Subcommand};
+use clap::{
+    builder::{
+        styling::{AnsiColor, Effects},
+        Styles,
+    },
+    Parser, Subcommand,
+};
 use clap_complete::Shell;
 
+// Configures Clap v3-style help menu colors
+const STYLES: Styles = Styles::styled()
+    .header(AnsiColor::Green.on_default().effects(Effects::BOLD))
+    .usage(AnsiColor::Green.on_default().effects(Effects::BOLD))
+    .literal(AnsiColor::Cyan.on_default().effects(Effects::BOLD))
+    .placeholder(AnsiColor::Cyan.on_default());
+
 #[derive(Parser)]
+#[command(styles = STYLES)]
 #[clap(author, version, about)]
 #[clap(propagate_version = true)]
 pub struct Cli {
