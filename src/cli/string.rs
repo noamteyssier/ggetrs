@@ -3,7 +3,7 @@ use crate::{
     utils::{match_output, OutputFormat},
 };
 use anyhow::Result;
-use bon::builder;
+use bon::{builder, Builder};
 use clap::{Parser, Subcommand};
 use serde_json::{json, Value};
 use std::io::Write;
@@ -85,8 +85,7 @@ impl OutputArgs {
     }
 }
 
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Network Arguments")]
 /// Retrieves the network interactions for your input protein(s) in various text based formats
 pub struct StringNetworkArgs {
@@ -146,8 +145,7 @@ impl StringNetworkArgs {
     }
 }
 
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Homology Arguments")]
 pub struct StringHomologyArgs {
     /// List of genes to retrieve network for
@@ -175,8 +173,7 @@ impl StringHomologyArgs {
     }
 }
 
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Mapping Identifiers Arguments")]
 pub struct StringMappingArgs {
     /// List of genes to retrieve network for
@@ -219,8 +216,7 @@ impl StringMappingArgs {
 }
 
 /// Gets all the STRING interaction partners of your proteins
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Interactions Arguments")]
 pub struct StringInteractionsArgs {
     /// List of genes to retrieve network for
@@ -271,8 +267,7 @@ impl StringInteractionsArgs {
 }
 
 /// Performs the enrichment analysis of your set of proteins for the Gene Ontology, KEGG pathways, UniProt Keywords, PubMed publications, Pfam, InterPro and SMART domains.
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Functional Enrichment Arguments")]
 pub struct StringFunctionalEnrichmentArgs {
     /// List of genes to retrieve network for
@@ -310,8 +305,7 @@ impl StringFunctionalEnrichmentArgs {
 }
 
 /// Gets the functional annotation (Gene Ontology, UniProt Keywords, PFAM, INTERPRO and SMART domains) of your list of proteins.
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING Functional Annotations Arguments")]
 pub struct StringFunctionalAnnotationArgs {
     /// List of genes to retrieve network for
@@ -352,8 +346,7 @@ impl StringFunctionalAnnotationArgs {
 }
 
 /// Tests if your network has more interactions than expected
-#[derive(Debug, Clone, Parser)]
-#[builder]
+#[derive(Debug, Clone, Parser, Builder)]
 #[clap(next_help_heading = "STRING PPI Enrichment Arguments")]
 pub struct StringPpiEnrichmentArgs {
     /// List of genes to retrieve network for
