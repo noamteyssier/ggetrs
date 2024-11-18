@@ -21,7 +21,7 @@ default = ["pyo3/extension-module"]
 [dependencies]
 anyhow = "1.0.64"
 bitvec = "1.0.1"
-bon = "2.3.0"
+bon = "3.0.1"
 chrono = "0.4.22"
 clap = { version = "4.0.18", features = ["derive"] }
 clap_complete = "4.0.3"
