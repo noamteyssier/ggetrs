@@ -1,6 +1,6 @@
 [package]
 name = "ggetrs"
-version = "0.1.84"
+version = "0.1.85"
 edition = "2021"
 license = "MIT"
 description = "Efficient querying of biological databases from the command line"
@@ -33,10 +33,10 @@ polars = { version = "0.43.1", default-features = false, features = ["json"] }
 pyo3 = { version = "0.22.2", features = ["extension-module", "anyhow"] }
 regex = "1.6.0"
 reqwest = { version = "0.12.5", features = [
-    "json",
-    "multipart",
-    "blocking",
-    "stream",
+  "json",
+  "multipart",
+  "blocking",
+  "stream",
 ] }
 serde = { version = "1.0.144", features = ["derive"] }
 serde-xml-rs = "0.6.0"
