@@ -23,5 +23,5 @@ pub fn python_info(
     let species = species.unwrap_or("homo_sapiens".to_string());
     let taxon_id = taxon_id.unwrap_or(9606);
     let results = info(&search_terms, &species, taxon_id)?;
-    Ok(results.into_py_dict_bound(py))
+    Ok(results.into_py_dict(py)?)
 }

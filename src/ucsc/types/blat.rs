@@ -32,9 +32,9 @@ impl BlatResults {
             .0
             .iter()
             .cloned()
-            .map(|x| x.into_py_dict_bound(py))
+            .map(|x| x.into_py_dict(py).unwrap())
             .collect();
-        Ok(PyList::new_bound(py, vec_dict))
+        Ok(PyList::new(py, vec_dict)?)
     }
 }
 
@@ -72,9 +72,9 @@ impl fmt::Display for Blat {
         )
     }
 }
-impl IntoPyDict for Blat {
-    fn into_py_dict_bound(self, py: Python<'_>) -> Bound<'_, PyDict> {
-        let dict = PyDict::new_bound(py);
+impl<'py> IntoPyDict<'py> for Blat {
+    fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let dict = PyDict::new(py);
         dict.set_item("matches", self.matches).unwrap();
         dict.set_item("mismatches", self.mismatches).unwrap();
         dict.set_item("repmatches", self.repmatches).unwrap();
@@ -96,7 +96,7 @@ impl IntoPyDict for Blat {
         dict.set_item("block_sizes", &self.block_sizes).unwrap();
         dict.set_item("q_starts", &self.q_starts).unwrap();
         dict.set_item("q_starts", &self.t_starts).unwrap();
-        dict
+        Ok(dict)
     }
 }
 impl Blat {

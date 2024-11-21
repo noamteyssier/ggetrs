@@ -13,9 +13,9 @@ impl FastaRecords {
             .0
             .iter()
             .cloned()
-            .map(|x| x.into_py_dict_bound(py))
+            .map(|x| x.into_py_dict(py).unwrap())
             .collect();
-        Ok(PyList::new_bound(py, vec_dict))
+        Ok(PyList::new(py, vec_dict)?)
     }
 }
 
@@ -30,12 +30,12 @@ impl Display for FastaRecord {
         write!(f, ">{}\n{}\n", self.header, self.sequence)
     }
 }
-impl IntoPyDict for FastaRecord {
-    fn into_py_dict_bound(self, py: Python<'_>) -> Bound<'_, PyDict> {
-        let map = PyDict::new_bound(py);
+impl<'py> IntoPyDict<'py> for FastaRecord {
+    fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let map = PyDict::new(py);
         map.set_item("header", self.header).unwrap();
         map.set_item("sequence", self.sequence).unwrap();
-        map
+        Ok(map)
     }
 }
 impl FastaRecord {
