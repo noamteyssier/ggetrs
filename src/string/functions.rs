@@ -3,7 +3,8 @@ use crate::cli::{
     StringInteractionsArgs, StringMappingArgs, StringNetworkArgs, StringPpiEnrichmentArgs,
 };
 use anyhow::Result;
-use polars::prelude::*;
+use polars_core::prelude::*;
+use polars_io::prelude::*;
 use reqwest::blocking::Client;
 use serde_json::Value;
 use std::io::Cursor;

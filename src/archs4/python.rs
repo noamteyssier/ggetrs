@@ -31,7 +31,7 @@ pub fn python_archs4_tissue<'py>(
 
 /// Wraps `ARCHS4` specific functions into a python submodule
 pub fn python_archs4(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
-    let submodule = PyModule::new_bound(py, "archs4")?;
+    let submodule = PyModule::new(py, "archs4")?;
     submodule.add_function(wrap_pyfunction!(python_archs4_tissue, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_archs4_correlate, module)?)?;
     module.add_submodule(&submodule)?;

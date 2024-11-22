@@ -5,7 +5,7 @@ use reqwest::Client;
 use serde_json::Value;
 use std::collections::HashMap;
 
-fn build_query_string(gene: &str, freeform: bool, taxon: &Option<usize>) -> String {
+fn build_query_string(gene: &str, freeform: bool, taxon: Option<&usize>) -> String {
     let gene_query = if gene.starts_with("ENS") || freeform {
         format!("({gene})")
     } else {
@@ -26,7 +26,7 @@ pub async fn async_query_uniprot(
     freeform: bool,
     taxon: &Option<usize>,
 ) -> Result<Option<UniprotInfo>> {
-    let query = build_query_string(gene, freeform, taxon);
+    let query = build_query_string(gene, freeform, taxon.as_ref());
     let url = format!("https://rest.uniprot.org/uniprotkb/search?query={query}+AND+reviewed:true",);
     let value = Client::new()
         .get(&url) // Updated to pass the URL by reference

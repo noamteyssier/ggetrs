@@ -21,7 +21,7 @@ impl fmt::Display for SearchResults {
 }
 impl SearchResults {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> Result<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item(
             "results",
             self.0
@@ -82,7 +82,7 @@ impl SearchResult {
     }
 
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("stable_id", &self.stable_id)?;
         dict.set_item("display_label", &self.display_label)?;
         dict.set_item("ensembl_description", &self.ensembl_description)?;

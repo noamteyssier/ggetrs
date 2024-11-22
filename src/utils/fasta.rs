@@ -9,13 +9,15 @@ use std::fmt::Display;
 pub struct FastaRecords(pub Vec<FastaRecord>);
 impl FastaRecords {
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
-        let vec_dict: Vec<Bound<'py, PyDict>> = self
-            .0
-            .iter()
-            .cloned()
-            .map(|x| x.into_py_dict_bound(py))
-            .collect();
-        Ok(PyList::new_bound(py, vec_dict))
+        let vec_dict =
+            self.0
+                .iter()
+                .cloned()
+                .try_fold(Vec::default(), |mut acc, x| -> PyResult<Vec<_>> {
+                    acc.push(x.into_py_dict(py)?);
+                    Ok(acc)
+                })?;
+        PyList::new(py, vec_dict)
     }
 }
 
@@ -30,12 +32,12 @@ impl Display for FastaRecord {
         write!(f, ">{}\n{}\n", self.header, self.sequence)
     }
 }
-impl IntoPyDict for FastaRecord {
-    fn into_py_dict_bound(self, py: Python<'_>) -> Bound<'_, PyDict> {
-        let map = PyDict::new_bound(py);
-        map.set_item("header", self.header).unwrap();
-        map.set_item("sequence", self.sequence).unwrap();
-        map
+impl<'py> IntoPyDict<'py> for FastaRecord {
+    fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let map = PyDict::new(py);
+        map.set_item("header", self.header)?;
+        map.set_item("sequence", self.sequence)?;
+        Ok(map)
     }
 }
 impl FastaRecord {

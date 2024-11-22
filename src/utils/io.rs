@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::ValueEnum;
-use polars::prelude::*;
+use polars_core::prelude::*;
+use polars_io::prelude::*;
 use std::fs::File;
 use std::io::{BufWriter, Write};
 

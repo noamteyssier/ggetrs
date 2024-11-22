@@ -2,7 +2,7 @@ use crate::{
     ensembl::types::LookupResponse, ncbi::types::NcbiResults, uniprot::UniprotInfoContainer,
 };
 use pyo3::types::{IntoPyDict, PyDict, PyDictMethods};
-use pyo3::Bound;
+use pyo3::{Bound, PyResult};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
@@ -19,13 +19,14 @@ impl fmt::Display for InfoContainer {
         )
     }
 }
-impl IntoPyDict for InfoContainer {
-    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
-        let map = PyDict::new_bound(py);
+impl<'py> IntoPyDict<'py> for InfoContainer {
+    fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let map = PyDict::new(py);
         self.0.iter().for_each(|(k, v)| {
-            map.set_item(k, v.clone().into_py_dict_bound(py)).unwrap();
+            map.set_item(k, v.clone().into_py_dict(py).unwrap())
+                .unwrap();
         });
-        map
+        Ok(map)
     }
 }
 impl InfoContainer {
@@ -69,9 +70,9 @@ impl fmt::Display for Info {
         )
     }
 }
-impl IntoPyDict for Info {
-    fn into_py_dict_bound(self, py: pyo3::Python<'_>) -> Bound<'_, PyDict> {
-        let map = PyDict::new_bound(py);
+impl<'py> IntoPyDict<'py> for Info {
+    fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        let map = PyDict::new(py);
         map.set_item("ensembl_id", &self.ensembl_id).unwrap();
         map.set_item("uniprot_id", &self.uniprot_id).unwrap();
         map.set_item("ncbi_id", &self.ncbi_id).unwrap();
@@ -85,7 +86,7 @@ impl IntoPyDict for Info {
             .unwrap();
         map.set_item("species", &self.species).unwrap();
         map.set_item("assembly_name", &self.assembly_name).unwrap();
-        map
+        Ok(map)
     }
 }
 impl Info {

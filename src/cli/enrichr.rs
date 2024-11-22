@@ -4,7 +4,7 @@ use clap::Subcommand;
 pub enum ModEnrichr {
     /// Perform the Enrichr gene set enrichment analysis
     Enrichr {
-        /// any database listed at: https://maayanlab.cloud/Enrichr/#libraries
+        /// any database listed at: <https://maayanlab.cloud/Enrichr/#libraries>
         /// some shorthands include: pathway, transcription, ontology, diseases_drugs, celltypes,
         /// and kinase_interactions.
         #[clap(short, long)]

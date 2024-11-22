@@ -6,7 +6,7 @@ use mysql::{prelude::Queryable, Conn, OptsBuilder};
 pub fn database(filter: &Option<String>) -> anyhow::Result<ResponseDatabases> {
     let opts = get_mysql_options();
     let mut conn = Conn::new(opts)?;
-    let query = build_search_query(filter);
+    let query = build_search_query(filter.as_ref());
     let results: Vec<Database> = conn.query_map(query, Database)?;
     if results.is_empty() {
         match filter {
@@ -28,7 +28,7 @@ fn get_mysql_options() -> OptsBuilder {
 /// Generates the search query.
 ///
 /// Searches through databases for a related token
-fn build_search_query(search_term: &Option<String>) -> String {
+fn build_search_query(search_term: Option<&String>) -> String {
     if let Some(token) = search_term {
         format!("SHOW databases LIKE '%{token}%'")
     } else {

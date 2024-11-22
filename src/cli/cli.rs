@@ -116,7 +116,7 @@ pub enum Commands {
         #[clap(required = true)]
         search_terms: Vec<String>,
 
-        /// Species name to use: currently this MUST match the taxon_id
+        /// Species name to use: currently this MUST match the `taxon_id`
         #[clap(short, long, default_value = "homo_sapiens")]
         species: String,
 
@@ -129,7 +129,7 @@ pub enum Commands {
         output: Option<String>,
     },
 
-    /// Queries sequences from ensembl and UniProt
+    /// Queries sequences from ensembl and `UniProt`
     Seq {
         /// Search terms to query (can be Ensembl IDs or Gene Symbols)
         #[clap(value_parser, required = true)]

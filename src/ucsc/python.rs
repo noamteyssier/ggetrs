@@ -42,7 +42,7 @@ pub fn python_ucsc_blat<'py>(
 }
 
 pub fn python_ucsc(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
-    let submodule = PyModule::new_bound(py, "ucsc")?;
+    let submodule = PyModule::new(py, "ucsc")?;
     submodule.add_function(wrap_pyfunction!(python_ucsc_blat, module)?)?;
     module.add_submodule(&submodule)?;
     Ok(())
