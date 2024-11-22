@@ -107,7 +107,7 @@ pub fn python_ensembl_species(
 }
 
 pub fn python_ensembl(py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
-    let submodule = PyModule::new_bound(py, "ensembl")?;
+    let submodule = PyModule::new(py, "ensembl")?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_search, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_database, module)?)?;
     submodule.add_function(wrap_pyfunction!(python_ensembl_release, module)?)?;

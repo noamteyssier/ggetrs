@@ -52,7 +52,7 @@ impl fmt::Display for Correlations {
 }
 impl Correlations {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item(
             "correlations",
             self.correlations
@@ -90,7 +90,7 @@ impl fmt::Display for Correlation {
 }
 impl Correlation {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("gene_symbol", &self.gene_symbol)?;
         dict.set_item("pearson_correlation", self.pearson_correlation)?;
         Ok(dict)

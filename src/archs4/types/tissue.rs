@@ -53,7 +53,7 @@ impl ResponseTissue {
             .collect()
     }
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item(
             "tissues",
             self.results
@@ -124,7 +124,7 @@ impl ResultTissue {
     }
 
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("id", &self.id)?;
         dict.set_item("min", self.min)?;
         dict.set_item("q1", self.q1)?;

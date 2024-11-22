@@ -23,12 +23,15 @@ impl fmt::Display for ResponseEnrich {
 }
 impl ResponseEnrich {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         for (key, results) in &self.0 {
-            let all_results: Vec<Bound<'py, PyDict>> = results
-                .iter()
-                .map(|x| x.as_pydict(py).expect("could not create dictionary"))
-                .collect();
+            let all_results =
+                results
+                    .iter()
+                    .try_fold(Vec::new(), |mut acc, x| -> PyResult<Vec<_>> {
+                        acc.push(x.as_pydict(py)?);
+                        Ok(acc)
+                    })?;
             dict.set_item(key, all_results)?;
         }
         Ok(dict)
@@ -72,7 +75,7 @@ impl fmt::Display for ResultEnrichr {
 }
 impl ResultEnrichr {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
-        let dict = PyDict::new_bound(py);
+        let dict = PyDict::new(py);
         dict.set_item("rank", self.rank)?;
         dict.set_item("term_name", &self.term_name)?;
         dict.set_item("pvalue", self.pvalue)?;

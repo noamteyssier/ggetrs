@@ -28,13 +28,15 @@ impl BlatResults {
         Self(results)
     }
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
-        let vec_dict: Vec<Bound<'py, PyDict>> = self
-            .0
-            .iter()
-            .cloned()
-            .map(|x| x.into_py_dict(py).unwrap())
-            .collect();
-        Ok(PyList::new(py, vec_dict)?)
+        let vec_dict =
+            self.0
+                .iter()
+                .cloned()
+                .try_fold(Vec::new(), |mut acc, x| -> PyResult<Vec<_>> {
+                    acc.push(x.into_py_dict(py)?);
+                    Ok(acc)
+                })?;
+        PyList::new(py, vec_dict)
     }
 }
 
@@ -75,27 +77,27 @@ impl fmt::Display for Blat {
 impl<'py> IntoPyDict<'py> for Blat {
     fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
-        dict.set_item("matches", self.matches).unwrap();
-        dict.set_item("mismatches", self.mismatches).unwrap();
-        dict.set_item("repmatches", self.repmatches).unwrap();
-        dict.set_item("n_count", self.n_count).unwrap();
-        dict.set_item("q_num_insert", self.q_num_insert).unwrap();
-        dict.set_item("q_base_insert", self.q_base_insert).unwrap();
-        dict.set_item("t_num_insert", self.t_num_insert).unwrap();
-        dict.set_item("t_base_insert", self.t_base_insert).unwrap();
-        dict.set_item("strand", &self.strand).unwrap();
-        dict.set_item("q_name", &self.q_name).unwrap();
-        dict.set_item("q_size", self.q_size).unwrap();
-        dict.set_item("q_start", self.q_start).unwrap();
-        dict.set_item("q_end", self.q_end).unwrap();
-        dict.set_item("t_name", &self.t_name).unwrap();
-        dict.set_item("t_size", self.t_size).unwrap();
-        dict.set_item("t_start", self.t_start).unwrap();
-        dict.set_item("t_end", self.t_end).unwrap();
-        dict.set_item("block_count", self.block_count).unwrap();
-        dict.set_item("block_sizes", &self.block_sizes).unwrap();
-        dict.set_item("q_starts", &self.q_starts).unwrap();
-        dict.set_item("q_starts", &self.t_starts).unwrap();
+        dict.set_item("matches", self.matches)?;
+        dict.set_item("mismatches", self.mismatches)?;
+        dict.set_item("repmatches", self.repmatches)?;
+        dict.set_item("n_count", self.n_count)?;
+        dict.set_item("q_num_insert", self.q_num_insert)?;
+        dict.set_item("q_base_insert", self.q_base_insert)?;
+        dict.set_item("t_num_insert", self.t_num_insert)?;
+        dict.set_item("t_base_insert", self.t_base_insert)?;
+        dict.set_item("strand", &self.strand)?;
+        dict.set_item("q_name", &self.q_name)?;
+        dict.set_item("q_size", self.q_size)?;
+        dict.set_item("q_start", self.q_start)?;
+        dict.set_item("q_end", self.q_end)?;
+        dict.set_item("t_name", &self.t_name)?;
+        dict.set_item("t_size", self.t_size)?;
+        dict.set_item("t_start", self.t_start)?;
+        dict.set_item("t_end", self.t_end)?;
+        dict.set_item("block_count", self.block_count)?;
+        dict.set_item("block_sizes", &self.block_sizes)?;
+        dict.set_item("q_starts", &self.q_starts)?;
+        dict.set_item("q_starts", &self.t_starts)?;
         Ok(dict)
     }
 }

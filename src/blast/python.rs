@@ -15,7 +15,6 @@ use pyo3::{
     signature = (query, program = None, database = None, limit = None, expect = None, low_comp_filter = None, megablast = None)
 )]
 #[allow(clippy::too_many_arguments)]
-
 pub fn python_blast<'py>(
     py: Python<'py>,
     query: &str,
@@ -61,5 +60,5 @@ pub fn python_blast<'py>(
         low_comp_filter,
         megablast,
     )?;
-    Ok(response.into_py_dict_bound(py))
+    Ok(response.into_py_dict(py)?)
 }
