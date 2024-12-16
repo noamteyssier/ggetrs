@@ -33,7 +33,7 @@ mysql = { version = "25.0.1", default-features = false, features = [
     "rustls-tls",
 ] }
 # polars = { version = "0.43.1", default-features = false, features = ["json"] }
-polars-core = { version = "0.44.2", default-features = false }
+polars-core = { version = "0.45.1", default-features = false }
 polars-io = { version = "0.44.2", default-features = false, features = [
     "json",
     "csv",
