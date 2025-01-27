@@ -28,7 +28,7 @@ clap_complete = "4.0.3"
 ftp = "3.0.1"
 futures = "0.3.24"
 indicatif = "0.17.5"
-mysql = { version = "25.0.1", default-features = false, features = [
+mysql = { version = "26.0.0", default-features = false, features = [
     "minimal",
     "rustls-tls",
 ] }
