@@ -1,5 +1,9 @@
 pub mod cli;
 pub mod functions;
-mod python;
 pub mod types;
+
+#[cfg(feature = "python")]
+mod python;
+
+#[cfg(feature = "python")]
 pub use python::python_blast;

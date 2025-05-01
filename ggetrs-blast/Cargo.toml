@@ -5,11 +5,16 @@ edition = "2024"
 
 [dependencies]
 anyhow = { workspace = true }
-clap = { workspace = true }
-pyo3 = { workspace = true }
+clap = { workspace = true, optional = true }
+pyo3 = { workspace = true, optional = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 chrono = "0.4"
 regex = "1"
 serde-xml-rs = "0.7"
+
+[features]
+default = []
+cli = ["dep:clap"]
+python = ["dep:pyo3"]

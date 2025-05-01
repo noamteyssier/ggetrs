@@ -1,9 +1,9 @@
 use std::fmt::Display;
 
-use anyhow::{bail, Result};
-use clap::clap_derive::ValueEnum;
+use anyhow::{Result, bail};
 
-#[derive(Debug, Default, ValueEnum, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum BlastProgram {
     #[default]
     Blastn,
@@ -57,7 +57,8 @@ impl BlastProgram {
     }
 }
 
-#[derive(Debug, Default, ValueEnum, Clone, Copy, Eq, PartialEq)]
+#[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum BlastDatabase {
     #[default]
     Nt,

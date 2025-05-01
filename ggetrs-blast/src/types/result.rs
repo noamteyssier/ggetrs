@@ -1,6 +1,7 @@
+#[cfg(feature = "python")]
 use pyo3::{
-    types::{IntoPyDict, PyDict, PyDictMethods},
     Bound, PyResult,
+    types::{IntoPyDict, PyDict, PyDictMethods},
 };
 use serde::{Deserialize, Serialize};
 use std::fmt;
@@ -19,6 +20,7 @@ impl fmt::Display for BlastResult {
         )
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for BlastResult {
     fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let map = PyDict::new(py);
@@ -97,6 +99,7 @@ impl BlastHit {
         }
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for BlastHit {
     fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let map = PyDict::new(py);
