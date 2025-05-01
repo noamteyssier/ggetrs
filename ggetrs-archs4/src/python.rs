@@ -1,4 +1,3 @@
-use clap::ValueEnum;
 use pyo3::{
     Bound, PyResult, Python, pyfunction,
     types::{PyDict, PyModule, PyModuleMethods},

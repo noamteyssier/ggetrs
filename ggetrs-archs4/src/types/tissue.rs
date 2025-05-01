@@ -1,6 +1,6 @@
 use std::fmt;
 
-use clap::clap_derive::ValueEnum;
+#[cfg(feature = "python")]
 use pyo3::{
     Bound, PyResult, Python,
     types::{PyDict, PyDictMethods},
@@ -8,7 +8,8 @@ use pyo3::{
 use serde::Serialize;
 
 /// The currently supported species for tissue expression in `ARCHS4`
-#[derive(ValueEnum, Debug, Clone, Default)]
+#[derive(Debug, Clone, Default)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Species {
     #[default]
     Human,
@@ -53,6 +54,7 @@ impl ResponseTissue {
             .filter_map(ResultTissue::from_line)
             .collect()
     }
+    #[cfg(feature = "python")]
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item(
@@ -124,6 +126,7 @@ impl ResultTissue {
         })
     }
 
+    #[cfg(feature = "python")]
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("id", &self.id)?;

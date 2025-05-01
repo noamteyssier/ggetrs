@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[cfg(feature = "python")]
 use pyo3::{
     Bound, PyResult, Python,
     types::{PyDict, PyDictMethods},
@@ -51,6 +52,7 @@ impl fmt::Display for Correlations {
         )
     }
 }
+#[cfg(feature = "python")]
 impl Correlations {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
@@ -89,6 +91,7 @@ impl fmt::Display for Correlation {
         )
     }
 }
+#[cfg(feature = "python")]
 impl Correlation {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
