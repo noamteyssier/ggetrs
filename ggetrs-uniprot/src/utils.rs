@@ -1,13 +1,16 @@
 use std::fmt::Display;
 
+use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "python")]
 use pyo3::{
     prelude::*,
     types::{IntoPyDict, PyDict, PyList},
 };
-use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FastaRecords(pub Vec<FastaRecord>);
+#[cfg(feature = "python")]
 impl FastaRecords {
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
         let vec_dict =
@@ -23,7 +26,7 @@ impl FastaRecords {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-#[pyclass]
+#[cfg_attr(feature = "python", pyclass)]
 pub struct FastaRecord {
     header: String,
     sequence: String,
@@ -33,6 +36,7 @@ impl Display for FastaRecord {
         write!(f, ">{}\n{}\n", self.header, self.sequence)
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for FastaRecord {
     fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let map = PyDict::new(py);
