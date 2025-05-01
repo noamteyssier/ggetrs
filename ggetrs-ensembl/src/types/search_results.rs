@@ -1,12 +1,13 @@
 use std::fmt;
 
-use anyhow::Result;
 use mysql::Row;
+use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "python")]
 use pyo3::{
     Bound, PyResult, Python,
     types::{PyDict, PyDictMethods},
 };
-use serde::{Deserialize, Serialize};
 
 /// A unit struct container of [`SearchResult`]
 #[derive(Serialize, Deserialize, Debug)]
@@ -20,8 +21,9 @@ impl fmt::Display for SearchResults {
         )
     }
 }
+#[cfg(feature = "python")]
 impl SearchResults {
-    pub fn as_pydict<'py>(&self, py: Python<'py>) -> Result<Bound<'py, PyDict>> {
+    pub fn as_pydict<'py>(&self, py: Python<'py>) -> anyhow::Result<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item(
             "results",
@@ -82,6 +84,7 @@ impl SearchResult {
         })
     }
 
+    #[cfg(feature = "python")]
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("stable_id", &self.stable_id)?;

@@ -1,7 +1,7 @@
-use clap::ValueEnum;
+use std::str::FromStr;
 
 /// The different data types present within the Ensembl FTP
-#[derive(ValueEnum, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub enum DataType {
     CDNA,
     CDS,
@@ -10,6 +10,22 @@ pub enum DataType {
     GTF,
     NCRNA,
     PEP,
+}
+impl FromStr for DataType {
+    type Err = anyhow::Error;
+
+    fn from_str(datatype: &str) -> Result<Self, Self::Err> {
+        match datatype.to_lowercase().as_str() {
+            "cdna" => Ok(Self::CDNA),
+            "cds" => Ok(Self::CDS),
+            "dna" => Ok(Self::DNA),
+            "gff3" => Ok(Self::GFF3),
+            "gtf" => Ok(Self::GTF),
+            "ncrna" => Ok(Self::NCRNA),
+            "pep" => Ok(Self::PEP),
+            _ => Err(anyhow::anyhow!("invalid datatype")),
+        }
+    }
 }
 impl DataType {
     #[must_use]

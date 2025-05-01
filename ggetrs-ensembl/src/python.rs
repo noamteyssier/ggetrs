@@ -1,11 +1,13 @@
-use super::{database, list_species, reference, release, search, DataType, ENSEMBL_RELEASE};
-use anyhow::{bail, Result};
-use clap::ValueEnum;
+use std::str::FromStr;
+
+use anyhow::{Result, bail};
 use pyo3::{
-    pyfunction,
+    Bound, PyResult, Python, pyfunction,
     types::{PyDict, PyModule, PyModuleMethods},
-    wrap_pyfunction, Bound, PyResult, Python,
+    wrap_pyfunction,
 };
+
+use super::{DataType, ENSEMBL_RELEASE, database, list_species, reference, release, search};
 
 #[pyfunction(name = "search")]
 #[allow(clippy::needless_pass_by_value)]
@@ -70,9 +72,7 @@ pub fn python_ensembl_reference<'py>(
             }
             datatype
                 .iter()
-                .map(|x| {
-                    DataType::from_str(x, true).expect("Could not represent provided datatypes")
-                })
+                .map(|x| DataType::from_str(x).expect("Could not represent provided datatypes"))
                 .collect::<Vec<DataType>>()
         }
         None => {
@@ -97,7 +97,7 @@ pub fn python_ensembl_species(
     datatype: Option<String>,
 ) -> Vec<String> {
     let datatype = datatype.map_or(DataType::DNA, |x| {
-        DataType::from_str(&x, true).expect("Unexpected datatype provided")
+        DataType::from_str(&x).expect("Unexpected datatype provided")
     });
     let release = match release {
         Some(x) => x,

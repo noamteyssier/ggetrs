@@ -2,11 +2,13 @@ use std::fmt;
 
 use anyhow::Result;
 use ftp::FtpStream;
+use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "python")]
 use pyo3::{
     Bound, PyResult, Python,
     types::{PyDict, PyDictMethods},
 };
-use serde::{Deserialize, Serialize};
 
 use crate::utils::convert_mem_label;
 
@@ -42,6 +44,7 @@ impl FtpFile {
         })
     }
 
+    #[cfg(feature = "python")]
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("url", &self.url)?;

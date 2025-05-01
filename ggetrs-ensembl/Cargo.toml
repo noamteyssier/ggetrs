@@ -5,9 +5,8 @@ edition = "2024"
 
 [dependencies]
 anyhow = { workspace = true }
-clap = { workspace = true }
 futures = { workspace = true }
-pyo3 = { workspace = true }
+pyo3 = { workspace = true, optional = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -18,3 +17,7 @@ mysql = { version = "26", default-features = false, features = [
 ] }
 ftp = "3"
 indicatif = "0.17"
+
+[features]
+default = []
+python = ["dep:pyo3"]
