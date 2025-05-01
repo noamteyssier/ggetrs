@@ -1,6 +1,6 @@
-use clap::ValueEnum;
+use std::str::FromStr;
 
-#[derive(ValueEnum, Clone, Debug, Copy)]
+#[derive(Clone, Debug, Copy)]
 pub enum StringNetworkType {
     /// Retrieves a network of physical interactions
     Physical,
@@ -13,6 +13,17 @@ impl std::fmt::Display for StringNetworkType {
         match self {
             Self::Physical => write!(f, "physical"),
             Self::Functional => write!(f, "functional"),
+        }
+    }
+}
+impl FromStr for StringNetworkType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "physical" => Ok(Self::Physical),
+            "functional" => Ok(Self::Functional),
+            _ => Err(format!("Invalid network type: {}", s)),
         }
     }
 }

@@ -1,9 +1,9 @@
 use std::fs::File;
 use std::io::BufWriter;
 use std::io::Write;
+use std::str::FromStr;
 
 use anyhow::Result;
-use clap::ValueEnum;
 use polars_core::prelude::*;
 use polars_io::prelude::*;
 
@@ -41,7 +41,7 @@ pub fn write_dataframe<W: Write>(
     }
 }
 
-#[derive(Clone, Copy, ValueEnum, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum OutputFormat {
     Csv,
     Tsv,
@@ -65,6 +65,19 @@ impl From<OutputFormat> for WriteConfig {
             OutputFormat::Ndjson => WriteConfig::JSON {
                 format: JsonFormat::JsonLines,
             },
+        }
+    }
+}
+impl FromStr for OutputFormat {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "csv" => Ok(Self::Csv),
+            "tsv" => Ok(Self::Tsv),
+            "json" => Ok(Self::Json),
+            "ndjson" => Ok(Self::Ndjson),
+            _ => Err(format!("Invalid output format: {}", s)),
         }
     }
 }
