@@ -5,7 +5,11 @@ edition = "2024"
 
 [dependencies]
 anyhow = { workspace = true }
-pyo3 = { workspace = true }
+pyo3 = { workspace = true, optional = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+
+[features]
+default = []
+python = ["dep:pyo3"]

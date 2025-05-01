@@ -1,10 +1,13 @@
-use pyo3::{
-    types::{IntoPyDict, PyDict, PyDictMethods, PyList},
-    Bound, PyResult, Python,
-};
+use std::fmt;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::fmt;
+
+#[cfg(feature = "python")]
+use pyo3::{
+    Bound, PyResult, Python,
+    types::{IntoPyDict, PyDict, PyDictMethods, PyList},
+};
 
 /// A container of BLAT results
 #[derive(Serialize, Deserialize, Debug)]
@@ -27,6 +30,7 @@ impl BlatResults {
             .unwrap_or_default();
         Self(results)
     }
+    #[cfg(feature = "python")]
     pub fn as_pylist<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyList>> {
         let vec_dict =
             self.0
@@ -74,6 +78,7 @@ impl fmt::Display for Blat {
         )
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for Blat {
     fn into_py_dict(self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
