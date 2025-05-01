@@ -1,3 +1,15 @@
+[package]
+name = "ggetrs"
+version = "0.1.87"
+edition = "2024"
+license = "MIT"
+description = "Efficient querying of biological databases from the command line"
+homepage = "https://noamteyssier.github.io/ggetrs/"
+repository = "https://github.com/noamteyssier/ggetrs"
+documentation = "https://docs.rs/ggetrs"
+categories = ["science", "command-line-utilities"]
+keywords = ["bioinformatics", "ensembl", "ncbi", "uniprot", "enrichr"]
+
 [workspace]
 resolver = "2"
 members = [
@@ -43,18 +55,6 @@ pyo3 = { version = "0.24.1", features = ["extension-module", "anyhow"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tokio = { version = "1.21.0", default-features = false }
-
-[package]
-name = "ggetrs"
-version = "0.1.87"
-edition = "2024"
-license = "MIT"
-description = "Efficient querying of biological databases from the command line"
-homepage = "https://noamteyssier.github.io/ggetrs/"
-repository = "https://github.com/noamteyssier/ggetrs"
-documentation = "https://docs.rs/ggetrs"
-categories = ["science", "command-line-utilities"]
-keywords = ["bioinformatics", "ensembl", "ncbi", "uniprot", "enrichr"]
 
 [dependencies]
 anyhow = { workspace = true }
