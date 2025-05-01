@@ -7,7 +7,10 @@ edition = "2024"
 anyhow = { workspace = true }
 ggetrs-ensembl = { workspace = true }
 ggetrs-uniprot = { workspace = true }
-pyo3 = { workspace = true }
+pyo3 = { workspace = true, optional = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+
+[features]
+python = ["dep:pyo3"]
