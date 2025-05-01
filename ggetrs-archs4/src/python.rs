@@ -24,7 +24,7 @@ pub fn python_archs4_tissue<'py>(
     gene_name: &str,
     species: &str,
 ) -> PyResult<Bound<'py, PyDict>> {
-    let species_enum = Species::from_str(species, true).unwrap_or_default();
+    let species_enum = Species::from_str(species).unwrap_or_default();
     let results = tissue(gene_name, &species_enum).expect("Unable to query `archs4/tissue`");
     results.as_pydict(py)
 }

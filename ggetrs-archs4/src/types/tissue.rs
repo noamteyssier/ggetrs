@@ -27,6 +27,15 @@ impl fmt::Display for Species {
         )
     }
 }
+impl Species {
+    pub fn from_str(species: &str) -> Option<Self> {
+        match species {
+            "human" => Some(Self::Human),
+            "mouse" => Some(Self::Mouse),
+            _ => None,
+        }
+    }
+}
 
 /// A struct to hold the responses from tissue expression
 #[derive(Serialize, Debug)]
