@@ -11,6 +11,7 @@ authors = [
 ]
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
+project.dynamic = ["version"]
 
 keywords = [ "bioinformatics" ]
 
