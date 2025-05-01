@@ -1,8 +1,7 @@
 use std::fmt;
+use std::str::FromStr;
 
-use clap::ValueEnum;
-
-#[derive(ValueEnum, Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub enum PdbResource {
     Entry,
     Pubmed,
@@ -30,6 +29,25 @@ impl fmt::Display for PdbResource {
             Self::NonpolymerEntityInstance => "nonpolymer_entity_instance",
         };
         write!(f, "{repr}")
+    }
+}
+impl FromStr for PdbResource {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "entry" => Ok(Self::Entry),
+            "pubmed" => Ok(Self::Pubmed),
+            "assembly" => Ok(Self::Assembly),
+            "branched_entity" => Ok(Self::BranchedEntity),
+            "nonpolymer_entity" => Ok(Self::NonpolymerEntity),
+            "polymer_entity" => Ok(Self::PolymerEntity),
+            "uniprot" => Ok(Self::Uniprot),
+            "branched_entity_instance" => Ok(Self::BranchedEntityInstance),
+            "polymer_entity_instance" => Ok(Self::PolymerEntityInstance),
+            "nonpolymer_entity_instance" => Ok(Self::NonpolymerEntityInstance),
+            _ => Err(format!("Invalid PDB resource: {}", s)),
+        }
     }
 }
 impl PdbResource {
@@ -64,8 +82,7 @@ impl PdbResource {
 
 #[cfg(test)]
 mod testing {
-    use super::PdbResource;
-    use clap::ValueEnum;
+    use super::*;
 
     fn validate_enum(resource: PdbResource, _expected: PdbResource) {
         assert!(matches!(resource, _expected));
@@ -76,7 +93,7 @@ mod testing {
         let examples = vec!["entry", "Entry", "ENTRY", "EnTrY"];
         let expected = PdbResource::Entry;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
+            validate_enum(PdbResource::from_str(s).unwrap(), expected);
         }
     }
 
@@ -85,7 +102,7 @@ mod testing {
         let examples = vec!["pubmed", "Pubmed", "PUBMED", "pUbMeD"];
         let expected = PdbResource::Pubmed;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
+            validate_enum(PdbResource::from_str(s).unwrap(), expected);
         }
     }
 
@@ -94,7 +111,7 @@ mod testing {
         let examples = vec!["assembly", "Assembly", "ASSEMBLY", "aSsEmBlY"];
         let expected = PdbResource::Assembly;
         for s in examples {
-            validate_enum(PdbResource::from_str(s, true).unwrap(), expected);
+            validate_enum(PdbResource::from_str(s).unwrap(), expected);
         }
     }
 }

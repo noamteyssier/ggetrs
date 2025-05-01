@@ -1,8 +1,7 @@
 use std::fmt;
+use std::str::FromStr;
 
-use clap::ValueEnum;
-
-#[derive(ValueEnum, Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy)]
 pub enum PdbFormat {
     Pdb,
     Cif,
@@ -16,11 +15,21 @@ impl fmt::Display for PdbFormat {
         write!(f, "{repr}")
     }
 }
+impl FromStr for PdbFormat {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "pdb" => Ok(Self::Pdb),
+            "cif" => Ok(Self::Cif),
+            _ => Err(format!("Invalid PDB format: {}", s)),
+        }
+    }
+}
 
 #[cfg(test)]
 mod testing {
-    use super::PdbFormat;
-    use clap::ValueEnum;
+    use super::*;
 
     fn validate_enum(resource: PdbFormat, _expected: PdbFormat) {
         assert!(matches!(resource, _expected));
@@ -37,7 +46,7 @@ mod testing {
         let examples = vec!["pdb", "PDB", "pDb"];
         let expected = PdbFormat::Pdb;
         for s in examples {
-            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected);
+            validate_enum(PdbFormat::from_str(s).unwrap(), expected);
         }
     }
 
@@ -46,7 +55,7 @@ mod testing {
         let examples = vec!["cif", "CIF", "cIf"];
         let expected = PdbFormat::Cif;
         for s in examples {
-            validate_enum(PdbFormat::from_str(s, true).unwrap(), expected);
+            validate_enum(PdbFormat::from_str(s).unwrap(), expected);
         }
     }
 }
