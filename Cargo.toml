@@ -1,7 +1,53 @@
+[workspace]
+resolver = "2"
+members = [
+    "ggetrs-archs4",
+    "ggetrs-blast",
+    "ggetrs-chembl",
+    "ggetrs-enrichr",
+    "ggetrs-ensembl",
+    "ggetrs-info",
+    "ggetrs-ncbi",
+    "ggetrs-pdb",
+    "ggetrs-seq",
+    "ggetrs-string",
+    "ggetrs-ucsc",
+    "ggetrs-uniprot",
+]
+
+[workspace.dependencies]
+ggetrs-archs4 = { path = "./ggetrs-archs4" }
+ggetrs-blast = { path = "./ggetrs-blast" }
+ggetrs-chembl = { path = "./ggetrs-chembl" }
+ggetrs-enrichr = { path = "./ggetrs-enrichr" }
+ggetrs-ensembl = { path = "./ggetrs-ensembl" }
+ggetrs-info = { path = "./ggetrs-info" }
+ggetrs-ncbi = { path = "./ggetrs-ncbi" }
+ggetrs-pdb = { path = "./ggetrs-pdb" }
+ggetrs-seq = { path = "./ggetrs-seq" }
+ggetrs-string = { path = "./ggetrs-string" }
+ggetrs-ucsc = { path = "./ggetrs-ucsc" }
+ggetrs-uniprot = { path = "./ggetrs-uniprot" }
+anyhow = "1"
+bon = "3"
+clap = { version = "4", features = ["derive"] }
+futures = "0.3"
+reqwest = { version = "0.12.5", default-features = false, features = [
+    "json",
+    "multipart",
+    "blocking",
+    "stream",
+    "rustls-tls",
+] }
+pyo3 = { version = "0.24.1", features = ["extension-module", "anyhow"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.21.0", default-features = false }
+
 [package]
 name = "ggetrs"
 version = "0.1.87"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 description = "Efficient querying of biological databases from the command line"
 homepage = "https://noamteyssier.github.io/ggetrs/"
@@ -10,52 +56,70 @@ documentation = "https://docs.rs/ggetrs"
 categories = ["science", "command-line-utilities"]
 keywords = ["bioinformatics", "ensembl", "ncbi", "uniprot", "enrichr"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[lib]
-name = "ggetrs"
-crate-type = ["cdylib", "rlib"]
-
-[features]
-default = ["pyo3/extension-module"]
-
 [dependencies]
-anyhow = "1.0.64"
-bon = "3.0.2"
-chrono = "0.4.22"
-clap = { version = "4.0.18", features = ["derive"] }
-clap_complete = "4.0.3"
-ftp = "3.0.1"
-futures = "0.3.24"
-indicatif = "0.17.5"
-mysql = { version = "26", default-features = false, features = [
-    "minimal",
-    "rustls-tls",
-] }
-polars-core = { version = "0.46", default-features = false }
-polars-io = { version = "0.46", default-features = false, features = [
-    "json",
-    "csv",
-] }
-pyo3 = { version = "0.24.1", features = ["extension-module", "anyhow"] }
-regex = "1.6.0"
-reqwest = { version = "0.12.5", default-features = false, features = [
-    "json",
-    "multipart",
-    "blocking",
-    "stream",
-    "rustls-tls",
-] }
-serde = { version = "1.0.144", features = ["derive"] }
-serde-xml-rs = "0.7"
-serde_json = "1.0.85"
-tokio = { version = "1.21.0", default-features = false }
+anyhow = { workspace = true }
+clap = { workspace = true }
+ggetrs-archs4 = { workspace = true }
+ggetrs-blast = { workspace = true }
+ggetrs-chembl = { workspace = true }
+ggetrs-enrichr = { workspace = true }
+ggetrs-ensembl = { workspace = true }
+ggetrs-info = { workspace = true }
+ggetrs-ncbi = { workspace = true }
+ggetrs-pdb = { workspace = true }
+ggetrs-seq = { workspace = true }
+ggetrs-string = { workspace = true }
+ggetrs-ucsc = { workspace = true }
+ggetrs-uniprot = { workspace = true }
+clap_complete = "4"
 
-[lints.clippy]
-pedantic = { level = "warn", priority = -1 }
-module_inception = "allow"
-module_name_repetitions = "allow"
-missing_panics_doc = "allow"
-missing_errors_doc = "allow"
-cast_possible_truncation = "allow"
-should_implement_trait = "allow"
-float_cmp = "allow"
+
+# # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# [lib]
+# name = "ggetrs"
+# crate-type = ["cdylib", "rlib"]
+
+# [features]
+# default = ["pyo3/extension-module"]
+
+# [dependencies]
+# anyhow = "1.0.64"
+# bon = "3.0.2"
+# chrono = "0.4.22"
+# clap = { version = "4.0.18", features = ["derive"] }
+# clap_complete = "4.0.3"
+# ftp = "3.0.1"
+# futures = "0.3.24"
+# indicatif = "0.17.5"
+# mysql = { version = "26", default-features = false, features = [
+#     "minimal",
+#     "rustls-tls",
+# ] }
+# polars-core = { version = "0.46", default-features = false }
+# polars-io = { version = "0.46", default-features = false, features = [
+#     "json",
+#     "csv",
+# ] }
+# pyo3 = { version = "0.24.1", features = ["extension-module", "anyhow"] }
+# regex = "1.6.0"
+# reqwest = { version = "0.12.5", default-features = false, features = [
+#     "json",
+#     "multipart",
+#     "blocking",
+#     "stream",
+#     "rustls-tls",
+# ] }
+# serde = { version = "1.0.144", features = ["derive"] }
+# serde-xml-rs = "0.7"
+# serde_json = "1.0.85"
+# tokio = { version = "1.21.0", default-features = false }
+
+# [lints.clippy]
+# pedantic = { level = "warn", priority = -1 }
+# module_inception = "allow"
+# module_name_repetitions = "allow"
+# missing_panics_doc = "allow"
+# missing_errors_doc = "allow"
+# cast_possible_truncation = "allow"
+# should_implement_trait = "allow"
+# float_cmp = "allow"

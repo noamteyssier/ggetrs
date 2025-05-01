@@ -1,5 +1,5 @@
-use crate::pdb::types::{PdbFormat, PdbResource};
 use clap::Subcommand;
+use ggetrs_pdb::types::{PdbFormat, PdbResource};
 
 #[derive(Subcommand)]
 pub enum ModPdb {

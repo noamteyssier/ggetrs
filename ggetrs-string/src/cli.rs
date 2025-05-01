@@ -1,14 +1,12 @@
-// use crate::{
-//     string::StringNetworkType,
-//     utils::{match_output, OutputFormat},
-// };
-use std::io::Write;
-
+use crate::{
+    StringNetworkType,
+    utils::{OutputFormat, match_output},
+};
 use anyhow::Result;
 use bon::{Builder, builder};
 use clap::{Parser, Subcommand};
-use ggetrs_string::{OutputFormat, StringNetworkType, match_output};
 use serde_json::{Value, json};
+use std::io::Write;
 
 #[derive(Subcommand)]
 pub enum ModString {

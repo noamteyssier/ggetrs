@@ -1,0 +1,13 @@
+[package]
+name = "ggetrs-seq"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = { workspace = true }
+ggetrs-ensembl = { workspace = true }
+ggetrs-uniprot = { workspace = true }
+pyo3 = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }

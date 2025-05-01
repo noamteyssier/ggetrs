@@ -1,18 +1,15 @@
-use super::{
-    ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModString, ModUcsc, ModUniprot,
-};
-use crate::{
-    blast::types::{BlastDatabase, BlastProgram},
-    ensembl::ENSEMBL_RELEASE_STR,
-};
+use super::{ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc, ModUniprot};
 use clap::{
-    builder::{
-        styling::{AnsiColor, Effects},
-        Styles,
-    },
     Parser, Subcommand,
+    builder::{
+        Styles,
+        styling::{AnsiColor, Effects},
+    },
 };
 use clap_complete::Shell;
+use ggetrs_blast::types::{BlastDatabase, BlastProgram};
+use ggetrs_ensembl::ENSEMBL_RELEASE_STR;
+use ggetrs_string::ModString;
 
 // Configures Clap v3-style help menu colors
 const STYLES: Styles = Styles::styled()

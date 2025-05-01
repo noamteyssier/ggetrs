@@ -1,5 +1,5 @@
-use crate::archs4::Species;
 use clap::Subcommand;
+use ggetrs_archs4::Species;
 
 #[derive(Subcommand)]
 pub enum ModArchS4 {

@@ -1,35 +1,36 @@
+use anyhow::Result;
 use clap::{CommandFactory, Parser};
-use ggetrs::{
-    archs4::{launch_archs4_correlation, launch_archs4_tissue},
-    blast::cli::launch_blast,
-    chembl::launch_chembl_activity,
-    cli::{
-        Cli, Commands, ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModString,
-        ModUcsc, ModUniprot,
-    },
-    enrichr::{launch_enrichr, launch_enrichr_list},
-    ensembl::{
-        launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
-        launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
-        launch_ensembl_search,
-    },
-    info::launch_info,
-    ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons},
-    pdb::{launch_pdb_resource, launch_pdb_structure},
-    seq::launch_seq,
-    string::{
-        launch_string_annotations, launch_string_enrichment, launch_string_homology,
-        launch_string_interactions, launch_string_mapping, launch_string_network,
-        launch_string_ppi_enrichment,
-    },
-    ucsc::launch_ucsc_blat,
-    uniprot::launch_uniprot_query,
-    utils::autocomplete::print_completions,
-    RequestError,
+
+mod cli;
+mod utils;
+use cli::{
+    Cli, Commands, ModArchS4, ModChembl, ModEnrichr, ModEnsembl, ModNcbi, ModPdb, ModUcsc,
+    ModUniprot,
 };
+use ggetrs_archs4::{launch_archs4_correlation, launch_archs4_tissue};
+use ggetrs_blast::cli::launch_blast;
+use ggetrs_chembl::launch_chembl_activity;
+use ggetrs_enrichr::{launch_enrichr, launch_enrichr_list};
+use ggetrs_ensembl::{
+    launch_ensembl_database, launch_ensembl_list_species, launch_ensembl_lookup_id,
+    launch_ensembl_lookup_symbol, launch_ensembl_reference, launch_ensembl_release,
+    launch_ensembl_search,
+};
+use ggetrs_info::launch_info;
+use ggetrs_ncbi::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons};
+use ggetrs_pdb::{launch_pdb_resource, launch_pdb_structure};
+use ggetrs_seq::launch_seq;
+use ggetrs_string::{
+    ModString, launch_string_annotations, launch_string_enrichment, launch_string_homology,
+    launch_string_interactions, launch_string_mapping, launch_string_network,
+    launch_string_ppi_enrichment,
+};
+use ggetrs_ucsc::launch_ucsc_blat;
+use ggetrs_uniprot::launch_uniprot_query;
+use utils::print_completions;
 
 #[allow(clippy::too_many_lines)]
-fn main() -> Result<(), RequestError> {
+fn main() -> Result<()> {
     let cli = Cli::parse();
     match &cli.command {
         Commands::Enrichr(sub) => match sub {

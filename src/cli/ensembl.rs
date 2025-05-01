@@ -1,5 +1,5 @@
-use crate::ensembl::{DataType, ENSEMBL_RELEASE_STR};
 use clap::Subcommand;
+use ggetrs_ensembl::{DataType, ENSEMBL_RELEASE_STR};
 
 #[derive(Subcommand)]
 pub enum ModEnsembl {
