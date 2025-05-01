@@ -1,16 +1,20 @@
-use pyo3::types::PyDictMethods;
-use pyo3::Bound;
-use pyo3::{pyclass, types::PyDict, PyResult, Python};
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
+
+use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "python")]
+use pyo3::{
+    Bound, PyResult, Python, pyclass,
+    types::{PyDict, PyDictMethods},
+};
 
 /// A struct to hold the results of an enrichment test.
 ///
 /// The keys of this `HashMap` will be the background library
 /// tested against and the values will each be an instance of [ResultEnrichr]
 #[derive(Serialize, Deserialize, Debug)]
-#[pyclass]
+#[cfg_attr(feature = "python", pyclass)]
 pub struct ResponseEnrich(pub HashMap<String, Vec<ResultEnrichr>>);
 impl fmt::Display for ResponseEnrich {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -21,6 +25,7 @@ impl fmt::Display for ResponseEnrich {
         )
     }
 }
+#[cfg(feature = "python")]
 impl ResponseEnrich {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
@@ -42,26 +47,17 @@ impl ResponseEnrich {
 ///
 /// Names were taken from <https://maayanlab.cloud/Enrichr/help#api&q=3>
 #[derive(Serialize, Deserialize, Debug)]
-#[pyclass(dict)]
+#[cfg_attr(feature = "python", pyclass(dict, get_all, set_all))]
 #[allow(clippy::unsafe_derive_deserialize)]
 pub struct ResultEnrichr {
-    #[pyo3(get, set)]
     pub rank: usize,
-    #[pyo3(get, set)]
     pub term_name: String,
-    #[pyo3(get, set)]
     pub pvalue: f64,
-    #[pyo3(get, set)]
     pub zscore: f64,
-    #[pyo3(get, set)]
     pub combined_score: f64,
-    #[pyo3(get, set)]
     pub overlapping_genes: Vec<String>,
-    #[pyo3(get, set)]
     pub adj_pvalue: f64,
-    #[pyo3(get, set)]
     pub old_pvalue: f64,
-    #[pyo3(get, set)]
     pub old_adj_pvalue: f64,
 }
 impl fmt::Display for ResultEnrichr {
@@ -73,6 +69,7 @@ impl fmt::Display for ResultEnrichr {
         )
     }
 }
+#[cfg(feature = "python")]
 impl ResultEnrichr {
     pub fn as_pydict<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
