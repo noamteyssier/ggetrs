@@ -4,11 +4,13 @@ use std::fmt;
 use ggetrs_ensembl::types::LookupResponse;
 use ggetrs_ncbi::types::NcbiResults;
 use ggetrs_uniprot::UniprotInfoContainer;
+use serde::{Deserialize, Serialize};
+
+#[cfg(feature = "python")]
 use pyo3::{
     types::{IntoPyDict, PyDict, PyDictMethods},
     {Bound, PyResult},
 };
-use serde::{Deserialize, Serialize};
 
 /// Container for `Info` which aggregates results from multiple databases
 #[derive(Serialize, Deserialize, Debug)]
@@ -22,6 +24,7 @@ impl fmt::Display for InfoContainer {
         )
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for InfoContainer {
     fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let map = PyDict::new(py);
@@ -73,6 +76,7 @@ impl fmt::Display for Info {
         )
     }
 }
+#[cfg(feature = "python")]
 impl<'py> IntoPyDict<'py> for Info {
     fn into_py_dict(self, py: pyo3::Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let map = PyDict::new(py);

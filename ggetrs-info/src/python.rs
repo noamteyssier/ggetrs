@@ -1,10 +1,10 @@
-use super::info;
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use pyo3::{
-    pyfunction,
+    Bound, Python, pyfunction,
     types::{IntoPyDict, PyDict},
-    Bound, Python,
 };
+
+use super::info;
 
 #[pyfunction(name = "info")]
 #[pyo3(signature = (search_terms, species = None, taxon_id = None))]
