@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 anyhow = { workspace = true }
-clap = { workspace = true, optional = true }
 pyo3 = { workspace = true, optional = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
@@ -13,5 +12,4 @@ serde_json = { workspace = true }
 
 [features]
 default = []
-cli = ["dep:clap"]
 python = ["dep:pyo3"]

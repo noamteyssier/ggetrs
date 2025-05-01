@@ -1,9 +1,8 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 
 use anyhow::{Result, bail};
 
 #[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
-#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum BlastProgram {
     #[default]
     Blastn,
@@ -27,6 +26,21 @@ impl Display for BlastProgram {
         )
     }
 }
+impl FromStr for BlastProgram {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        match s {
+            "blastn" => Ok(Self::Blastn),
+            "blastp" => Ok(Self::Blastp),
+            "blastx" => Ok(Self::Blastx),
+            "tblastn" => Ok(Self::Tblastn),
+            "tblastx" => Ok(Self::Tblastx),
+            _ => bail!("Unexpected program: {s}"),
+        }
+    }
+}
+
 impl BlastProgram {
     pub fn from_sequence(sequence: &str) -> Result<Self> {
         let sequence = sequence.to_uppercase();
@@ -58,7 +72,6 @@ impl BlastProgram {
 }
 
 #[derive(Debug, Default, Clone, Copy, Eq, PartialEq)]
-#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum BlastDatabase {
     #[default]
     Nt,
@@ -84,6 +97,22 @@ impl Display for BlastDatabase {
                 Self::Pdbnt => "pdbnt",
             }
         )
+    }
+}
+impl FromStr for BlastDatabase {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "nt" => Ok(Self::Nt),
+            "nr" => Ok(Self::Nr),
+            "refseq_rna" => Ok(Self::RefseqRna),
+            "refseq_protein" => Ok(Self::RefseqProtein),
+            "swissprot" => Ok(Self::Swissprot),
+            "pdbaa" => Ok(Self::Pdbaa),
+            "pdbnt" => Ok(Self::Pdbnt),
+            _ => Err(anyhow::anyhow!("Invalid database name")),
+        }
     }
 }
 impl BlastDatabase {

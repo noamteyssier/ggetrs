@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, str::FromStr};
 
 #[cfg(feature = "python")]
 use pyo3::{
@@ -9,7 +9,6 @@ use serde::Serialize;
 
 /// The currently supported species for tissue expression in `ARCHS4`
 #[derive(Debug, Clone, Default)]
-#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Species {
     #[default]
     Human,
@@ -25,6 +24,17 @@ impl fmt::Display for Species {
                 Self::Mouse => "mouse",
             }
         )
+    }
+}
+impl FromStr for Species {
+    type Err = anyhow::Error;
+
+    fn from_str(species: &str) -> Result<Self, Self::Err> {
+        match species.to_lowercase().as_str() {
+            "human" => Ok(Self::Human),
+            "mouse" => Ok(Self::Mouse),
+            _ => Err(anyhow::anyhow!("invalid species")),
+        }
     }
 }
 impl Species {

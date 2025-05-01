@@ -1,13 +1,13 @@
+use std::str::FromStr;
+
 use super::{
     functions::blast,
     types::{BlastDatabase, BlastProgram},
 };
-use anyhow::{bail, Result};
-use clap::ValueEnum;
+use anyhow::{Result, bail};
 use pyo3::{
-    pyfunction,
+    Bound, Python, pyfunction,
     types::{IntoPyDict, PyDict},
-    Bound, Python,
 };
 
 #[pyfunction(name = "blast")]
@@ -27,7 +27,7 @@ pub fn python_blast<'py>(
 ) -> Result<Bound<'py, PyDict>> {
     let program = match program {
         Some(program_str) => {
-            if let Ok(s) = BlastProgram::from_str(&program_str, true) {
+            if let Ok(s) = BlastProgram::from_str(&program_str) {
                 Some(s)
             } else {
                 bail!("Could not assign blast program from input")
@@ -38,7 +38,7 @@ pub fn python_blast<'py>(
 
     let database = match database {
         Some(database_str) => {
-            if let Ok(s) = BlastDatabase::from_str(&database_str, true) {
+            if let Ok(s) = BlastDatabase::from_str(&database_str) {
                 Some(s)
             } else {
                 bail!("Could not assign blast database from input")
