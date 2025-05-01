@@ -1,5 +1,6 @@
+use std::str::FromStr;
+
 use anyhow::{Result, bail};
-use clap::ValueEnum;
 use pyo3::{
     Bound, PyResult, Python, pyfunction,
     types::{PyList, PyModule, PyModuleMethods},
@@ -18,7 +19,7 @@ pub fn python_ucsc_blat<'py>(
 ) -> Result<Bound<'py, PyList>> {
     // match provided seqtype against known `SeqType`
     let seqtype = if let Some(st) = seqtype {
-        if let Ok(s) = SeqType::from_str(&st, true) {
+        if let Ok(s) = SeqType::from_str(&st) {
             s
         } else {
             bail!(format!(

@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 anyhow = { workspace = true }
-clap = { workspace = true }
 pyo3 = { workspace = true }
 reqwest = { workspace = true }
 serde = { workspace = true }
