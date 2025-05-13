@@ -8,7 +8,7 @@ use cli::{
     ModUniprot,
 };
 use ggetrs_archs4::{launch_archs4_correlation, launch_archs4_tissue};
-use ggetrs_blast::cli::launch_blast;
+use ggetrs_blast::launch_blast;
 use ggetrs_chembl::launch_chembl_activity;
 use ggetrs_enrichr::{launch_enrichr, launch_enrichr_list};
 use ggetrs_ensembl::{

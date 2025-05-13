@@ -1,6 +1,8 @@
-pub mod cli;
 pub mod functions;
+pub mod launch;
 pub mod types;
+
+pub use launch::launch_blast;
 
 #[cfg(feature = "python")]
 mod python;
