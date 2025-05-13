@@ -1,5 +1,5 @@
 use super::{add_list, enrich, functions::add_background};
-use pyo3::{pyfunction, types::PyDict, Bound, PyResult, Python};
+use pyo3::{Bound, PyResult, Python, pyfunction, types::PyDict};
 
 #[pyfunction(name = "enrichr")]
 #[allow(clippy::needless_pass_by_value)]

@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum BlastStatus {

@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::Write;
 
 use super::{add_list, enrich, functions::add_background, get_libraries};
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 
 /// Main entrypoint to launching the `enrich` function for `Enrichr`
 pub fn launch_enrichr(
