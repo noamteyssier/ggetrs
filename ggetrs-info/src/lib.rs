@@ -1,12 +1,12 @@
-mod cli;
 pub mod functions;
+mod launch;
 pub mod types;
 
 #[cfg(feature = "python")]
 mod python;
 
-pub use cli::launch_info;
 pub use functions::info;
+pub use launch::launch_info;
 pub use types::Info;
 
 #[cfg(feature = "python")]

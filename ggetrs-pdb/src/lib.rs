@@ -1,4 +1,4 @@
-mod cli;
 pub mod functions;
+mod launch;
 pub mod types;
-pub use cli::{launch_pdb_resource, launch_pdb_structure};
+pub use launch::{launch_pdb_resource, launch_pdb_structure};

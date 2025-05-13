@@ -7,8 +7,8 @@ pub mod types;
 /// Module for utilities
 mod utils;
 
-/// Module for CLI
-mod cli;
+/// Module for launching functions
+mod launch;
 
-pub use cli::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons};
 pub use functions::{query_ids, query_symbols};
+pub use launch::{launch_ncbi_query_ids, launch_ncbi_query_symbols, launch_ncbi_taxons};
