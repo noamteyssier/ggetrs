@@ -1,0 +1,23 @@
+[package]
+name = "ggetrs-py"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "ggetrs"
+crate-type = ["cdylib"]
+
+[dependencies]
+ggetrs-archs4 = { workspace = true, features = ["python"] }
+ggetrs-blast = { workspace = true, features = ["python"] }
+ggetrs-enrichr = { workspace = true, features = ["python"] }
+ggetrs-ensembl = { workspace = true, features = ["python"] }
+ggetrs-info = { workspace = true, features = ["python"] }
+ggetrs-seq = { workspace = true, features = ["python"] }
+ggetrs-ucsc = { workspace = true, features = ["python"] }
+ggetrs-uniprot = { workspace = true, features = ["python"] }
+pyo3 = { workspace = true }
+
+
+[lints]
+workspace = true

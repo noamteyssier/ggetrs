@@ -21,6 +21,7 @@ members = [
     "ggetrs-info",
     "ggetrs-ncbi",
     "ggetrs-pdb",
+    "ggetrs-py",
     "ggetrs-seq",
     "ggetrs-string",
     "ggetrs-ucsc",
