@@ -12,9 +12,7 @@ requires-python = ">=3.8"
 dynamic = ["version"]
 
 keywords = ["bioinformatics"]
-dependencies = [
-    "requests>=2.32.3",
-]
+dependencies = ["requests>=2.32.3"]
 
 [project.urls]
 Homepage = "https://noamteyssier.github.io/ggetrs"
@@ -24,7 +22,4 @@ Repository = "https://github.com/noamteyssier/ggetrs"
 manifest-path = "./ggetrs-py/Cargo.toml"
 
 [dependency-groups]
-dev = [
-    "pytest>=8.3.5",
-    "ruff>=0.11.9",
-]
+dev = ["pytest>=8.3.5", "ruff>=0.11.9"]

@@ -18,6 +18,5 @@ ggetrs-ucsc = { workspace = true, features = ["python"] }
 ggetrs-uniprot = { workspace = true, features = ["python"] }
 pyo3 = { workspace = true }
 
-
 [lints]
 workspace = true
