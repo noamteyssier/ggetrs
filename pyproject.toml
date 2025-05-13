@@ -6,14 +6,12 @@ build-backend = "maturin"
 name = "ggetrs"
 description = "Biological querying and analysis"
 readme = "README.md"
-authors = [
-  { name = "Noam Teyssier", email = "noam.teyssier@ucsf.edu" }
-]
+authors = [{ name = "Noam Teyssier", email = "noam.teyssier@arcinstitute.org" }]
 license = { file = "LICENSE" }
 requires-python = ">=3.8"
-project.dynamic = ["version"]
+dynamic = ["version"]
 
-keywords = [ "bioinformatics" ]
+keywords = ["bioinformatics"]
 
 [project.urls]
 Homepage = "https://noamteyssier.github.io/ggetrs"
