@@ -1,4 +1,4 @@
-mod cli;
 pub mod functions;
+mod launch;
 pub mod types;
-pub use cli::launch_chembl_activity;
+pub use launch::launch_chembl_activity;
