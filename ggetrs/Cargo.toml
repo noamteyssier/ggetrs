@@ -1,14 +1,14 @@
 [package]
 name = "ggetrs"
 version = "0.1.88"
-edition = "2024"
-license = "MIT"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+repository.homepage = true
+repository.keywords = true
 description = "Efficient querying of biological databases from the command line"
-homepage = "https://noamteyssier.github.io/ggetrs/"
-repository = "https://github.com/noamteyssier/ggetrs"
 documentation = "https://docs.rs/ggetrs"
-categories = ["science", "command-line-utilities"]
-keywords = ["bioinformatics", "ensembl", "ncbi", "uniprot", "enrichr"]
+categories = ["science:bioinformatics", "command-line-utilities"]
 
 [dependencies]
 anyhow = { workspace = true }

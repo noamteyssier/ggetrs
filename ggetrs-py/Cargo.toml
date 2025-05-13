@@ -1,7 +1,14 @@
 [package]
 name = "ggetrs-py"
 version = "0.1.0"
-edition = "2024"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+repository.homepage = true
+repository.categories = true
+repository.keywords = true
+description = "ggetrs submodule for interacting with ggetrs via python"
+documentation = "https://docs.rs/ggetrs-py"
 
 [lib]
 name = "ggetrs"

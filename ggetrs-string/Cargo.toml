@@ -1,7 +1,14 @@
 [package]
 name = "ggetrs-string"
 version = "0.1.0"
-edition = "2024"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+repository.homepage = true
+repository.categories = true
+repository.keywords = true
+description = "ggetrs submodule for querying STRING"
+documentation = "https://docs.rs/ggetrs-string"
 
 [dependencies]
 anyhow = { workspace = true }

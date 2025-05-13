@@ -17,7 +17,16 @@ members = [
     "ggetrs-uniprot",
 ]
 
+[workspace.package]
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/noamteyssier/ggetrs"
+homepage = "https://noamteyssier.github.io/ggetrs/"
+categories = ["science::bioinformatics"]
+keywords = ["ensembl", "ncbi", "uniprot", "enrichr", "string"]
+
 [workspace.dependencies]
+
 ggetrs-archs4 = { version = "0.1.0", path = "./ggetrs-archs4" }
 ggetrs-blast = { version = "0.1.0", path = "./ggetrs-blast" }
 ggetrs-chembl = { version = "0.1.0", path = "./ggetrs-chembl" }
@@ -30,6 +39,7 @@ ggetrs-seq = { version = "0.1.0", path = "./ggetrs-seq" }
 ggetrs-string = { version = "0.1.0", path = "./ggetrs-string" }
 ggetrs-ucsc = { version = "0.1.0", path = "./ggetrs-ucsc" }
 ggetrs-uniprot = { version = "0.1.0", path = "./ggetrs-uniprot" }
+
 anyhow = "1"
 bon = "3"
 clap = { version = "4", features = ["derive"] }
