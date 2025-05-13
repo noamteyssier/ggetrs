@@ -29,18 +29,18 @@ members = [
 ]
 
 [workspace.dependencies]
-ggetrs-archs4 = { path = "./ggetrs-archs4" }
-ggetrs-blast = { path = "./ggetrs-blast" }
-ggetrs-chembl = { path = "./ggetrs-chembl" }
-ggetrs-enrichr = { path = "./ggetrs-enrichr" }
-ggetrs-ensembl = { path = "./ggetrs-ensembl" }
-ggetrs-info = { path = "./ggetrs-info" }
-ggetrs-ncbi = { path = "./ggetrs-ncbi" }
-ggetrs-pdb = { path = "./ggetrs-pdb" }
-ggetrs-seq = { path = "./ggetrs-seq" }
-ggetrs-string = { path = "./ggetrs-string" }
-ggetrs-ucsc = { path = "./ggetrs-ucsc" }
-ggetrs-uniprot = { path = "./ggetrs-uniprot" }
+ggetrs-archs4 = { version = "0.1.0", path = "./ggetrs-archs4" }
+ggetrs-blast = { version = "0.1.0", path = "./ggetrs-blast" }
+ggetrs-chembl = { version = "0.1.0", path = "./ggetrs-chembl" }
+ggetrs-enrichr = { version = "0.1.0", path = "./ggetrs-enrichr" }
+ggetrs-ensembl = { version = "0.1.0", path = "./ggetrs-ensembl" }
+ggetrs-info = { version = "0.1.0", path = "./ggetrs-info" }
+ggetrs-ncbi = { version = "0.1.0", path = "./ggetrs-ncbi" }
+ggetrs-pdb = { version = "0.1.0", path = "./ggetrs-pdb" }
+ggetrs-seq = { version = "0.1.0", path = "./ggetrs-seq" }
+ggetrs-string = { version = "0.1.0", path = "./ggetrs-string" }
+ggetrs-ucsc = { version = "0.1.0", path = "./ggetrs-ucsc" }
+ggetrs-uniprot = { version = "0.1.0", path = "./ggetrs-uniprot" }
 anyhow = "1"
 bon = "3"
 clap = { version = "4", features = ["derive"] }
