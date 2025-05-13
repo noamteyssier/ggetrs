@@ -7,7 +7,7 @@ archs4: archs4_correlate archs4_tissue
 ensembl: ensembl_search ensembl_database ensembl_release
 
 install:
-  cargo install --path .
+  cargo install --path ggetrs
 
 develop:
   maturin develop --release
