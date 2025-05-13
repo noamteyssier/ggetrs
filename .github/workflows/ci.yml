@@ -3,11 +3,10 @@ on: push
 env:
   CARGO_TERM_COLOR: always
 jobs:
-
   ci:
     needs: [build, test, docs, coverage, pytest, fmt, clippy]
     name: CI
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - name: Done
         run: exit 0
@@ -17,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
     steps:
       - uses: actions/checkout@v3
       - name: Install nextest
@@ -49,31 +48,31 @@ jobs:
       - name: Install nextest
         uses: taiki-e/install-action@nextest
       - name: Test
-        run: cargo nextest run --retries 10
+        run: cargo nextest run --retries 10 --workspace
 
   docs:
     name: Docs
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
       - run: cargo doc --verbose
 
   coverage:
     name: Coverage
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
-    - uses: actions/checkout@v3
-    - name: Install nextest
-      uses: taiki-e/install-action@nextest
-    - name: Install LLVM-Coverage
-      uses: taiki-e/install-action@cargo-llvm-cov
-    - name: Measure Coverage
-      run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov nextest --retries 10
-    - name: Upload Coverage
-      uses: codecov/codecov-action@v3
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage.lcov
+      - uses: actions/checkout@v3
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+      - name: Install LLVM-Coverage
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - name: Measure Coverage
+        run: cargo llvm-cov --lib --ignore-filename-regex "cli|python" --lcov --output-path coverage.lcov nextest --retries 10 --workspace
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.lcov
 
   pytest:
     name: Pytest

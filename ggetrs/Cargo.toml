@@ -1,0 +1,31 @@
+[package]
+name = "ggetrs"
+version = "0.1.88"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+description = "Efficient querying of biological databases from the command line"
+documentation = "https://docs.rs/ggetrs"
+categories = ["science:bioinformatics", "command-line-utilities"]
+
+[dependencies]
+anyhow = { workspace = true }
+clap = { workspace = true }
+ggetrs-archs4 = { workspace = true }
+ggetrs-blast = { workspace = true }
+ggetrs-chembl = { workspace = true }
+ggetrs-enrichr = { workspace = true }
+ggetrs-ensembl = { workspace = true }
+ggetrs-info = { workspace = true }
+ggetrs-ncbi = { workspace = true }
+ggetrs-pdb = { workspace = true }
+ggetrs-seq = { workspace = true }
+ggetrs-string = { workspace = true }
+ggetrs-ucsc = { workspace = true }
+ggetrs-uniprot = { workspace = true }
+clap_complete = "4"
+
+[lints]
+workspace = true

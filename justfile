@@ -6,13 +6,13 @@ archs4: archs4_correlate archs4_tissue
 
 ensembl: ensembl_search ensembl_database ensembl_release
 
-install: 
-  cargo install --path .
+install:
+  cargo install --path ggetrs
 
 develop:
   maturin develop --release
 
-build: 
+build:
   cargo build --release
 
 clean:
@@ -23,7 +23,7 @@ doc:
     --verbose
 
 test:
-  cargo nextest run --retries 10
+  cargo nextest run --retries 5 --workspace
 
 pytest:
   pytest -v --reruns 10 --reruns-delay 1
@@ -58,7 +58,7 @@ enrichr_query: build
 archs4_correlate: build
   time target/release/ggetrs archs4 correlate \
     AP2S1
-    
+
 archs4_tissue: build
   time target/release/ggetrs archs4 tissue \
     AP2S1
@@ -81,12 +81,12 @@ ensembl_lookup_id: build
 uniprot_query_ensembl: build
   time target/release/ggetrs uniprot query \
     ENSG00000080298 \
-    ENSG00000042753 
+    ENSG00000042753
 
 uniprot_query_genes: build
   time target/release/ggetrs uniprot query \
     RFX3 \
-    AP2S1 
+    AP2S1
 
 seq_symbol: build
   time target/release/ggetrs seq AP2S1
