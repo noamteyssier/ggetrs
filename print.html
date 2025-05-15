@@ -1,0 +1,987 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js ayu">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ggetrs</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "ayu";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="install.html">Installation</a></li><li class="chapter-item expanded affix "><a href="modules.html">Modules</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Functional</li><li class="chapter-item expanded "><a href="enrichr.html"><strong aria-hidden="true">1.</strong> Enrichr</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="enrichr/enrichr.html"><strong aria-hidden="true">1.1.</strong> Enrichr</a></li><li class="chapter-item expanded "><a href="enrichr/list.html"><strong aria-hidden="true">1.2.</strong> List</a></li></ol></li><li class="chapter-item expanded "><a href="archs4.html"><strong aria-hidden="true">2.</strong> ARCHS4</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="archs4/correlate.html"><strong aria-hidden="true">2.1.</strong> Correlate</a></li><li class="chapter-item expanded "><a href="archs4/tissue.html"><strong aria-hidden="true">2.2.</strong> Tissue</a></li></ol></li><li class="chapter-item expanded "><a href="blast.html"><strong aria-hidden="true">3.</strong> BLAST</a></li><li class="chapter-item expanded "><a href="search.html"><strong aria-hidden="true">4.</strong> Search</a></li><li class="chapter-item expanded "><a href="info.html"><strong aria-hidden="true">5.</strong> Info</a></li><li class="chapter-item expanded "><a href="seq.html"><strong aria-hidden="true">6.</strong> Seq</a></li><li class="chapter-item expanded "><a href="ucsc.html"><strong aria-hidden="true">7.</strong> UCSC</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ucsc/blat.html"><strong aria-hidden="true">7.1.</strong> BLAT</a></li></ol></li><li class="chapter-item expanded "><a href="pdb.html"><strong aria-hidden="true">8.</strong> PDB</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pdb/structure.html"><strong aria-hidden="true">8.1.</strong> Structure</a></li><li class="chapter-item expanded "><a href="pdb/info.html"><strong aria-hidden="true">8.2.</strong> Info</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Database</li><li class="chapter-item expanded "><a href="chembl.html"><strong aria-hidden="true">9.</strong> Chembl</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="chembl/activity.html"><strong aria-hidden="true">9.1.</strong> Activity</a></li></ol></li><li class="chapter-item expanded "><a href="ensembl.html"><strong aria-hidden="true">10.</strong> Ensembl</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ensembl/database.html"><strong aria-hidden="true">10.1.</strong> Database</a></li><li class="chapter-item expanded "><a href="ensembl/lookup-id.html"><strong aria-hidden="true">10.2.</strong> Lookup ID</a></li><li class="chapter-item expanded "><a href="ensembl/lookup-symbol.html"><strong aria-hidden="true">10.3.</strong> Lookup Symbol</a></li><li class="chapter-item expanded "><a href="ensembl/ref.html"><strong aria-hidden="true">10.4.</strong> Ref</a></li><li class="chapter-item expanded "><a href="ensembl/release.html"><strong aria-hidden="true">10.5.</strong> Release</a></li><li class="chapter-item expanded "><a href="ensembl/search.html"><strong aria-hidden="true">10.6.</strong> Search</a></li><li class="chapter-item expanded "><a href="ensembl/species.html"><strong aria-hidden="true">10.7.</strong> Species</a></li></ol></li><li class="chapter-item expanded "><a href="uniprot.html"><strong aria-hidden="true">11.</strong> Uniprot</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="uniprot/query.html"><strong aria-hidden="true">11.1.</strong> Query</a></li></ol></li><li class="chapter-item expanded "><a href="ncbi.html"><strong aria-hidden="true">12.</strong> NCBI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ncbi/taxons.html"><strong aria-hidden="true">12.1.</strong> Taxons</a></li><li class="chapter-item expanded "><a href="ncbi/query_ids.html"><strong aria-hidden="true">12.2.</strong> Query IDs</a></li><li class="chapter-item expanded "><a href="ncbi/query_symbols.html"><strong aria-hidden="true">12.3.</strong> Query Symbols</a></li></ol></li><li class="chapter-item expanded "><li class="part-title">Quality of Life</li><li class="chapter-item expanded "><a href="autocomplete.html"><strong aria-hidden="true">13.</strong> Autocomplete</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="faq.html">FAQ</a></li><li class="chapter-item expanded affix "><a href="citations.html">Citations</a></li><li class="chapter-item expanded affix "><a href="contributing.html">Contributing</a></li><li class="chapter-item expanded affix "><a href="bug_reporting.html">Bug Reporting</a></li><li class="chapter-item expanded affix "><a href="disclaimer.html">Disclaimer</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">ggetrs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="-ggetrs-"><a class="header" href="#-ggetrs-">[ <code>ggetrs</code> ]</a></h1>
+<p><a href="https://github.com/noamteyssier/ggetrs/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed" /></a>
+<a href="https://github.com/noamteyssier/ggetrs/actions"><img src="https://github.com/noamteyssier/ggetrs/workflows/CI/badge.svg" alt="actions status" /></a>
+<a href="https://codecov.io/gh/noamteyssier/ggetrs"><img src="https://codecov.io/gh/noamteyssier/ggetrs/branch/main/graph/badge.svg?token=CEQWH6MMCV" alt="codecov" /></a>
+<a href="https://crates.io/crates/ggetrs"><img src="https://img.shields.io/crates/d/ggetrs?color=orange&amp;label=crates.io" alt="Crates.io" /></a>
+<a href="https://docs.rs/ggetrs/latest/ggetrs/"><img src="https://img.shields.io/docsrs/ggetrs?color=green&amp;label=docs.rs" alt="docs.rs" /></a></p>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p><code>ggetrs</code> is a free, open-source command-line tool that enables efficient querying
+of genomic databases.
+It consists of a collection of separate but interoperable modules, each designed
+to facilitate one type of database querying in a single line of code.</p>
+<p>This is a rust reimplentation of the original python-based program
+<a href="https://github.com/pachterlab/gget"><code>gget</code></a> and was rewritten to take advantage
+of rust's powerful HTTP and asynchronous functionality for a faster user experience.</p>
+<p>There are some minor syntactic changes between function calls from the original <code>gget</code>
+and a description for each tool is provided on the <a href="https://noamteyssier.github.io/ggetrs/modules.html">modules page</a>.</p>
+<p>This tool is written fully in rust - but allows for a python interface using <a href="https://github.com/PyO3/pyo3">pyo3</a>.</p>
+<p>If you have questions please check out the <a href="./faq.html">FAQ</a></p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p><code>ggetrs</code> can be installed easily using <code>cargo</code>.</p>
+<p>See alternative methods and details for <a href="./install.html">python installation</a></p>
+<pre><code class="language-bash">cargo install ggetrs
+</code></pre>
+<h2 id="module-overview"><a class="header" href="#module-overview">Module Overview</a></h2>
+<p>Here is a <a href="./modules.html">list of currently supported modules</a></p>
+<h2 id="external-links"><a class="header" href="#external-links">External Links</a></h2>
+<ul>
+<li><a href="https://github.com/noamteyssier/ggetrs">Github Repo</a></li>
+<li><a href="https://crates.io/crates/ggetrs">crates.io</a></li>
+<li><a href="https://docs.rs/ggetrs">docs.rs</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation-1"><a class="header" href="#installation-1">Installation</a></h1>
+<h2 id="installing-via-cargo"><a class="header" href="#installing-via-cargo">Installing via Cargo</a></h2>
+<p>This can be installed easily through the rust package manager <code>cargo</code>.
+If you have never used rust before it is easily installed with a single command <a href="https://rustup.rs/">here</a>.</p>
+<pre><code class="language-bash"># install ggetrs from crates.io
+cargo install ggetrs
+</code></pre>
+<h2 id="installing-via-github"><a class="header" href="#installing-via-github">Installing via Github</a></h2>
+<pre><code class="language-bash">git clone https://github.com/noamteyssier/ggetrs
+cd ggetrs
+cargo install --path .
+</code></pre>
+<h2 id="installing-the-python-module"><a class="header" href="#installing-the-python-module">Installing the Python Module</a></h2>
+<p>If you are also interested in using the python interface for <code>ggetrs</code> you will first need to install <a href="https://github.com/PyO3/maturin"><code>maturin</code></a> and then install <code>ggetrs</code>.</p>
+<pre><code class="language-bash"># clone the repo
+git clone https://github.com/noamteyssier/ggetrs
+cd ggetrs
+
+# install maturin
+pip install maturin
+
+# install ggetrs to your current environment
+maturin develop
+</code></pre>
+<h3 id="no-conda--venv-environment"><a class="header" href="#no-conda--venv-environment">No conda / venv environment</a></h3>
+<p>Currently <code>maturin develop</code> requires a conda or venv environment to be active before installing a python module, but you can install it manually by first building the wheel then manually pip installing the wheel.</p>
+<pre><code class="language-bash"># clone the repo
+git clone https://github.com/noamteyssier/ggetrs
+cd ggetrs
+
+# install maturin
+pip install maturin
+
+# build the python wheel
+maturin build
+
+# install the python wheel manually
+pip install target/wheels/*.whl
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="modules"><a class="header" href="#modules">Modules</a></h1>
+<p><code>ggetrs</code> currently consists of the following modules:</p>
+<h2 id="functional"><a class="header" href="#functional">Functional</a></h2>
+<p>These modules perform single line utility functions like performing a gene-set enrichment analysis or returning the PDB structure of an input protein.</p>
+<table><thead><tr><th>Module Name</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./enrichr.html"><code>enrichr</code></a></td><td>Perform an enrichment analysis on a list of genes using <a href="https://maayanlab.cloud/Enrichr">Enrichr</a></td></tr>
+<tr><td><a href="./archs4.html"><code>archs4</code></a></td><td>Find the most correlated genes to a gene of interest or find the gene's tissue expression atlas using <a href="https://maayanlab.cloud/archs4">ARCHS4</a></td></tr>
+<tr><td><a href="./blast.html"><code>blast</code></a></td><td>BLAST a nucleotide or amino acid sequence to any <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> database</td></tr>
+<tr><td><a href="./search.html"><code>search</code></a></td><td>Fetch genes and transcripts from <a href="https://ensembl.org">Ensembl</a> using free-form search terms.</td></tr>
+<tr><td><a href="./info.html"><code>info</code></a></td><td>Fetch extensive gene and transcript metadata from <a href="https://ensembl.org">Ensembl</a>, <a href="https://uniprot.org">Uniprot</a>, and <a href="https://ncbi.nlm.nih.gov">NCBI</a>.</td></tr>
+<tr><td><a href="./seq.html"><code>seq</code></a></td><td>Fetch nucleotide or amino acid sequences of genes or transcripts from <a href="https://ensembl.org">Ensembl</a> or <a href="https://uniprot.org">Uniprot</a> respectively.</td></tr>
+<tr><td><a href="./ucsc.html"><code>ucsc</code></a></td><td>Perform a <a href="https://genome.ucsc.edu/cgi-bin/hgBlat">BLAT</a> search using the UCSC Genome Browser.</td></tr>
+<tr><td><a href="./pdb.html"><code>pdb</code></a></td><td>Get structure and metadata of a protein from the <a href="https://rcsb.org">RCSB Protein Data Bank</a></td></tr>
+</tbody></table>
+<h2 id="database-queries"><a class="header" href="#database-queries">Database Queries</a></h2>
+<p>These modules perform descriptive searches by querying databases directly using their publicly available APIs.</p>
+<table><thead><tr><th>Module Name</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./chembl.html"><code>chembl</code></a></td><td>Perform a bioactivity search for any protein of interest using <a href="https://ebi.ac.uk/chembl">Chembl</a></td></tr>
+<tr><td><a href="./ensembl.html"><code>ensembl</code></a></td><td>Perform <a href="https://ensembl.org">Ensembl</a> related queries from their public <a href="https://rest.ensembl.org">API</a>.</td></tr>
+<tr><td><a href="./uniprot.html"><code>uniprot</code></a></td><td>Query <a href="https://uniprot.org">Uniprot</a> directly for gene/protein information.</td></tr>
+<tr><td><a href="./ncbi.html"><code>ncbi</code></a></td><td>Query <a href="https://ncbi.nlm.nih.gov">NCBI</a> directly for gene/protein information.</td></tr>
+</tbody></table>
+<h2 id="quality-of-life"><a class="header" href="#quality-of-life">Quality of Life</a></h2>
+<p>These modules improve the quality of life of anybody using a terminal.</p>
+<table><thead><tr><th>Module Name</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./autocomplete.html"><code>autocomplete</code></a></td><td>Generates an autocompletion file for your shell of choice for a better terminal experience.</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="enrichr"><a class="header" href="#enrichr">Enrichr</a></h1>
+<p>This module allows for gene set enrichment analysis using <a href="https://maayanlab.cloud/Enrichr">Enrichr</a>
+as well as other methods to explore gene sets provided within the service.</p>
+<p>This tool currently has two submodules.</p>
+<table><thead><tr><th>Module</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./enrichr/enrichr.html"><code>enrichr</code></a></td><td>Performs a gene-set enrichment analysis</td></tr>
+<tr><td><a href="./enrichr/list.html"><code>list</code></a></td><td>Lists and explores available background libraries</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="enrichr-1"><a class="header" href="#enrichr-1">Enrichr</a></h1>
+<p>Perform an enrichment analysis on a list of genes using <a href="https://maayanlab.cloud/Enrichr">Enrichr</a>.</p>
+<p>This requires at minimum a database name (listed <a href="https://maayanlab.cloud/Enrichr/#libraries">here</a>)
+and any number of gene symbols to perform enrichment analysis on.</p>
+<h2 id="library-shorthands"><a class="header" href="#library-shorthands">Library Shorthands</a></h2>
+<p>Some shorthands for the library are built into the program for convenience.
+These can be used in the command line interface or in the python interface.</p>
+<table><thead><tr><th>Alias</th><th>Library</th></tr></thead><tbody>
+<tr><td>pathway</td><td>KEGG_2021_Human</td></tr>
+<tr><td>transcription</td><td>ChEA_2016</td></tr>
+<tr><td>ontology</td><td>GO_Biological_Processes_2021</td></tr>
+<tr><td>diseases_drugs</td><td>GWAS_Catalog_2019</td></tr>
+<tr><td>celltypes</td><td>PangloaDB_Augmented_2021</td></tr>
+<tr><td>kinase_interactions</td><td>KEA_2015</td></tr>
+</tbody></table>
+<h2 id="arguments"><a class="header" href="#arguments">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Library</td><td><code>-l</code></td><td><code>--library</code></td><td>a <a href="enrichr/enrichr.html#library-shorthands">library shorthand</a> or any <a href="https://maayanlab.cloud/Enrichr/#libraries">Enrichr library</a></td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface"><a class="header" href="#command-line-interface">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Perform an enrichment analysis using Enrichr
+ggetrs enrichr enrichr -l GO_Biological_Process_2021 AP2S1 NSD1 RFX3
+
+# Perform an enrichment analysis with a shorthand library
+# this is equivalent to the above search
+ggetrs enrichr enrichr -l ontology AP2S1 NSD1 RFX3
+
+# Perform an enrichment analysis on pathway
+ggetrs enrichr enrichr -l pathway AP2S1 NSD1 RFX3
+</code></pre>
+<h2 id="python"><a class="header" href="#python">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# Search using the ontology shorthand
+ggetrs.enrichr(&quot;ontology&quot;, [&quot;AP2S1&quot;, &quot;RFX3&quot;, &quot;NSD1&quot;])
+
+# Search using the kinase_interactions shorthand
+ggetrs.enrichr(&quot;kinase_interactions&quot;, [&quot;AP2S1&quot;, &quot;RFX3&quot;, &quot;NSD1&quot;])
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="list"><a class="header" href="#list">List</a></h1>
+<p>Lists available libraries and their statistics available on <a href="https://maayanlab.cloud/Enrichr">Enrichr</a>.</p>
+<h2 id="arguments-1"><a class="header" href="#arguments-1">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Minimal</td><td><code>-m</code></td><td><code>--minimal</code></td><td>Return only library names in results</td></tr>
+<tr><td>List Categories</td><td><code>-t</code></td><td><code>--list-categories</code></td><td>List the categorization of libraries</td></tr>
+<tr><td>Categories</td><td><code>-c</code></td><td><code>--category</code></td><td>Filter libraries with a specified category ID</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<pre><code class="language-bash"># List all available libraries and their metadata
+ggetrs enrichr list
+
+# List all available libraries and their metadata in a minimal format
+ggetrs enrichr list -m
+
+# List the categorization of libraries
+ggetrs enrichr list -t
+
+# Filter libraries an their metadata that belong to a category ID
+# example category ID 2 = pathways
+ggetrs enrichr list -c 2
+
+# Filter libraries and print in a minimal format
+ggetrs enrichr list -c 2 -m
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="archs4"><a class="header" href="#archs4">ARCHS4</a></h1>
+<p>Queries gene-specific information from the <a href="https://maayanlab.cloud/archs4">ARCHS4</a>
+database.</p>
+<p>This tool currently has two submodules.</p>
+<table><thead><tr><th>Module</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./archs4/correlate.html"><code>correlate</code></a></td><td>Performs a gene-correlation analysis</td></tr>
+<tr><td><a href="./archs4/tissue.html"><code>tissue</code></a></td><td>Performs a tissue-enrichment analysis</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="correlate"><a class="header" href="#correlate">Correlate</a></h1>
+<p>Performs a gene-correlation analysis using <a href="https://maayanlab.cloud/archs4">ARCHS4</a>.</p>
+<h2 id="arguments-2"><a class="header" href="#arguments-2">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Count</td><td><code>-c</code></td><td><code>--count</code></td><td>number of values to recover [default: 100]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-1"><a class="header" href="#command-line-interface-1">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Perform a gene-correlation analysis with ARCHS4
+ggetrs archs4 correlate AP2S1
+
+# Perform a gene-correlation analysis with ARCHS4
+# But only return the top 10 results
+ggetrs archs4 correlate -c 10 AP2S1
+</code></pre>
+<h2 id="python-1"><a class="header" href="#python-1">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# Perform a gene-correlation analysis for AP2S1
+# and return the top 10 results
+ggetrs.archs4.correlate(&quot;AP2S1&quot;, 10)
+
+# Perform a gene-correlation analysis for AP2S1
+# and return the top 100 results
+ggetrs.archs4.correlate(&quot;AP2S1&quot;, 100)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tissue"><a class="header" href="#tissue">Tissue</a></h1>
+<p>Performs a tissue-correlation analysis using <a href="https://maayanlab.cloud/archs4">ARCHS4</a>.</p>
+<h2 id="arguments-3"><a class="header" href="#arguments-3">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>species of organism to recover [default: human] [possible values: human, mous]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-2"><a class="header" href="#command-line-interface-2">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Find tissue-level expression for AP2S1 in Humans
+ggetrs archs4 tissue AP2S1
+
+# Find tissue-level expression for AP2S1 in Mice
+ggetrs archs4 tissue -s mouse AP2S1
+</code></pre>
+<h2 id="python-2"><a class="header" href="#python-2">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# perform a tissue-correlation analysis for AP2S1 in Humans
+ggetrs.archs4.tissue(&quot;AP2S1&quot;, &quot;human&quot;)
+
+# perform a tissue-correlation analysis for AP2S1 in Mice
+ggetrs.archs4.tissue(&quot;AP2S1&quot;, &quot;mouse&quot;)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="blast"><a class="header" href="#blast">BLAST</a></h1>
+<h2 id="help"><a class="header" href="#help">Help</a></h2>
+<p>The BLAST program can be determined from the provided input (will assign
+either <code>blastn</code> or <code>blastp</code>) and the appropriate database will be used:
+<code>nt</code> and <code>nr</code> respectively.</p>
+<p>You may override these though by using their argument flags.
+Keep in mind that there is no logic built into validating your inputs.
+All non-default arguments will be passed to the BLAST API as is.</p>
+<h2 id="arguments-4"><a class="header" href="#arguments-4">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Program</td><td><code>-p</code></td><td><code>--program</code></td><td>blast program to use [possible values: blastn, blastp, blastx, tblastn, tblastx]</td></tr>
+<tr><td>Database</td><td><code>-d</code></td><td><code>--database</code></td><td>blast database to use [possible values: nt, nr, refseq-rna, refseq-protein, swissprot, pdbaa, pdbnt]</td></tr>
+<tr><td>Limit</td><td><code>-l</code></td><td><code>--limit</code></td><td>Number of hits to return [default: 50]</td></tr>
+<tr><td>Expect</td><td><code>-e</code></td><td><code>--expect</code></td><td>Minimum expected value to consider [default: 10.0]</td></tr>
+<tr><td>Low Complexity Filter</td><td><code>-f</code></td><td><code>--low-comp-filter</code></td><td>Include flag to use a complexity filter [default = false]</td></tr>
+<tr><td>MEGABLAST</td><td><code>-m</code></td><td><code>--megablast</code></td><td>Whether to use MEGABLAST (default = false)</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-3"><a class="header" href="#command-line-interface-3">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Perform BLAST with a nucleotide sequence
+ggetrs blast ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG
+
+# Perform BLAST with an amino acid sequence
+ggetrs blast MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE
+
+# Perform BLAST with an amino acid sequence using the PDBAA database
+ggetrs blast -d pdbaa MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE
+</code></pre>
+<h2 id="python-3"><a class="header" href="#python-3">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# Perform BLAST with a nucleotide sequence
+ggetrs.blast(
+  &quot;ATACTCAGTCACACAAGCCATAGCAGGAAACAGCGAGCTTGCAGCCTCACCGACGAGTCTCAACTAAAAGGGACTCCCGGAGCTAGGGGTGGGGACTCGGCCTCACACAGTGAGTGCCGG&quot;
+)
+
+# Perform BLAST with an amino acid sequence
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;
+)
+
+# Perform BLAST with an amino acid sequence using the PDBAA database
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;,
+  database = &quot;pdbaa&quot;
+)
+
+# Perform BLAST with an amino acid sequence using the PDBAA database with a low complexity filter and a limit
+ggetrs.blast(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;,
+  database = &quot;pdbaa&quot;,
+  limit = 10,
+  low_comp_filter=True,
+)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="search"><a class="header" href="#search">Search</a></h1>
+<p>Searches through descriptions on ENSEMBL using free-form search terms.</p>
+<h2 id="arguments-5"><a class="header" href="#arguments-5">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Database</td><td><code>-d</code></td><td><code>--database</code></td><td>Name of Ensembl database to use.</td></tr>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>Species used in database [default: homo_sapiens]</td></tr>
+<tr><td>Database Type</td><td><code>-t</code></td><td><code>--db-type</code></td><td>Database type specified by Ensembl [default: core]</td></tr>
+<tr><td>Release</td><td><code>-r</code></td><td><code>--release</code></td><td>release version number to use for database</td></tr>
+<tr><td>Assembly</td><td><code>-a</code></td><td><code>--assembly</code></td><td>Assembly to use for species [default: 38]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-4"><a class="header" href="#command-line-interface-4">Command Line Interface</a></h2>
+<pre><code class="language-bash"># searches Ensembl for all genes with `clathrin` in the description
+ggetrs search clathrin
+
+# searches Ensembl for all genes with `clathrin` OR `heavy` in the description
+ggetrs search clathrin heavy
+
+# searchs Ensembl for all genes with `clathrin heavy` in the description
+ggetrs search &quot;clathrin heavy&quot;
+</code></pre>
+<h2 id="python-4"><a class="header" href="#python-4">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# searches Ensembl for all genes with `clathrin` in the description
+ggetrs.search([&quot;clathrin&quot;])
+
+# searches Ensembl for all genes with `clathrin` or `heavy` in the description
+ggetrs.search([&quot;clathrin&quot;, &quot;heavy&quot;])
+
+# searchs Ensembl for all genes with `clathrin heavy` in the description
+ggetrs.search([&quot;clathrin heavy&quot;])
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="info"><a class="header" href="#info">Info</a></h1>
+<p>Fetch extensive gene and transcript metadata from <a href="https://ensembl.org">Ensembl</a>,
+<a href="https://uniprot.org">Uniprot</a>, and <a href="https://ncbi.nlm.nih.gov">NCBI</a>.</p>
+<h2 id="arguments-6"><a class="header" href="#arguments-6">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>Species name to use: currently this MUST match the taxon_id [default: homo_sapiens]</td></tr>
+<tr><td>Taxon ID</td><td><code>-t</code></td><td><code>--taxon-id</code></td><td>Taxon ID to use: currently this MUST match the taxon_id [default: homo_sapiens]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-usage"><a class="header" href="#command-line-usage">Command Line Usage</a></h2>
+<pre><code class="language-bash"># Queries information for single term
+ggetrs info AP2S1
+
+# Queries information for multiple terms
+ggetrs info AP2S1 RFX3 NSD1
+</code></pre>
+<h2 id="python-5"><a class="header" href="#python-5">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# Queries information for single term
+ggetrs.info([&quot;AP2S1&quot;])
+
+# Queries information for multiple terms
+ggetrs.info([&quot;AP2S1&quot;, &quot;RFX3&quot;, &quot;NSD1&quot;])
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="seq"><a class="header" href="#seq">Seq</a></h1>
+<p>Returns nucleotide or amino acid sequence for a provided ensembl ID or gene symbol.</p>
+<p>If gene symbols are provided instead of ensembl IDs for nucleotide sequences
+those symbols will first be matched to an ensembl ID with the same functionality
+of <a href="./ensembl/lookup-symbol.html"><code>ggetrs ensembl lookup-symbol</code></a>.</p>
+<p>All returned sequences are guaranteed to be in the same order as provided ids/symbols.</p>
+<h2 id="arguments-7"><a class="header" href="#arguments-7">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Translate</td><td><code>-t</code></td><td><code>--translate</code></td><td>Return the amino acid sequence instead of nucleotide sequence</td></tr>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>Species to specify when not using an Ensembl ID [default: homo_sapiens]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-5"><a class="header" href="#command-line-interface-5">Command Line Interface</a></h2>
+<pre><code class="language-bash"># recover nucleotide sequence for AP2S1 (ENSG00000042753)
+ggetrs seq ENSG00000042753
+
+# recover nucleotide sequence for AP2S1
+ggetrs seq AP2S1
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753) and NSD1
+ggetrs seq ENSG00000042753 NSD1
+
+# recover amino acid sequence for AP2S1 (ENSG00000042753)
+ggetrs seq -t ENSG00000042753
+
+# recover amino acid sequence for AP2S1
+ggetrs seq -t AP2S1
+
+# recover amino acid sequences for AP2S1 and NSD1 and RFX3
+ggetrs seq -t AP2S1 NSD1 RFX3
+</code></pre>
+<h2 id="python-6"><a class="header" href="#python-6">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753)
+ggetrs.seq([&quot;ENSG00000042753&quot;])
+
+# recover nucleotide sequence for AP2S1
+ggetrs.seq([&quot;AP2S1&quot;])
+
+# recover nucleotide sequence for AP2S1 (ENSG00000042753) and NSD1
+ggetrs.seq([&quot;ENSG00000042753&quot;, &quot;NSD1&quot;])
+
+# recover amino acid sequence for AP2S1 (ENSG00000042753)
+ggetrs.seq([&quot;ENSG00000042753&quot;], translate=True)
+
+# recover amino acid sequence for AP2S1
+ggetrs.seq([&quot;AP2S1&quot;], translate=True)
+
+# recover amino acid sequences for multiple transcripts
+ggetrs.seq([&quot;AP2S1&quot;, &quot;NSD1&quot;, &quot;RFX3&quot;], translate=True)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ucsc"><a class="header" href="#ucsc">UCSC</a></h1>
+<p>This module is used to interact with the UCSC genome browser.
+Currently there is only the BLAT API which is implemented.</p>
+<table><thead><tr><th>Module</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./ucsc/blat.html"><code>blat</code></a></td><td>Performs a BLAT sequence search on a provided database</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="blat"><a class="header" href="#blat">BLAT</a></h1>
+<p>Perform a <a href="https://genome.ucsc.edu/cgi-bin/hgBlat">BLAT</a> search using the UCSC Genome Browser.</p>
+<h2 id="arguments-8"><a class="header" href="#arguments-8">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Sequence Type</td><td><code>-s</code></td><td><code>--seqtype</code></td><td>Specify the structure format [default: dna] [possible values: dna, protein, translated-rna, translated-dna]</td></tr>
+<tr><td>Database Name</td><td><code>-d</code></td><td><code>--db-name</code></td><td>Specifies the database name to query [default: hg38]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-6"><a class="header" href="#command-line-interface-6">Command Line Interface</a></h2>
+<pre><code class="language-bash"># query UCSC genome browser for the first 121 bp of AP2S1
+ggetrs ucsc blat GGGCCCTACAACTGCACCCTGAGCCGGAGCTGCCCAGTCGCCGCGGGACCGGGGCCGCTGGGGTCTGGACGGGGGTCGCCATGGTAACGGGGGAGCGCTACGCCGGGGACTGGCGGAGGG
+</code></pre>
+<h2 id="python-7"><a class="header" href="#python-7">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# query UCSC genome browser for the first 121 bp of AP2S1
+ggetrs.ucsc.blat(
+  &quot;GGGCCCTACAACTGCACCCTGAGCCGGAGCTGCCCAGTCGCCGCGGGACCGGGGCCGCTGGGGTCTGGACGGGGGTCGCCATGGTAACGGGGGAGCGCTACGCCGGGGACTGGCGGAGGG&quot;
+)
+
+# query UCSC genome browser with amino acid sequence
+ggetrs.ucsc.blat(
+  &quot;MIRFILIQNRAGKTRLAKWYMQFDDDEKQKLIEEVHAVVTVRDAKHTNFVEFRNFKIIYRRYAGLYFCICVDVNDNNLAYLEAIHNFVEVLNEYFHNVCELDLVFNFYKVYTVVDEMFLAGEIRETSQTKVLKQLLMLQSLE&quot;,
+  seqtype=&quot;protein&quot;
+)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pdb"><a class="header" href="#pdb">PDB</a></h1>
+<p>Get structure and metadata of a protein from the <a href="https://rcsb.org">RCSB Protein Data Bank</a></p>
+<p>There are currently two submodules in PDB:</p>
+<table><thead><tr><th>Module</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./pdb/structure.html"><code>structure</code></a></td><td>Retrieves PDB structure for a provided RCSB ID</td></tr>
+<tr><td><a href="./pdb/info.html"><code>info</code></a></td><td>Retrieves Protein information for a provided RCSB ID</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="structure"><a class="header" href="#structure">Structure</a></h1>
+<p>Retrieves pdb structure for a provided ID</p>
+<h2 id="arguments-9"><a class="header" href="#arguments-9">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Header Only</td><td><code>-m</code></td><td><code>--header-only</code></td><td>Retrieve only the PDB Header</td></tr>
+<tr><td>Format</td><td><code>-f</code></td><td><code>--format</code></td><td>Specify the structure format [default: pdb] [possible values : pdb, cif]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<pre><code class="language-bash"># return the pdb structure for AP2S1 (6URI)
+ggetrs pdb structure 6URI
+
+# return the pdb structure for AP2S1 (6URI) as a `.cif`
+ggetrs pdb structure -f cif 6URI
+
+# return the header for AP2S1 (6URI)
+ggetrs pdb structure -m 6URI
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="info-1"><a class="header" href="#info-1">Info</a></h1>
+<p>Retrieves pdb information for a provided ID and resource</p>
+<h2 id="arguments-10"><a class="header" href="#arguments-10">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Resource</td><td><code>-r</code></td><td><code>--resource</code></td><td>Specify the structure format [default: entry] [possible values: entry, pubmed, assembly, branched-entity, nonpolymer-entity, polymer-entity, uniprot, branched-entity-instance, polymer-entity-instance, nonpolymer-entity-instance]</td></tr>
+<tr><td>Identifier</td><td><code>-i</code></td><td><code>--identifier</code></td><td>Specifies the Entry or Chain Identifier</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-7"><a class="header" href="#command-line-interface-7">Command Line Interface</a></h2>
+<pre><code class="language-bash"># return information for AP2S1 (6URI)
+ggetrs pdb info 6URI
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="chembl"><a class="header" href="#chembl">Chembl</a></h1>
+<p>This module is used to query the <a href="https://ebi.ac.uk/chembl">Chembl</a> database.</p>
+<p>Currently the query-APIs available are:</p>
+<table><thead><tr><th>Module</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./chembl/activity.html"><code>activity</code></a></td><td>Queries for checmical bioactivity for a provided protein-target.</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="activity"><a class="header" href="#activity">Activity</a></h1>
+<p>Queries chemical bioactivity for a provided protein target and return all small molecules.</p>
+<h2 id="arguments-11"><a class="header" href="#arguments-11">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Limit</td><td><code>-l</code></td><td><code>--limit</code></td><td>Number of results to return [default: 500]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
+<pre><code class="language-bash"># Query the Chembl database for small molecules with bioactivity targeting NSD1
+ggetrs chembl activity NSD1
+
+# Query the Chembl database for the top 20 bioactive molecules for NSD1
+ggetrs chembl activity -l 20 NSD1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ensembl"><a class="header" href="#ensembl">Ensembl</a></h1>
+<p>This is a collection of modules to query the ensembl database.</p>
+<p>Currently there are the following APIs covered:</p>
+<table><thead><tr><th>Submodule</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./ensembl/search.html"><code>search</code></a></td><td>Searches through descriptions on ENSEMBL</td></tr>
+<tr><td><a href="./ensembl/database.html"><code>database</code></a></td><td>Prints all available databases on Ensembl's SQL database</td></tr>
+<tr><td><a href="./ensembl/lookup-id.html"><code>lookup-id</code></a></td><td>Lookup information for genes/transcripts providing ensembl ids</td></tr>
+<tr><td><a href="./ensembl/lookup-symbol.html"><code>lookup-symbol</code></a></td><td>Lookup information for genes/transcripts providing symbols and species</td></tr>
+<tr><td><a href="./ensembl/release.html"><code>release</code></a></td><td>Retrieves the latest ensembl release version</td></tr>
+<tr><td><a href="./ensembl/ref.html"><code>ref</code></a></td><td>Retrieves reference files from Ensembl FTP site</td></tr>
+<tr><td><a href="./ensembl/species.html"><code>species</code></a></td><td>Retrieves the list of species from ENSEMBL FTP site</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="database"><a class="header" href="#database">Database</a></h1>
+<p>Prints all available databases on Ensembl's SQL server.</p>
+<p>This is used if you are interested in querying a specific database and can be passed into <a href="ensembl/./search.html"><code>ggetrs search</code></a>.</p>
+<h2 id="arguments-12"><a class="header" href="#arguments-12">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Filter</td><td><code>-f</code></td><td><code>--filter</code></td><td>Provides a substring filter to only return databases which contain the substring</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-8"><a class="header" href="#command-line-interface-8">Command Line Interface</a></h2>
+<pre><code class="language-bash"># show all databases in the SQL server
+ggetrs ensembl database
+
+# filter for databases with the `sapiens` substring
+ggetrs ensembl database -f sapiens
+
+# filter for databases with the `cerevisiae` substring
+ggetrs ensembl database -f cerevisiae
+</code></pre>
+<h2 id="python-8"><a class="header" href="#python-8">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# show all databases in the SQL server
+ggetrs.ensembl.database()
+
+# filter for databases with the `sapiens` substring
+ggetrs.ensembl.database(&quot;sapiens&quot;)
+
+# filter for databases with the `cerevisiae` substring
+ggetrs.ensembl.database(&quot;cerevisiae&quot;)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lookup-id"><a class="header" href="#lookup-id">Lookup-Id</a></h1>
+<p>Lookup information for genes/transcripts providing ensembl ids</p>
+<h2 id="arguments-13"><a class="header" href="#arguments-13">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Names</td><td><code>-n</code></td><td><code>--names</code></td><td>Returns a minimal output of only the found gene names</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
+<pre><code class="language-bash"># Query information for AP2S1 (ENSG00000042753)
+ggetrs ensembl lookup-id ENSG00000042753
+
+# Query Information for AP2S1 (ENSG00000042753) and NSD1 (ENSG00000165671)
+ggetrs ensembl lookup-id ENSG00000042753 ENSG00000165671
+
+# Query information for AP2S1 (ENSG00000042753) and NSD1 (ENSG00000165671)
+# but only return their found gene names
+# (useful for translating between ensembl IDs and gene symbols)
+ggetrs ensembl lookup-id -n ENSG00000042753 ENSG00000165671
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lookup-symbol"><a class="header" href="#lookup-symbol">Lookup-Symbol</a></h1>
+<p>Lookup information for genes/transcripts providing symbols and species</p>
+<h2 id="arguments-14"><a class="header" href="#arguments-14">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>Species to specify [default: homo_sapiens]</td></tr>
+<tr><td>IDs</td><td><code>-i</code></td><td><code>--ids</code></td><td>Return a minimal output of only the found Ensembl IDs</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
+<pre><code class="language-bash"># Query information for AP2S1
+ggetrs ensembl lookup-symbol AP2S1
+
+# Query information for AP2S1 and NSD1
+ggetrs ensembl lookup-symbol AP2S1 NSD1
+
+# Query information for AP2S1 and NSD1 in mice
+ggetrs ensembl lookup-symbol -s mus_musculus AP2S1 NSD1
+
+# Query information for AP2S1 and NSD1 but only return Ensembl IDs
+# (useful for translating between Ensembl IDs and gene symbols)
+ggetrs ensembl lookup-symbol -i AP2S1 NSD1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ref"><a class="header" href="#ref">Ref</a></h1>
+<p>Retrieves reference files from the Ensembl FTP site.</p>
+<h2 id="help-1"><a class="header" href="#help-1">Help</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Species</td><td><code>-s</code></td><td><code>--species</code></td><td>Species to query data for [default: homo_sapiens]</td></tr>
+<tr><td>Release</td><td><code>-r</code></td><td><code>--release</code></td><td>Release to use - will default to latest release</td></tr>
+<tr><td>Data Type</td><td><code>-d</code></td><td><code>--datatype</code></td><td>Datatype to query for - provided as a comma-separated list</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+<tr><td>Download</td><td><code>-D</code></td><td><code>--download</code></td><td>Download all requested files to the current working directory</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-9"><a class="header" href="#command-line-interface-9">Command Line Interface</a></h2>
+<pre><code class="language-bash"># returns the url for human genome (default)
+ggetrs ensembl ref
+
+# returns the url for the human cdna transcriptome
+ggetrs ensembl ref -d cdna
+
+# returns the url for the human cdna transcriptome and genome
+ggetrs ensembl ref -d cdna,dna
+
+# returns the url for the mouse cdna transcriptome and genome
+ggetrs ensembl ref -d cdna,dna -s mus_musculus
+
+# downloads the requested files to the current directory
+ggetrs ensembl ref -d cdna,dna,gtf -s homo_sapiens
+</code></pre>
+<h2 id="python-9"><a class="header" href="#python-9">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# returns the url for human genome (default)
+ggetrs.ensembl.reference()
+
+# returns the url for the human cdna transcriptome
+ggetrs.ensembl.reference(
+  datatype=&quot;cdna&quot;
+)
+
+# returns the url for the human cdna transcriptome and genome
+ggetrs.ensembl.reference(
+  datatype=[&quot;cdna&quot;, &quot;dna&quot;]
+)
+
+# returns the url for the mouse cdna transcriptome and genome
+ggetrs.ensembl.reference(
+  datatype=[&quot;cdna&quot;, &quot;dna&quot;], 
+  species=&quot;mus_musculus&quot;
+)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="release"><a class="header" href="#release">Release</a></h1>
+<p>Returns the latest Ensembl release version</p>
+<h2 id="command-line-interface-10"><a class="header" href="#command-line-interface-10">Command Line Interface</a></h2>
+<pre><code class="language-bash">ggetrs ensembl release
+</code></pre>
+<h2 id="python-10"><a class="header" href="#python-10">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+ggetrs.ensembl.release()
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="search-1"><a class="header" href="#search-1">Search</a></h1>
+<p>This is another way to access <a href="ensembl/./../search.html"><code>ggetrs search</code></a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="species"><a class="header" href="#species">Species</a></h1>
+<p>Returns the available species in the Ensembl FTP site</p>
+<h2 id="arguments-15"><a class="header" href="#arguments-15">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Release</td><td><code>-r</code></td><td><code>--release</code></td><td>Ensembl release version to use - will default to latest release</td></tr>
+<tr><td>Data Type</td><td><code>-d</code></td><td><code>--datatype</code></td><td>Datatype to query species list [default: dna] [possible values: cdna, cds, dna, gff3, gtf, ncrna, pep]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-11"><a class="header" href="#command-line-interface-11">Command Line Interface</a></h2>
+<pre><code class="language-bash"># return all species where there is a genome (i.e. dna)
+ggetrs ensembl species
+
+# return all species where there is a transcriptome (i.e. cdna)
+ggetrs ensembl species -d cdna
+
+# return all species where there is a transcriptome (i.e. cdna)
+# for an older release
+ggetrs ensembl species -d cdna -r 60
+</code></pre>
+<h2 id="python-11"><a class="header" href="#python-11">Python</a></h2>
+<pre><code class="language-python">import ggetrs
+
+# return all species where there is a genome (i.e. dna)
+ggetrs.ensembl.species()
+
+# return all species where there is a transcriptome (i.e. cdna)
+ggetrs.ensembl.species(dataype=&quot;dna&quot;)
+
+# return all species where there is a transcriptome (i.e. cdna)
+# for an older release
+ggetrs.ensembl.species(dataype=&quot;cdna&quot;, release=60)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="uniprot"><a class="header" href="#uniprot">Uniprot</a></h1>
+<p>This a module for direct querying on the <a href="https://uniprot.org">Uniprot</a> database.</p>
+<p>Currently there is a single module, but more modules are expected to be created in the future and so this command was created as a submodule.</p>
+<p>This provides nearly all information as <a href="./info.html"><code>ggetrs info</code></a> but is significantly faster.</p>
+<table><thead><tr><th>Submodule</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./uniprot/query.html"><code>query</code></a></td><td>Searches through descriptions on ENSEMBL</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="query"><a class="header" href="#query">Query</a></h1>
+<p>Searches through descriptions on Uniprot</p>
+<h2 id="arguments-16"><a class="header" href="#arguments-16">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Taxon</td><td><code>-t</code></td><td><code>--taxon</code></td><td>Taxon to filter results (human: 9606, mouse: 10090)</td></tr>
+<tr><td>Freeform</td><td><code>-f</code></td><td><code>--freeform</code></td><td>Include flag to perform a freeform search through uniprot. Not including will default to searching for gene symbols.</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-12"><a class="header" href="#command-line-interface-12">Command Line Interface</a></h2>
+<pre><code class="language-bash"># Query uniprot for single terms
+ggetrs uniprot query AP2S1
+
+# Query uniprot for multiple terms
+ggetrs uniprot query AP2S1 RFX3 NSD1
+
+# Query uniprot with freeform search
+ggetrs uniprot query -f rifin
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ncbi"><a class="header" href="#ncbi">NCBI</a></h1>
+<p>This module allows for direct access to APIs provided by NCBI.
+Currently the following submodules are provided:</p>
+<table><thead><tr><th>Submodule</th><th>Description</th></tr></thead><tbody>
+<tr><td><a href="./ncbi/taxons.html"><code>taxons</code></a></td><td>Retrieves taxon information from NCBI from a query string</td></tr>
+<tr><td><a href="./ncbi/query_ids.html"><code>query-ids</code></a></td><td>Retrieves information for a list of IDs</td></tr>
+<tr><td><a href="./ncbi/query_symbols.html"><code>query-symbols</code></a></td><td>Retrieves information for a list of symbols (must provide taxon)</td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="taxons"><a class="header" href="#taxons">Taxons</a></h1>
+<p>This retrieves possible taxons from an incomplete query string.</p>
+<h2 id="arguments-17"><a class="header" href="#arguments-17">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Limit</td><td><code>-l</code></td><td><code>--limit</code></td><td>Number of search results to return [default: 5]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-13"><a class="header" href="#command-line-interface-13">Command Line Interface</a></h2>
+<pre><code class="language-bash"># return all taxons that contain the substring 'sapiens'
+ggetrs ncbi taxons sapiens
+
+# return the first 3 taxons that contain the substring 'sapi'
+ggetrs ncbi taxons -l 3 sapi
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="query-ids"><a class="header" href="#query-ids">Query IDs</a></h1>
+<p>Retrieves information for a list of NCBI IDs</p>
+<h2 id="arguments-18"><a class="header" href="#arguments-18">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-usage-1"><a class="header" href="#command-line-usage-1">Command Line Usage</a></h2>
+<pre><code class="language-bash"># query NCBI for AP2S1 (NCBI ID: 1175)
+ggetrs ncbi query-ids 1175
+
+# query NCBI for AP2S1 and NSD1 (1175 and 64324 respectively)
+ggetrs ncbi query-ids 1175 64324
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="query-symbols"><a class="header" href="#query-symbols">Query Symbols</a></h1>
+<p>Query NCBI for gene symbols and with a provided taxon ID.
+You can determine taxon IDs for your organism of choice with
+<a href="ncbi/./taxons.html"><code>ggetrs ncbi taxons</code></a>.</p>
+<h2 id="arguments-19"><a class="header" href="#arguments-19">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Taxon ID</td><td><code>-t</code></td><td><code>--taxon-id</code></td><td>Taxon ID (human: 9606, mouse: 10090) [default: 9606]</td></tr>
+<tr><td>Output</td><td><code>-o</code></td><td><code>--output</code></td><td>optional filepath to write output to [default=stdout]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-14"><a class="header" href="#command-line-interface-14">Command Line Interface</a></h2>
+<pre><code class="language-bash"># query NCBI for the symbol AP2S1
+ggetrs ncbi query-symbols AP2S1
+
+# query NCBI for the symbol AP2S1 in mice
+ggetrs ncbi query-symbols -t 10090 AP2S1
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="autocomplete"><a class="header" href="#autocomplete">Autocomplete</a></h1>
+<p>This is used to generate autocomplete information for your terminal shell.</p>
+<h2 id="arguments-20"><a class="header" href="#arguments-20">Arguments</a></h2>
+<table><thead><tr><th>Name</th><th>Short</th><th>Long</th><th>Description</th></tr></thead><tbody>
+<tr><td>Shell</td><td><code>-s</code></td><td><code>--shell</code></td><td>Shell to generate autocompletions for [possible values: bash, elvish, fish, powershell, zsh]</td></tr>
+</tbody></table>
+<h2 id="command-line-interface-15"><a class="header" href="#command-line-interface-15">Command Line Interface</a></h2>
+<pre><code class="language-bash"># generate autocompletions for the fish shell
+ggetrs autocomplete -s fish
+
+# write autocomplete directly to fish shell config
+ggetrs autocomplete -s fish &gt; ~/.config/fish/completions/ggetrs.fish
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="faq"><a class="header" href="#faq">FAQ</a></h1>
+<h2 id="what-makes-this-different-than-gget"><a class="header" href="#what-makes-this-different-than-gget">What makes this different than <code>gget</code>?</a></h2>
+<p><code>ggetrs</code> takes advantage of rust's powerful powerful asynchronous features
+and lets you perform a large numbers of HTTP requests without increasing wait times.</p>
+<p>Since it is a compiled program as well there is no start-up time between commands
+and you can run your favorite tool in a <code>for loop</code> with no overhead.</p>
+<p>However <code>ggetrs</code> stays true to the original <code>gget</code> mindset and tries to make usage
+as simple as possible no matter the interface (from python to CLI).</p>
+<h2 id="does-this-have-functions-that-gget-doesnt"><a class="header" href="#does-this-have-functions-that-gget-doesnt">Does this have functions that <code>gget</code> doesn't?</a></h2>
+<p>We're working on having both tools mirror functionality - but currently this includes the
+<a href="./chembl.html">Chembl</a> bioactivity database,
+more endpoints from the <a href="./ensembl.html">Ensembl API</a>,
+and direct queries to <a href="./ncbi.html">NCBI</a> and <a href="./uniprot.html">Uniprot</a>.</p>
+<h2 id="does-gget-have-functions-that-ggetrs-does-not"><a class="header" href="#does-gget-have-functions-that-ggetrs-does-not">Does <code>gget</code> have functions that <code>ggetrs</code> does not?</a></h2>
+<p><code>ggetrs</code> will likely not support the <code>ggetrs muscle</code> and <code>ggetrs alphafold</code>
+functionalities for the time being.
+The reasoning being that these are wrappers around existing binaries
+and not HTTP requests.</p>
+<h2 id="do-i-need-to-know-rust-to-use-this-tool"><a class="header" href="#do-i-need-to-know-rust-to-use-this-tool">Do I need to know rust to use this tool?</a></h2>
+<p>This tool is written fully in rust - but allows for a python interface using
+<a href="https://github.com/PyO3/pyo3">pyo3</a>.
+Currently not all tools have a python API - but they are planned to be
+implemented eventually.</p>
+<p>All of the currently supported <code>gget</code> modules have their python API implemented.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="citations"><a class="header" href="#citations">Citations</a></h1>
+<h2 id="gget"><a class="header" href="#gget">gget</a></h2>
+<p>Luebbert L. &amp; Pachter L. (2022). Efficient querying of genomic reference databases with <em>gget</em>. bioRxiv 2022.05.17.492392; doi: https://doi.org/10.1101/2022.05.17.492392</p>
+<h2 id="archs4-1"><a class="header" href="#archs4-1">ARCHS4</a></h2>
+<p>Lachmann A, Torre D, Keenan AB, Jagodnik KM, Lee HJ, Wang L, Silverstein MC, Ma’ayan A. Massive mining of publicly available RNA-seq data from human and mouse. Nature Communications 9. Article number: 1366 (2018), doi:10.1038/s41467-018-03751-6</p>
+<p>Bray NL, Pimentel H, Melsted P and Pachter L, Near optimal probabilistic RNA-seq quantification, Nature Biotechnology 34, p 525--527 (2016). https://doi.org/10.1038/nbt.3519</p>
+<h2 id="enrichr-2"><a class="header" href="#enrichr-2">Enrichr</a></h2>
+<p>Chen EY, Tan CM, Kou Y, Duan Q, Wang Z, Meirelles GV, Clark NR, Ma'ayan A. Enrichr: interactive and collaborative HTML5 gene list enrichment analysis tool. BMC Bioinformatics. 2013; 128(14).</p>
+<p>Kuleshov MV, Jones MR, Rouillard AD, Fernandez NF, Duan Q, Wang Z, Koplev S, Jenkins SL, Jagodnik KM, Lachmann A, McDermott MG, Monteiro CD, Gundersen GW, Ma'ayan A. Enrichr: a comprehensive gene set enrichment analysis web server 2016 update. Nucleic Acids Research. 2016; gkw377.</p>
+<p>Xie Z, Bailey A, Kuleshov MV, Clarke DJB., Evangelista JE, Jenkins SL, Lachmann A, Wojciechowicz ML, Kropiwnicki E, Jagodnik KM, Jeon M, &amp; Ma’ayan A. Gene set knowledge discovery with Enrichr. Current Protocols, 1, e90. 2021. doi: 10.1002/cpz1.90.</p>
+<h2 id="blast-1"><a class="header" href="#blast-1">BLAST</a></h2>
+<p>Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. J Mol Biol. 1990 Oct 5;215(3):403-10. doi: 10.1016/S0022-2836(05)80360-2. PMID: 2231712.</p>
+<h2 id="blat-1"><a class="header" href="#blat-1">BLAT</a></h2>
+<p>Kent WJ. BLAT--the BLAST-like alignment tool. Genome Res. 2002 Apr;12(4):656-64. doi: 10.1101/gr.229202. PMID: 11932250; PMCID: PMC187518.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<p>This project is intended to be open-source and contributions are very welcome!</p>
+<p>Please contribute on the <a href="https://github.com/noamteyssier/ggetrs">github repo</a></p>
+<p>If you are new to rust or open source in general but still want to contribute
+please don't hesitate to reach out!
+I would be more than happy to help guide you through building your first module.</p>
+<p>All new additions must pass and follow current testing standards.</p>
+<h2 id="contribution-flow-chart"><a class="header" href="#contribution-flow-chart">Contribution Flow Chart</a></h2>
+<ol>
+<li>
+<p>Open an issue describing what you would like to add as a feature/problem you'd
+like to fix</p>
+</li>
+<li>
+<p>Fork the repository / create a branch</p>
+</li>
+<li>
+<p>Make the changes you'd like to the branch (Commit frequently and describe the changes in your commit messages)</p>
+</li>
+<li>
+<p>Open a pull request to main <code>ggetrs</code> repo and request a review</p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bug-reporting"><a class="header" href="#bug-reporting">Bug Reporting</a></h1>
+<p>There will be bugs and I'll work on fixing them.</p>
+<p>But please if you run into anything that seems off don't
+hesitate to create an issue on the repo.</p>
+<p>Please be detailed as possible in your issue when describing the bug
+including providing a minimal reproducible example.</p>
+<p>i.e. if your command didn't work provide the exact command you used.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="disclaimer"><a class="header" href="#disclaimer">Disclaimer</a></h1>
+<p>This tool is provided <em>caveat emptor</em> and relies on the public databases that it draws from.
+If you have any issues with the resulting data - please refer your rage to the relevant providers
+and don't shoot the messenger :)</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>
