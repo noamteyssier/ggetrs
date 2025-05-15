@@ -8,7 +8,7 @@ homepage.workspace = true
 keywords.workspace = true
 description = "Efficient querying of biological databases from the command line"
 documentation = "https://docs.rs/ggetrs"
-categories = ["science:bioinformatics", "command-line-utilities"]
+categories = ["science::bioinformatics", "command-line-utilities"]
 
 [dependencies]
 anyhow = { workspace = true }
