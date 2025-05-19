@@ -18,7 +18,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 chrono = "0.4"
 regex = "1"
-serde-xml-rs = "0.7"
+serde-xml-rs = "0.8"
 
 [features]
 default = []
