@@ -16,7 +16,7 @@ bon = { workspace = true }
 clap = { workspace = true }
 reqwest = { workspace = true }
 serde_json = { workspace = true }
-polars-core = { version = "0.46", default-features = false }
+polars-core = { version = "0.49", default-features = false }
 polars-io = { version = "0.46", default-features = false, features = [
     "json",
     "csv",
