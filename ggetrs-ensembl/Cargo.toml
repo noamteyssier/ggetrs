@@ -23,7 +23,7 @@ mysql = { version = "26", default-features = false, features = [
     "rustls-tls",
 ] }
 ftp = "3"
-indicatif = "0.17"
+indicatif = "0.18"
 
 [features]
 default = []
